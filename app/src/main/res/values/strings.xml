@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Arenillas Turismo</string>
+    <string name="app_name">Arenillas Turístico</string>
+    <string name="list_places">sitios</string>
 </resources>
