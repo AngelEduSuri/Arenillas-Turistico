@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">Arenillas Turístico</string>
     <string name="list_places">sitios</string>
+    <string name="splash_image">splashImage</string>
+    <string name="mapa_de_sitios">MAPA DE SITIOS</string>
+    <string name="lista_de_sitios">LISTA DE SITIOS</string>
+    <string name="galeria">GALERÍA</string>
+    <string name="contacto">CONTACTO</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

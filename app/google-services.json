@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "108210550832",
+    "project_id": "arenillas-turistico",
+    "storage_bucket": "arenillas-turistico.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:108210550832:android:fab5e216726bbe7047d5f5",
+        "android_client_info": {
+          "package_name": "com.aesuriagasalazar.arenillasturismo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "108210550832-94h034og4deqsgm03s03pr2prod7u1h2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALCcU_Hn_oYv0sz25hDcLmmcQMpZBNvk4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "108210550832-94h034og4deqsgm03s03pr2prod7u1h2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
