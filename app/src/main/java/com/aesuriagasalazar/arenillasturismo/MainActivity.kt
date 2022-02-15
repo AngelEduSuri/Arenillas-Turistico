@@ -1,8 +1,11 @@
 package com.aesuriagasalazar.arenillasturismo
 
+import android.content.pm.ActivityInfo
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -16,9 +19,22 @@ class MainActivity : AppCompatActivity() {
     private lateinit var database: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        NavigationUI.setupActionBarWithNavController(
+            this,
+            this.findNavController(R.id.nav_host_fragment)
+        )
+
+        getDataFromFirebase()
+    }
+
+    override fun onSupportNavigateUp() = this.findNavController(R.id.nav_host_fragment).navigateUp()
+
+
+    private fun getDataFromFirebase() {
         database = Firebase.database.getReference(getString(R.string.list_places))
 
         val places = mutableListOf<Place>()
