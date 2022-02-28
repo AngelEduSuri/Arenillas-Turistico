@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.aesuriagasalazar.arenillasturismo.R
 import com.aesuriagasalazar.arenillasturismo.databinding.FragmentMainMenuBinding
 
-class MainMenu : Fragment() {
+class FragmentMainMenu : Fragment() {
 
     private lateinit var binding: FragmentMainMenuBinding
 
@@ -22,7 +22,7 @@ class MainMenu : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_menu, container, false)
 
         binding.buttonList.setOnClickListener {
-            findNavController().navigate(MainMenuDirections.actionMainMenuToCategoriesList())
+            findNavController().navigate(FragmentMainMenuDirections.actionMainMenuToCategoryList())
         }
 
         return binding.root
