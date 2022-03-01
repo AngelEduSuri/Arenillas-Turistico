@@ -9,4 +9,5 @@
     <dimen name="margin_card_button_vertical">16dp</dimen>
     <dimen name="margin_card_button_horizontal">8dp</dimen>
     <dimen name="rounded_card_button">20dp</dimen>
+    <dimen name="card_height_category">150dp</dimen>
 </resources>

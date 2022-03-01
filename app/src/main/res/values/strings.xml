@@ -2,10 +2,27 @@
     <string name="app_name">Arenillas Turístico</string>
     <string name="list_places">sitios</string>
     <string name="splash_image">splashImage</string>
-    <string name="mapa_de_sitios">MAPA DE SITIOS</string>
-    <string name="lista_de_sitios">LISTA DE SITIOS</string>
-    <string name="galeria">GALERÍA</string>
-    <string name="contacto">CONTACTO</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Soy el la vista movil</string>
+    <string name="share">Compartir</string>
+    <string name="content_description_share">Comparte el enlace de la aplicacion</string>
+
+    <!-- Title for buttons main menu -->
+    <string name="map_of_places">MAPA DE SITIOS</string>
+    <string name="list_of_places">LISTA DE SITIOS</string>
+    <string name="gallery">GALERÍA</string>
+    <string name="contact">CONTACTO</string>
+
+    <!-- Title for labels fragments -->
+    <string name="title_menu">Menú</string>
+    <string name="title_category">Categorías</string>
+    <string name="title_places">Lugares</string>
+    <string name="title_detail">Detalles</string>
+
+    <!-- Title categories -->
+    <string name="parks">Parques</string>
+    <string name="food">Comida</string>
+    <string name="nature">Naturaleza</string>
+    <string name="sports">Deportivo</string>
+    <string name="lodging">Hospedaje</string>
+    <string name="entertainment">Entretenimiento</string>
 </resources>

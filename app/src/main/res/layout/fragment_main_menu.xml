@@ -10,18 +10,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.MainMenu">
+        tools:context=".view.menu.FragmentMainMenu">
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/button_map"
             android:layout_width="0dp"
-            android:layout_height="180dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="4dp"
-            android:backgroundTint="@color/secondaryColor"
-            android:elevation="8dp"
-            app:cardCornerRadius="10dp"
+            android:layout_height="@dimen/button_card_height"
+            android:layout_marginStart="@dimen/margin_card_button_vertical"
+            android:layout_marginEnd="@dimen/margin_card_button_horizontal"
+            android:layout_marginBottom="@dimen/margin_card_button_horizontal"
+            style="@style/CardStyleButton"
             app:layout_constraintBottom_toTopOf="@+id/button_gallery"
             app:layout_constraintEnd_toStartOf="@+id/button_list"
             app:layout_constraintHorizontal_bias="0.5"
@@ -29,37 +27,42 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:contentDescription="@string/mapa_de_sitios"
-                android:src="@drawable/mapa"
-                tools:ignore="ImageContrastCheck" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/margin_card_button_vertical"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginBottom="10dp"
-                android:text="@string/mapa_de_sitios"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.8"
+                    android:contentDescription="@string/map_of_places"
+                    android:src="@drawable/mapa" />
 
-        </androidx.cardview.widget.CardView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:text="@string/map_of_places"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="@dimen/title_size_button"
+                    android:textStyle="bold" />
 
-        <androidx.cardview.widget.CardView
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/button_list"
             android:layout_width="0dp"
-            android:layout_height="180dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="4dp"
-            android:backgroundTint="@color/secondaryColor"
-            android:elevation="8dp"
-            app:cardCornerRadius="10dp"
+            android:layout_height="@dimen/button_card_height"
+            android:layout_marginStart="@dimen/margin_card_button_horizontal"
+            android:layout_marginEnd="@dimen/margin_card_button_vertical"
+            android:layout_marginBottom="@dimen/margin_card_button_horizontal"
+            style="@style/CardStyleButton"
             app:layout_constraintBottom_toTopOf="@+id/button_contact"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -67,97 +70,115 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:contentDescription="@string/lista_de_sitios"
-                android:src="@drawable/categories" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/margin_card_button_vertical"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginBottom="10dp"
-                android:text="@string/lista_de_sitios"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.8"
+                    android:contentDescription="@string/list_of_places"
+                    android:src="@drawable/categories" />
 
-        </androidx.cardview.widget.CardView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:text="@string/list_of_places"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="@dimen/title_size_button"
+                    android:textStyle="bold" />
 
-        <androidx.cardview.widget.CardView
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/button_gallery"
             android:layout_width="0dp"
-            android:layout_height="180dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginTop="4dp"
-            android:backgroundTint="@color/secondaryColor"
-            android:elevation="8dp"
-            app:cardCornerRadius="10dp"
+            android:layout_height="@dimen/button_card_height"
+            android:layout_marginStart="@dimen/margin_card_button_vertical"
+            android:layout_marginEnd="@dimen/margin_card_button_horizontal"
+            android:layout_marginTop="@dimen/margin_card_button_horizontal"
+            style="@style/CardStyleButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button_contact"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_map">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:contentDescription="@string/galeria"
-                android:src="@drawable/gallery" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/margin_card_button_vertical"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginBottom="10dp"
-                android:text="@string/galeria"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.8"
+                    android:contentDescription="@string/gallery"
+                    android:src="@drawable/gallery" />
 
-        </androidx.cardview.widget.CardView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.2"
+                    android:text="@string/gallery"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="@dimen/title_size_button"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
-        <androidx.cardview.widget.CardView
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/button_contact"
             android:layout_width="0dp"
-            android:layout_height="180dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="4dp"
-            android:backgroundTint="@color/secondaryColor"
-            android:elevation="8dp"
-            app:cardCornerRadius="10dp"
+            android:layout_height="@dimen/button_card_height"
+            android:layout_marginStart="@dimen/margin_card_button_horizontal"
+            android:layout_marginEnd="@dimen/margin_card_button_vertical"
+            android:layout_marginTop="@dimen/margin_card_button_horizontal"
+            style="@style/CardStyleButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/button_gallery"
             app:layout_constraintTop_toBottomOf="@+id/button_list">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:contentDescription="@string/contacto"
-                android:src="@drawable/contact" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/margin_card_button_vertical"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginBottom="10dp"
-                android:text="@string/contacto"
-                android:textColor="@color/primaryTextColor"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.8"
+                    android:contentDescription="@string/contact"
+                    android:src="@drawable/contact" />
 
-        </androidx.cardview.widget.CardView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:text="@string/contact"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="@dimen/title_size_button"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

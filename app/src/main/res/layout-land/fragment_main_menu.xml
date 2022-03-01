@@ -10,9 +10,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.FragmentMainMenu">
+        tools:context=".view.menu.FragmentMainMenu">
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/button_map"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -20,9 +20,7 @@
             android:layout_marginTop="@dimen/margin_card_button_vertical"
             android:layout_marginEnd="@dimen/margin_card_button_horizontal"
             android:layout_marginBottom="@dimen/margin_card_button_horizontal"
-            android:backgroundTint="@color/secondaryColor"
-            android:elevation="8dp"
-            app:cardCornerRadius="@dimen/rounded_card_button"
+            style="@style/CardStyleButton"
             app:layout_constraintBottom_toTopOf="@+id/button_gallery"
             app:layout_constraintEnd_toStartOf="@+id/button_list"
             app:layout_constraintHorizontal_bias="0.5"
@@ -41,14 +39,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.8"
-                    android:contentDescription="@string/mapa_de_sitios"
+                    android:contentDescription="@string/map_of_places"
                     android:src="@drawable/mapa" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.2"
-                    android:text="@string/mapa_de_sitios"
+                    android:text="@string/map_of_places"
                     android:textAlignment="center"
                     android:textColor="@color/primaryTextColor"
                     android:textSize="@dimen/title_size_button"
@@ -56,9 +54,9 @@
 
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/button_list"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -66,9 +64,7 @@
             android:layout_marginTop="@dimen/margin_card_button_vertical"
             android:layout_marginEnd="@dimen/margin_card_button_vertical"
             android:layout_marginBottom="@dimen/margin_card_button_horizontal"
-            android:backgroundTint="@color/secondaryColor"
-            android:elevation="8dp"
-            app:cardCornerRadius="@dimen/rounded_card_button"
+            style="@style/CardStyleButton"
             app:layout_constraintBottom_toTopOf="@+id/button_contact"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -87,7 +83,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.8"
-                    android:contentDescription="@string/lista_de_sitios"
+                    android:contentDescription="@string/list_of_places"
                     android:src="@drawable/categories" />
 
                 <TextView
@@ -95,16 +91,16 @@
                     android:textAlignment="center"
                     android:layout_height="0dp"
                     android:layout_weight="0.2"
-                    android:text="@string/lista_de_sitios"
+                    android:text="@string/list_of_places"
                     android:textColor="@color/primaryTextColor"
                     android:textSize="@dimen/title_size_button"
                     android:textStyle="bold" />
 
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/button_gallery"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -112,9 +108,7 @@
             android:layout_marginTop="@dimen/margin_card_button_horizontal"
             android:layout_marginEnd="@dimen/margin_card_button_horizontal"
             android:layout_marginBottom="@dimen/margin_card_button_vertical"
-            android:backgroundTint="@color/secondaryColor"
-            android:elevation="8dp"
-            app:cardCornerRadius="@dimen/rounded_card_button"
+            style="@style/CardStyleButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button_contact"
             app:layout_constraintHorizontal_bias="0.5"
@@ -132,7 +126,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.8"
-                    android:contentDescription="@string/galeria"
+                    android:contentDescription="@string/gallery"
                     android:src="@drawable/gallery" />
 
                 <TextView
@@ -140,25 +134,23 @@
                     android:layout_height="0dp"
                     android:layout_weight="0.2"
                     android:textAlignment="center"
-                    android:text="@string/galeria"
+                    android:text="@string/gallery"
                     android:textColor="@color/primaryTextColor"
                     android:textSize="@dimen/title_size_button"
                     android:textStyle="bold" />
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/button_contact"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/margin_card_button_horizontal"
             android:layout_marginTop="@dimen/margin_card_button_horizontal"
-            android:layout_marginEnd="@dimen/margin_card_button_horizontal"
+            android:layout_marginEnd="@dimen/margin_card_button_vertical"
             android:layout_marginBottom="@dimen/margin_card_button_vertical"
-            android:backgroundTint="@color/secondaryColor"
-            android:elevation="8dp"
-            app:cardCornerRadius="@dimen/rounded_card_button"
+            style="@style/CardStyleButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -176,7 +168,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="0.8"
-                    android:contentDescription="@string/contacto"
+                    android:contentDescription="@string/contact"
                     android:src="@drawable/contact" />
 
                 <TextView
@@ -184,14 +176,14 @@
                     android:layout_height="0dp"
                     android:layout_weight="0.2"
                     android:textAlignment="center"
-                    android:text="@string/contacto"
+                    android:text="@string/contact"
                     android:textColor="@color/primaryTextColor"
                     android:textSize="@dimen/title_size_button"
                     android:textStyle="bold" />
 
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
