@@ -23,5 +23,18 @@
         android:id="@+id/categoryList"
         android:name="com.aesuriagasalazar.arenillasturismo.view.category.FragmentCategoryList"
         android:label="@string/title_category"
-        tools:layout="@layout/fragment_category_list" />
+        tools:layout="@layout/fragment_category_list" >
+        <action
+            android:id="@+id/action_categoryList_to_fragmentPlacesList"
+            app:destination="@id/fragmentPlacesList" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentPlacesList"
+        android:name="com.aesuriagasalazar.arenillasturismo.view.place.FragmentPlacesList"
+        android:label="@string/title_places"
+        tools:layout="@layout/fragment_places_list">
+        <argument
+            android:name="category"
+            app:argType="string" />
+    </fragment>
 </navigation>

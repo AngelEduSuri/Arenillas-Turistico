@@ -1,9 +1,11 @@
 package com.aesuriagasalazar.arenillasturismo.model
 
+import android.content.res.Resources
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.aesuriagasalazar.arenillasturismo.R
+import com.google.firebase.database.core.Context
 
 data class Category(val icon: Int, val title: Int)
 
@@ -26,4 +28,8 @@ fun imageResource(imageView: ImageView, res: Int) {
 @BindingAdapter("title_category")
 fun textResource(textView: TextView, res: Int) {
     textView.setText(res)
+}
+
+fun Int.toStringCategory(resource: Resources): String {
+    return resource.getString(this)
 }

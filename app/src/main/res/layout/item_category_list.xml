@@ -7,6 +7,9 @@
         <variable
             name="category"
             type="com.aesuriagasalazar.arenillasturismo.model.Category" />
+        <variable
+            name="categoryClick"
+            type="com.aesuriagasalazar.arenillasturismo.view.category.CategoryClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,6 +25,7 @@
             app:cardElevation="8dp"
             android:clickable="true"
             android:focusable="true"
+            android:onClick="@{()-> categoryClick.onCategoryClick(category.title)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">

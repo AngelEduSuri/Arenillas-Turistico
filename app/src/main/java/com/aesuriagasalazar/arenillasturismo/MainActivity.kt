@@ -24,7 +24,6 @@ import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var database: DatabaseReference
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -43,36 +42,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(appBar)
         NavigationUI.setupWithNavController(appBar, navController, appBarConfiguration)
 
-        getDataFromFirebase()
     }
 
     override fun onSupportNavigateUp() = navController.navigateUp()
-
-
-    private fun getDataFromFirebase() {
-        database = Firebase.database.getReference(getString(R.string.list_places))
-
-        val places = mutableListOf<Place>()
-
-        val postListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                places.clear()
-                for (placeSnapshot in dataSnapshot.children) {
-                    val product = placeSnapshot.getValue(Place::class.java)
-                    product?.let { places.add(it) }
-                }
-
-                places.forEach {
-                    Log.i("leer", it.nombre)
-                }
-                Log.i("leer", "Tamaño de lista: ${places.size}")
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                Log.i("leer", "loadPost:onCancelled", databaseError.toException())
-            }
-        }
-        database.addValueEventListener(postListener)
-    }
 }
