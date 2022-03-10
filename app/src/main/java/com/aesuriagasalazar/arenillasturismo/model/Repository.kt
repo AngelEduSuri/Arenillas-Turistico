@@ -9,22 +9,25 @@ import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 import com.aesuriagasalazar.arenillasturismo.model.domain.asDomainModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.yield
 
 class Repository(
     private val realTimeDataBase: RealTimeDataBase,
     private val localDataBase: PlaceDao
 ) {
-
-    /** Variable observable que se actualiza automaticamente de la base de datos **/
-    val places: LiveData<List<Place>> = Transformations.map(localDataBase.getPlaces()) {
-        it.asDomainModel()
-    }
+//
+//    /** Variable observable que se actualiza automaticamente de la base de datos **/
+//    val places: LiveData<List<Place>> = Transformations.map(localDataBase.getPlaces()) {
+//        it.asDomainModel()
+//    }
 
     /** Obtengo la lista de firebase y la guardo en local **/
-    suspend fun getListPlaces() {
+    suspend fun loadPlacesFromDataSource() {
         withContext(Dispatchers.IO) {
             val response = realTimeDataBase.firebaseOnCoroutine()
             localDataBase.savePlaces(response.places.asEntityModel())
         }
     }
+
+    suspend fun getPlacesCategory(category: String) = localDataBase.getPlacesForCategory(category)
 }

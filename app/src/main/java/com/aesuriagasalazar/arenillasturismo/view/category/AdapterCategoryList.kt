@@ -17,12 +17,12 @@ class AdapterCategoryList(
 
     override fun getItemCount() = listCategory.size
 
-    class ViewHolder(private val binding: ItemCategoryListBinding): RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder private constructor(private val binding: ItemCategoryListBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun bind(category: Category, categoryClickListener: CategoryClickListener) {
             binding.category = category
-            binding.executePendingBindings()
             binding.categoryClick = categoryClickListener
+            binding.executePendingBindings()
         }
 
         companion object {

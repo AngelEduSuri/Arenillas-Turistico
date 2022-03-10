@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="place"
+            type="com.aesuriagasalazar.arenillasturismo.model.domain.Place" />
+        <variable
+            name="placeClick"
+            type="com.aesuriagasalazar.arenillasturismo.view.place.PlaceClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/margin_card_button_horizontal"
+        android:paddingBottom="@dimen/margin_card_button_horizontal">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="350dp"
+            app:cardElevation="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/image_place"
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:contentDescription="@{place.categoria}"
+                    image_load_url="@{place.miniatura}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/title_place"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{place.nombre}"
+                    tools:text="Nombre del Lugar"
+                    android:textStyle="bold"
+                    android:textSize="25sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/image_place" />
+
+                <TextView
+                    android:id="@+id/description_place"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:text="@{place.descripcion}"
+                    tools:text="Descripcion del Lugar"
+                    android:textSize="18sp"
+                    android:padding="@dimen/margin_card_button_horizontal"
+                    app:layout_constraintBottom_toTopOf="@+id/materialButton"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/title_place" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/materialButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/button_more_details"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:icon="@drawable/icon_more_details"
+                    app:iconGravity="end"
+                    app:iconSize="30dp"
+                    android:onClick="@{() -> placeClick.onPlaceClick(place)}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -5,6 +5,7 @@
     <string name="hello_blank_fragment">Soy el la vista movil</string>
     <string name="share">Compartir</string>
     <string name="content_description_share">Comparte el enlace de la aplicacion</string>
+    <string name="button_more_details">Más Información</string>
 
     <!-- Title for buttons main menu -->
     <string name="map_of_places">MAPA DE SITIOS</string>

@@ -1,10 +1,12 @@
 package com.aesuriagasalazar.arenillasturismo.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.aesuriagasalazar.arenillasturismo.model.Repository
-import kotlinx.coroutines.delay
+import com.aesuriagasalazar.arenillasturismo.model.domain.Place
+import com.aesuriagasalazar.arenillasturismo.model.domain.asDomainModel
 import kotlinx.coroutines.launch
-import java.io.IOException
+import java.util.concurrent.atomic.AtomicInteger
 
 class PlaceListViewModel(
     private val repository: Repository,
@@ -14,7 +16,8 @@ class PlaceListViewModel(
     private val _loadingBar = MutableLiveData<Boolean>()
     val loadingBar: LiveData<Boolean> = _loadingBar
 
-    val places = repository.places
+    private val _categoryList = MutableLiveData<List<Place>>()
+    val categoryList: LiveData<List<Place>> = _categoryList
 
     init {
         loadDataFromRepository()
@@ -23,7 +26,8 @@ class PlaceListViewModel(
     private fun loadDataFromRepository() {
         viewModelScope.launch {
             _loadingBar.value = true
-            repository.getListPlaces()
+            repository.loadPlacesFromDataSource()
+            _categoryList.value = repository.getPlacesCategory(category.lowercase()).asDomainModel()
             _loadingBar.value = false
         }
     }
