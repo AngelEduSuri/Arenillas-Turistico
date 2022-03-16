@@ -15,6 +15,9 @@ interface PlaceDao {
     @Query(value = "SELECT * FROM list_places_table WHERE category = :category")
     suspend fun getPlacesForCategory(category: String): List<PlaceEntity>
 
+    @Query(value = "SELECT COUNT(*) FROM list_places_table")
+    suspend fun getListCount(): Int
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun savePlaces( videos: List<PlaceEntity>)
 }

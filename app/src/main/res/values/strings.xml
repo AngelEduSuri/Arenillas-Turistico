@@ -1,11 +1,13 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Arenillas Turístico</string>
     <string name="list_places">sitios</string>
     <string name="splash_image">splashImage</string>
     <string name="hello_blank_fragment">Soy el la vista movil</string>
     <string name="share">Compartir</string>
+    <string name="home">Menú</string>
     <string name="content_description_share">Comparte el enlace de la aplicacion</string>
     <string name="button_more_details">Más Información</string>
+    <string name="button_go_to_ar">Ver en realidad aumentada</string>
 
     <!-- Title for buttons main menu -->
     <string name="map_of_places">MAPA DE SITIOS</string>
@@ -18,12 +20,18 @@
     <string name="title_category">Categorías</string>
     <string name="title_places">Lugares</string>
     <string name="title_detail">Detalles</string>
+    <string name="title_description">Descripción</string>
+    <string name="title_location">Ubicación</string>
+    <string name="title_address">Dirección</string>
 
     <!-- Title categories -->
-    <string name="parks">Parques</string>
+    <string name="parks">Parque</string>
     <string name="food">Comida</string>
     <string name="nature">Naturaleza</string>
     <string name="sports">Deportivo</string>
     <string name="lodging">Hospedaje</string>
     <string name="entertainment">Entretenimiento</string>
+
+    <string name="body_example">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
+
 </resources>

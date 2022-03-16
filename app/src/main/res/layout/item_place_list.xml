@@ -20,7 +20,7 @@
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="0dp"
-            android:layout_height="350dp"
+            android:layout_height="400dp"
             app:cardElevation="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -34,7 +34,7 @@
                 <ImageView
                     android:id="@+id/image_place"
                     android:layout_width="0dp"
-                    android:layout_height="200dp"
+                    android:layout_height="230dp"
                     android:contentDescription="@{place.categoria}"
                     image_load_url="@{place.miniatura}"
                     app:layout_constraintEnd_toEndOf="parent"

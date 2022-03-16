@@ -22,12 +22,28 @@
         <item name="android:windowBackground">?attr/colorPrimary</item>
     </style>
 
-    <style name="CardStyleButton" >
+    <style name="CardStyleButton">
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
         <item name="cardElevation">8dp</item>
         <item name="cardCornerRadius">@dimen/rounded_card_button</item>
         <item name="cardBackgroundColor">?attr/colorSecondary</item>
+    </style>
+
+    <style name="SliderImageStyle">
+        <item name="sliderIndicatorAnimationDuration">600</item>
+        <item name="sliderIndicatorGravity">center_horizontal|bottom</item>
+        <item name="sliderIndicatorMargin">15dp</item>
+        <item name="sliderIndicatorOrientation">horizontal</item>
+        <item name="sliderIndicatorPadding">3dp</item>
+        <item name="sliderIndicatorRadius">2dp</item>
+        <item name="sliderIndicatorSelectedColor">@color/secondaryTextColor</item>
+        <item name="sliderIndicatorUnselectedColor">@color/secondaryDarkColor</item>
+        <item name="sliderScrollTimeInSec">3</item>
+        <item name="sliderStartAutoCycle">true</item>
+        <item name="sliderAnimationDuration">600</item>
+        <item name="sliderAutoCycleDirection">back_and_forth</item>
+        <item name="sliderAutoCycleEnabled">true</item>
     </style>
 
 </resources>

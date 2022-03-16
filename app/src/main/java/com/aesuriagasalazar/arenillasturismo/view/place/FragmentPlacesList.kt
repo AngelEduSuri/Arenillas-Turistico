@@ -2,6 +2,7 @@ package com.aesuriagasalazar.arenillasturismo.view.place
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aesuriagasalazar.arenillasturismo.R
 import com.aesuriagasalazar.arenillasturismo.databinding.FragmentPlacesListBinding
@@ -37,9 +39,11 @@ class FragmentPlacesList : Fragment() {
             false
         )
 
+        val application = requireNotNull(this.activity).application
+
         /** El factory permite instanciar el viewmodel y mantener la instancia **/
         viewModelFactory = PlaceListViewModelFactory(
-            Repository(RealTimeDataBase(), PlacesDatabase.getDatabase(activity?.applicationContext!!).videoDao),
+            Repository(RealTimeDataBase(), PlacesDatabase.getDatabase(application).videoDao),
             FragmentPlacesListArgs.fromBundle(requireArguments()).category
         )
         viewModel = ViewModelProvider(this, viewModelFactory)[PlaceListViewModel::class.java]
@@ -47,7 +51,8 @@ class FragmentPlacesList : Fragment() {
         /** Configuracion del recyclerview **/
         val manager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         val adapter = AdapterPlaceList(PlaceClickListener {
-            Toast.makeText(context, "Click en ${it.nombre}, yendo a la pagina detalle", Toast.LENGTH_SHORT).show()
+            findNavController()
+                .navigate(FragmentPlacesListDirections.actionFragmentPlacesListToFragmentPlaceDetails(it))
         })
 
         /** Paso el viewmodel y el lifecycle a la vista xml para el data binding **/
@@ -61,6 +66,16 @@ class FragmentPlacesList : Fragment() {
             it?.let {
                 adapter.listPlaces = it
                 adapter.notifyDataSetChanged()
+            }
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it.isNotEmpty()) {
+                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                    findNavController().popBackStack()
+                    viewModel.clearError()
+                }
             }
         }
 

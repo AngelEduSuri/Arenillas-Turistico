@@ -1,13 +1,19 @@
 package com.aesuriagasalazar.arenillasturismo.model
 
 import android.content.res.Resources
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.aesuriagasalazar.arenillasturismo.R
+import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 import com.bumptech.glide.Glide
-import com.google.firebase.database.core.Context
+import com.bumptech.glide.request.RequestOptions
+import com.mapbox.geojson.Point
+import com.mapbox.maps.CameraOptions
+import com.mapbox.maps.MapView
 
 data class Category(val icon: Int, val title: Int)
 
@@ -32,25 +38,41 @@ fun textResource(textView: TextView, res: Int) {
     textView.setText(res)
 }
 
-
-
-
 @BindingAdapter("image_load_url")
 fun imageUrl(imageView: ImageView, url: String) {
-    val circularProgressDrawable = CircularProgressDrawable(imageView.context)
-    circularProgressDrawable.strokeWidth = 15f
-    circularProgressDrawable.centerRadius = 100f
-    circularProgressDrawable.start()
 
     Glide
-        .with(imageView)
+        .with(imageView.context)
         .load(url)
         .centerCrop()
-        .placeholder(circularProgressDrawable)
-        .error(R.drawable.icon_error_load_image)
+        .apply(RequestOptions()
+            .placeholder(R.drawable.loading_animation)
+            .error(R.drawable.broken_image))
         .into(imageView)
 }
 
 fun Int.toStringCategory(resource: Resources): String {
     return resource.getString(this)
+}
+
+@BindingAdapter("image_load_slider")
+fun imageUrlSlider(imageView: ImageView, imageUrl: String) {
+    Glide
+        .with(imageView.context)
+        .load(imageUrl.toUri())
+        .fitCenter()
+        .apply(RequestOptions()
+            .placeholder(R.drawable.loading_animation)
+            .error(R.drawable.broken_image))
+        .into(imageView)
+}
+
+@BindingAdapter("load_init_camera")
+fun initCameraMapbox(mapView: MapView, place: Place) {
+    mapView.getMapboxMap().setCamera(
+        CameraOptions.Builder()
+            .center(Point.fromLngLat(place.longitud, place.latitud, place.altitud.toDouble()))
+            .zoom(17.5)
+            .build()
+    )
 }

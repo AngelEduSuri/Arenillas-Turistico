@@ -12,7 +12,6 @@ abstract class PlacesDatabase: RoomDatabase() {
 
     companion object{
 
-        @Volatile
         private lateinit var INSTANCE: PlacesDatabase
 
         fun getDatabase(context: Context): PlacesDatabase {

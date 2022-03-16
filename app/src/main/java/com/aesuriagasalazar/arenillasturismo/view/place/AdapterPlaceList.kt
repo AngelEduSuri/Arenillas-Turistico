@@ -27,8 +27,8 @@ class AdapterPlaceList(private val placeClickListener: PlaceClickListener): Recy
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val biding = ItemPlaceListBinding.inflate(layoutInflater, parent, false)
-                return ViewHolder(biding)
+                val binding = ItemPlaceListBinding.inflate(layoutInflater, parent, false)
+                return ViewHolder(binding)
             }
         }
     }

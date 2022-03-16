@@ -1,7 +1,11 @@
 package com.aesuriagasalazar.arenillasturismo.model.domain
 
+import android.os.Parcelable
 import com.aesuriagasalazar.arenillasturismo.model.data.local.PlaceEntity
+import kotlinx.android.parcel.Parcelize
 
+@Suppress("DEPRECATED_ANNOTATION")
+@Parcelize
 data class Place(
     val id: Int = 0,
     val nombre: String = "",
@@ -13,7 +17,7 @@ data class Place(
     val altitud: Int = 0,
     val miniatura: String = "",
     val imagenes: List<String> = listOf()
-)
+): Parcelable
 
 /** Convierte el modelo de entidad en una lista de dominio **/
 fun List<PlaceEntity>.asDomainModel(): List<Place> {
@@ -28,7 +32,7 @@ fun List<PlaceEntity>.asDomainModel(): List<Place> {
             latitud = it.latitud,
             altitud = it.altitud,
             miniatura = it.miniatura,
-            imagenes = it.imagenes.split("-")
+            imagenes = it.imagenes.split("*")
         )
     }
 }

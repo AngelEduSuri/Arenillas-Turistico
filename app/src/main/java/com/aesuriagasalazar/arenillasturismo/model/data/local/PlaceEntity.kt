@@ -42,7 +42,7 @@ fun List<Place>.asEntityModel(): List<PlaceEntity>{
             latitud = it.latitud,
             altitud = it.altitud,
             miniatura = it.miniatura,
-            imagenes = it.imagenes.joinToString("-")
+            imagenes = it.imagenes.joinToString("*")
         )
     }
 }

@@ -1,15 +1,11 @@
 package com.aesuriagasalazar.arenillasturismo.model
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import android.util.Log
 import com.aesuriagasalazar.arenillasturismo.model.data.local.PlaceDao
 import com.aesuriagasalazar.arenillasturismo.model.data.local.asEntityModel
 import com.aesuriagasalazar.arenillasturismo.model.data.remote.RealTimeDataBase
-import com.aesuriagasalazar.arenillasturismo.model.domain.Place
-import com.aesuriagasalazar.arenillasturismo.model.domain.asDomainModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.yield
 
 class Repository(
     private val realTimeDataBase: RealTimeDataBase,
@@ -22,12 +18,19 @@ class Repository(
 //    }
 
     /** Obtengo la lista de firebase y la guardo en local **/
-    suspend fun loadPlacesFromDataSource() {
-        withContext(Dispatchers.IO) {
+    suspend fun loadPlacesFromDataSourceRemote(): String? {
+        val error = withContext(Dispatchers.IO) {
             val response = realTimeDataBase.firebaseOnCoroutine()
+            val error = response.error
             localDataBase.savePlaces(response.places.asEntityModel())
+            return@withContext error
         }
+        return error
     }
 
+    /** Averiguo si la base de datos local tiene algun registro **/
+    suspend fun getItemsCount() = localDataBase.getListCount()
+
+    /** Consulto la lista de lugares por su categoria **/
     suspend fun getPlacesCategory(category: String) = localDataBase.getPlacesForCategory(category)
 }
