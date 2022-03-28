@@ -12,7 +12,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.whenResumed
 import androidx.navigation.fragment.findNavController
 import com.aesuriagasalazar.arenillasturismo.R
 import com.aesuriagasalazar.arenillasturismo.databinding.FragmentMapListBinding
@@ -23,12 +22,16 @@ import com.aesuriagasalazar.arenillasturismo.model.Repository
 import com.aesuriagasalazar.arenillasturismo.model.data.local.PlacesDatabase
 import com.aesuriagasalazar.arenillasturismo.model.data.remote.RealTimeDataBase
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
+import com.aesuriagasalazar.arenillasturismo.view.permissions.UserPermissions
 import com.aesuriagasalazar.arenillasturismo.viewmodel.MapListViewModel
 import com.aesuriagasalazar.arenillasturismo.viewmodel.MapListViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.mapbox.geojson.Point
-import com.mapbox.maps.*
+import com.mapbox.maps.CameraOptions
+import com.mapbox.maps.MapboxExperimental
+import com.mapbox.maps.Style
+import com.mapbox.maps.ViewAnnotationAnchor
 import com.mapbox.maps.dsl.cameraOptions
 import com.mapbox.maps.plugin.animation.MapAnimationOptions.Companion.mapAnimationOptions
 import com.mapbox.maps.plugin.animation.flyTo
@@ -51,6 +54,7 @@ class FragmentMapList : Fragment() {
     private lateinit var annotationManager: PointAnnotationManager
     private lateinit var viewAnnotation: ViewAnnotationManager
     private lateinit var cardViewMap: ItemPlaceMapBinding
+    private lateinit var permissions: UserPermissions
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,16 +79,13 @@ class FragmentMapList : Fragment() {
         viewModel.listPlaces.observe(viewLifecycleOwner) { places ->
             lifecycleScope.launch {
                 places?.let {
-                    lifecycleScope.launch {
-                        loadPlacesOnMap(places)
-                        Log.i("leer", "${places.size}")
-                        if (places.isEmpty())
-                            Snackbar.make(
-                                binding.root,
-                                "No existen lugares para esta categoria",
-                                Snackbar.LENGTH_SHORT
-                            ).show()
-                    }
+                    loadPlacesOnMap(places)
+                    if (places.isEmpty())
+                        Snackbar.make(
+                            binding.root,
+                            "No existen lugares para esta categoria",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                 }
             }
         }
@@ -101,13 +102,22 @@ class FragmentMapList : Fragment() {
             if (it != null) {
                 loadPlaceCard(it.place, it.pointAnnotation)
                 binding.mapViewList.getMapboxMap().addOnMapClickListener(mapClickListener)
-                Log.i("leer", "place selected")
             }
         }
 
         viewModel.userLocation.observe(viewLifecycleOwner) {
             it?.let {
-                Snackbar.make(binding.root, "Obteniendo la ubicacion del usuario", Snackbar.LENGTH_SHORT).show()
+                if (it) {
+                    permissions = UserPermissions(this)
+                    if (permissions.checkPermissions()) {
+                        Snackbar.make(binding.root, "Habilitado, obteniendo ubicacion", Snackbar.LENGTH_LONG).show()
+                    } else {
+                        permissions.showDialogPermissions()
+                    }
+                    viewModel.userLocationPermissionIdle()
+                } else {
+                    Log.i("leer", "false")
+                }
             }
         }
 
@@ -277,6 +287,11 @@ class FragmentMapList : Fragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.i("leer", "onpause")
     }
 }
 

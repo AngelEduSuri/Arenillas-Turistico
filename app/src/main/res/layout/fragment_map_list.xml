@@ -51,7 +51,7 @@
             android:contentDescription="@string/my_location"
             app:backgroundTint="?attr/colorSecondary"
             app:elevation="8dp"
-            android:onClick="@{() -> viewModel.userLocation()}"
+            android:onClick="@{() -> viewModel.userLocationPermissionShow()}"
             app:layout_constraintBottom_toTopOf="@+id/cardName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.95"

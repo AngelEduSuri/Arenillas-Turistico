@@ -21,14 +21,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        /** Configurar la barra superior material3 con el componente de navegacion **/
+        /** Configura la barra superior material3 con el componente de navegacion **/
         navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration(navController.graph)
         appBar = findViewById(R.id.topAppBar)
         setSupportActionBar(appBar)
         NavigationUI.setupWithNavController(appBar, navController, appBarConfiguration)
-
     }
 
     override fun onSupportNavigateUp() = navController.navigateUp()

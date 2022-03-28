@@ -8,6 +8,9 @@
     <string name="content_description_share">Comparte el enlace de la aplicacion</string>
     <string name="button_more_details">Más Información</string>
     <string name="button_go_to_ar">Ver en realidad aumentada</string>
+    <string name="accept">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="retry_again">Reintentar</string>
 
     <!-- Title for buttons main menu -->
     <string name="map_of_places">MAPA DE SITIOS</string>
@@ -38,5 +41,12 @@
     <string name="my_location">Mi Ubicación</string>
     <string name="filter">Filtrar</string>
     <string name="category_select">Seleccione una categoría</string>
+
+    <!-- Permissions titles -->
+    <string name="msg_api_31">Para mostrar su ubicación necesita seleccionar la opcion "Precisa" a continuación</string>
+    <string name="all_granted_location">Permiso de ubicación aceptado</string>
+    <string name="rationale_permissions">El permiso de ubicación es necesario para mostrar la ubicación del usuario.\n\n¿Desea intentarlo de nuevo?</string>
+    <string name="permission_location_denied_permanently">Permiso de ubicación fue denegado permanentemente.\nPara obtener la ubicación necesita activar el permiso manualmente en:\n* Permisos de la aplicación o Accesos\n* Ubicación\n* Permitir\n\n¿Desea intentarlo?</string>
+    <string name="permissions_required">Permiso de Ubicación</string>
 
 </resources>
