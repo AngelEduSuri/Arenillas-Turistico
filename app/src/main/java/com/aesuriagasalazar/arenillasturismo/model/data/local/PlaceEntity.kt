@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 
+/** Data class que representa la entidad de la base de datos local **/
 @Entity(tableName = "list_places_table")
 data class PlaceEntity(
     @PrimaryKey(autoGenerate = false)
@@ -29,7 +30,7 @@ data class PlaceEntity(
     val imagenes: String = ""
 )
 
-/** Convierte la lista online en una modelo de entidad de base de datos **/
+/** Convierte la lista de datos en un modelo de entidad de base de datos Room **/
 fun List<Place>.asEntityModel(): List<PlaceEntity>{
     return map {
         PlaceEntity(

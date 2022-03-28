@@ -8,13 +8,17 @@ import androidx.room.RoomDatabase
 @Database(entities = [PlaceEntity::class], version = 1, exportSchema = false)
 abstract class PlacesDatabase: RoomDatabase() {
 
-    abstract val videoDao: PlaceDao
+    abstract val placeDao: PlaceDao
 
     companion object{
 
         private lateinit var INSTANCE: PlacesDatabase
 
+        /**
+         * @param context se usar para crear la base de datos room usando el contexto de la app
+         */
         fun getDatabase(context: Context): PlacesDatabase {
+            /** Se mapea la clase databse y se everigua si INSTANCE es instanciada o no **/
             synchronized(PlacesDatabase::class.java) {
                 if (!::INSTANCE.isInitialized) {
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
@@ -22,6 +26,7 @@ abstract class PlacesDatabase: RoomDatabase() {
                         "places").build()
                 }
             }
+            /** Se retorna la instancia si ya existe y si no se crea **/
             return INSTANCE
         }
     }

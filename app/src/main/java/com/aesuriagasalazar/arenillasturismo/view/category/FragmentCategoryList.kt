@@ -1,19 +1,17 @@
 package com.aesuriagasalazar.arenillasturismo.view.category
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aesuriagasalazar.arenillasturismo.R
 import com.aesuriagasalazar.arenillasturismo.databinding.FragmentCategoryListBinding
 import com.aesuriagasalazar.arenillasturismo.model.CategoryStatic
 import com.aesuriagasalazar.arenillasturismo.model.toStringCategory
-
 
 class FragmentCategoryList : Fragment() {
 

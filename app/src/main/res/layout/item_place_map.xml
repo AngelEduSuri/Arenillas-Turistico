@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="place"
+            type="com.aesuriagasalazar.arenillasturismo.model.domain.Place" />
+        <variable
+            name="onClose"
+            type="com.aesuriagasalazar.arenillasturismo.view.map.CloseViewMap" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="?attr/colorPrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/namePlace"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:foregroundGravity=""
+                android:gravity="center"
+                android:lines="2"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:text="@{place.nombre}"
+                android:textAlignment="center"
+                android:textColor="?attr/colorOnPrimary"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/imagePlace"
+                app:layout_constraintEnd_toStartOf="@+id/iconClose"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/app_name" />
+
+            <ImageView
+                android:id="@+id/iconClose"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:contentDescription="@string/title_category"
+                android:onClick="@{() -> onClose.onMapClick()}"
+                android:src="@drawable/icon_close_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/namePlace"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.02" />
+
+            <ImageView
+                android:id="@+id/imagePlace"
+                image_load_url="@{place.miniatura}"
+                android:layout_width="0dp"
+                android:layout_height="70dp"
+                android:contentDescription="@{place.nombre}"
+                android:onClick="@{() -> onClose.onDetailsGo(place)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="16:9"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/namePlace"
+                tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

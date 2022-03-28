@@ -2,7 +2,6 @@ package com.aesuriagasalazar.arenillasturismo.view.place
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +18,7 @@ import com.aesuriagasalazar.arenillasturismo.model.data.local.PlacesDatabase
 import com.aesuriagasalazar.arenillasturismo.model.data.remote.RealTimeDataBase
 import com.aesuriagasalazar.arenillasturismo.viewmodel.PlaceListViewModel
 import com.aesuriagasalazar.arenillasturismo.viewmodel.PlaceListViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 
 class FragmentPlacesList : Fragment() {
 
@@ -43,7 +43,7 @@ class FragmentPlacesList : Fragment() {
 
         /** El factory permite instanciar el viewmodel y mantener la instancia **/
         viewModelFactory = PlaceListViewModelFactory(
-            Repository(RealTimeDataBase(), PlacesDatabase.getDatabase(application).videoDao),
+            Repository(RealTimeDataBase(), PlacesDatabase.getDatabase(application).placeDao),
             FragmentPlacesListArgs.fromBundle(requireArguments()).category
         )
         viewModel = ViewModelProvider(this, viewModelFactory)[PlaceListViewModel::class.java]
@@ -72,7 +72,7 @@ class FragmentPlacesList : Fragment() {
         viewModel.error.observe(viewLifecycleOwner) {
             it?.let {
                 if (it.isNotEmpty()) {
-                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
                     findNavController().popBackStack()
                     viewModel.clearError()
                 }

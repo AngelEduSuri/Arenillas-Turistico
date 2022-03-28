@@ -9,41 +9,40 @@
             type="com.aesuriagasalazar.arenillasturismo.model.domain.Place" />
     </data>
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <com.smarteist.autoimageslider.SliderView
                 android:id="@+id/imageSlider"
                 style="@style/SliderImageStyle"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="64dp"
-                android:layout_marginEnd="64dp"
+                app:layout_constraintBottom_toTopOf="@+id/buttonAr"
                 app:layout_constraintDimensionRatio="16:9"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonAr"
+                style="@style/ButtonArStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:text="@string/button_go_to_ar"
-                android:textSize="18sp"
-                app:icon="@drawable/icon_camera_24"
-                app:iconGravity="end"
-                app:iconSize="25dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/titleName"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imageSlider" />
+                app:layout_constraintTop_toBottomOf="@+id/imageSlider" />
 
             <TextView
                 android:id="@+id/titleName"
@@ -54,9 +53,11 @@
                 android:textAlignment="center"
                 android:textSize="25sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/titleCategory"
                 app:layout_constraintEnd_toEndOf="@id/buttonAr"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@id/buttonAr"
-                app:layout_constraintTop_toBottomOf="@id/buttonAr"
+                app:layout_constraintTop_toBottomOf="@+id/buttonAr"
                 tools:text="@string/app_name" />
 
             <TextView
@@ -68,10 +69,22 @@
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:textStyle="bold|italic"
+                app:layout_constraintBottom_toTopOf="@id/divider"
                 app:layout_constraintEnd_toEndOf="@id/buttonAr"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@id/titleName"
-                app:layout_constraintTop_toBottomOf="@id/titleName"
+                app:layout_constraintTop_toBottomOf="@+id/titleName"
                 tools:text="@string/title_category" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/divider"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toTopOf="@id/titleDescription"
+                app:layout_constraintEnd_toEndOf="@+id/titleCategory"
+                app:layout_constraintStart_toStartOf="@+id/titleCategory"
+                app:layout_constraintTop_toBottomOf="@id/titleCategory" />
 
             <TextView
                 android:id="@+id/titleDescription"
@@ -84,9 +97,11 @@
                 android:textColor="?attr/colorOnSecondary"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@id/titleCategory"
-                app:layout_constraintStart_toStartOf="@id/titleCategory"
-                app:layout_constraintTop_toBottomOf="@id/titleCategory" />
+                app:layout_constraintBottom_toTopOf="@+id/bodyDescription"
+                app:layout_constraintEnd_toEndOf="@id/divider"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@id/divider"
+                app:layout_constraintTop_toBottomOf="@+id/divider" />
 
             <TextView
                 android:id="@+id/bodyDescription"
@@ -95,9 +110,11 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/body_example"
                 android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/titleAddress"
                 app:layout_constraintEnd_toEndOf="@id/titleDescription"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@id/titleDescription"
-                app:layout_constraintTop_toBottomOf="@id/titleDescription"
+                app:layout_constraintTop_toBottomOf="@+id/titleDescription"
                 tools:text="@string/body_example" />
 
             <TextView
@@ -111,9 +128,11 @@
                 android:textColor="?attr/colorOnSecondary"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/bodyAddress"
                 app:layout_constraintEnd_toEndOf="@id/bodyDescription"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@id/bodyDescription"
-                app:layout_constraintTop_toBottomOf="@id/bodyDescription" />
+                app:layout_constraintTop_toBottomOf="@+id/bodyDescription" />
 
             <TextView
                 android:id="@+id/bodyAddress"
@@ -122,9 +141,11 @@
                 android:layout_marginTop="8dp"
                 android:text="@{place.direccion}"
                 android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/titleLocation"
                 app:layout_constraintEnd_toEndOf="@id/titleAddress"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@id/titleAddress"
-                app:layout_constraintTop_toBottomOf="@id/titleAddress"
+                app:layout_constraintTop_toBottomOf="@+id/titleAddress"
                 tools:text="@string/title_address" />
 
             <TextView
@@ -138,9 +159,11 @@
                 android:textColor="?attr/colorOnSecondary"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/mapView"
                 app:layout_constraintEnd_toEndOf="@id/bodyAddress"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@id/bodyAddress"
-                app:layout_constraintTop_toBottomOf="@id/bodyAddress" />
+                app:layout_constraintTop_toBottomOf="@+id/bodyAddress" />
 
             <com.mapbox.maps.MapView
                 android:id="@+id/mapView"
@@ -148,14 +171,14 @@
                 android:layout_height="200dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                app:load_init_camera="@{place}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/titleLocation"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@id/titleLocation"
-                app:layout_constraintTop_toBottomOf="@id/titleLocation" />
+                app:layout_constraintTop_toBottomOf="@+id/titleLocation"
+                app:load_init_camera="@{place}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
 </layout>

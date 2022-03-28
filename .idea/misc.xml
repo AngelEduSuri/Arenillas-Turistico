@@ -5,11 +5,13 @@
       <map>
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/drawable-v24/escudo_de_arenillas.xml" value="0.8" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1595" />
+        <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/drawable-v24/location_entertaiment.xml" value="0.1715" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/drawable-xhdpi/broken_image.xml" value="0.1895" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/drawable-xhdpi/loading_img.xml" value="0.1895" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1595" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/drawable/icon_error_load_image.xml" value="0.1895" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/drawable/icon_more_details.xml" value="0.1895" />
+        <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/drawable/icon_my_location_24.xml" value="0.1715" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/drawable/loading_image.xml" value="0.1895" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/drawable/splash_screen.xml" value="0.136" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/layout-land/fragment_main_menu.xml" value="0.152" />
@@ -25,12 +27,16 @@
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/layout/fragment_categories_list.xml" value="0.2222222222222222" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/layout/fragment_category_list.xml" value="0.2222222222222222" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/layout/fragment_main_menu.xml" value="0.2222222222222222" />
+        <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/layout/fragment_map_list.xml" value="0.2222222222222222" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/layout/fragment_place_details.xml" value="0.176" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/layout/fragment_places_list.xml" value="0.2222222222222222" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/layout/item_category_list.xml" value="0.2222222222222222" />
+        <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/layout/item_dialog_list.xml" value="0.2222222222222222" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/layout/item_place_list.xml" value="0.2222222222222222" />
+        <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/layout/item_place_map.xml" value="0.8" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/layout/item_slider_image.xml" value="0.2222222222222222" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/menu/action_main_menu.xml" value="0.2222222222222222" />
+        <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/menu/menu_filter_map.xml" value="0.2222222222222222" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/menu/menu_home.xml" value="0.2222222222222222" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/menu/menu_share.xml" value="0.2222222222222222" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1595" />

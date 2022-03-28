@@ -6,11 +6,12 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
+/** Interfaz DAO (Data Access Object) que representa las consultas a la base de datos local **/
 @Dao
 interface PlaceDao {
 
     @Query(value = "SELECT * FROM list_places_table")
-    fun getPlaces(): LiveData<List<PlaceEntity>>
+    suspend fun getPlaces(): List<PlaceEntity>
 
     @Query(value = "SELECT * FROM list_places_table WHERE category = :category")
     suspend fun getPlacesForCategory(category: String): List<PlaceEntity>

@@ -23,6 +23,7 @@
     <string name="title_description">Descripción</string>
     <string name="title_location">Ubicación</string>
     <string name="title_address">Dirección</string>
+    <string name="title_map">Mapa</string>
 
     <!-- Title categories -->
     <string name="parks">Parque</string>
@@ -31,7 +32,11 @@
     <string name="sports">Deportivo</string>
     <string name="lodging">Hospedaje</string>
     <string name="entertainment">Entretenimiento</string>
+    <string name="all">Todos</string>
 
     <string name="body_example">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
+    <string name="my_location">Mi Ubicación</string>
+    <string name="filter">Filtrar</string>
+    <string name="category_select">Seleccione una categoría</string>
 
 </resources>

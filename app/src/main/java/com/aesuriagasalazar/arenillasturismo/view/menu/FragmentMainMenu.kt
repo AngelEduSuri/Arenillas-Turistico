@@ -29,6 +29,10 @@ class FragmentMainMenu : Fragment() {
             findNavController().navigate(FragmentMainMenuDirections.actionMainMenuToCategoryList())
         }
 
+        binding.buttonMap.setOnClickListener {
+            findNavController().navigate(FragmentMainMenuDirections.actionMainMenuToFragmentMapList())
+        }
+
         setHasOptionsMenu(true)
         return binding.root
     }

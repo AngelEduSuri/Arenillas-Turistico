@@ -2,7 +2,6 @@ package com.aesuriagasalazar.arenillasturismo.view.detail
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -11,12 +10,10 @@ import com.aesuriagasalazar.arenillasturismo.R
 import com.aesuriagasalazar.arenillasturismo.databinding.FragmentPlaceDetailsBinding
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 import com.mapbox.geojson.Point
-import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.CircleAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createCircleAnnotationManager
-import com.mapbox.maps.plugin.gestures.addOnMapClickListener
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
 import com.smarteist.autoimageslider.SliderAnimations
 
@@ -50,10 +47,6 @@ class FragmentPlaceDetails : Fragment() {
         val mapInstance = binding.mapView.getMapboxMap()
         mapInstance.loadStyleUri(Style.MAPBOX_STREETS) {
             placeLocationMap(place)
-        }
-        mapInstance.addOnMapClickListener {
-            Log.i("leer", "Point: $it")
-            true
         }
 
         setHasOptionsMenu(true)
