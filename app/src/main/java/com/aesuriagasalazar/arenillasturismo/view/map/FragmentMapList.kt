@@ -1,5 +1,6 @@
 package com.aesuriagasalazar.arenillasturismo.view.map
 
+import android.animation.Animator
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Bundle
@@ -33,13 +34,19 @@ import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.Style
 import com.mapbox.maps.ViewAnnotationAnchor
 import com.mapbox.maps.dsl.cameraOptions
+import com.mapbox.maps.extension.style.expressions.dsl.generated.interpolate
+import com.mapbox.maps.plugin.LocationPuck2D
+import com.mapbox.maps.plugin.LocationPuck3D
 import com.mapbox.maps.plugin.animation.MapAnimationOptions.Companion.mapAnimationOptions
 import com.mapbox.maps.plugin.animation.flyTo
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.*
 import com.mapbox.maps.plugin.gestures.OnMapClickListener
 import com.mapbox.maps.plugin.gestures.addOnMapClickListener
+import com.mapbox.maps.plugin.gestures.gestures
 import com.mapbox.maps.plugin.gestures.removeOnMapClickListener
+import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener
+import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.maps.viewannotation.ViewAnnotationManager
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
 import kotlinx.coroutines.launch
@@ -48,12 +55,12 @@ import kotlinx.coroutines.launch
 class FragmentMapList : Fragment() {
 
     private lateinit var binding: FragmentMapListBinding
+    private lateinit var cardViewMap: ItemPlaceMapBinding
     private lateinit var viewModel: MapListViewModel
     private lateinit var viewModelFactory: MapListViewModelFactory
     private lateinit var mapClickListener: OnMapClickListener
     private lateinit var annotationManager: PointAnnotationManager
     private lateinit var viewAnnotation: ViewAnnotationManager
-    private lateinit var cardViewMap: ItemPlaceMapBinding
     private lateinit var permissions: UserPermissions
 
     override fun onCreateView(
@@ -63,68 +70,28 @@ class FragmentMapList : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_map_list, container, false)
         cardViewMap = DataBindingUtil.inflate(layoutInflater, R.layout.item_place_map, binding.mapViewList, false)
 
-        viewModelFactory = MapListViewModelFactory(Repository(RealTimeDataBase(), PlacesDatabase.getDatabase(requireContext()).placeDao))
+        viewModelFactory = MapListViewModelFactory(
+            Repository(RealTimeDataBase(), PlacesDatabase.getDatabase(requireContext()).placeDao),
+            requireActivity().application
+        )
         viewModel = ViewModelProvider(this, viewModelFactory)[MapListViewModel::class.java]
 
+        /** Observable sobre la capa del mapa **/
         viewModel.layerMap.observe(viewLifecycleOwner) {
             it?.let {
-                if (it) {
-                    binding.mapViewList.getMapboxMap().loadStyleUri(Style.SATELLITE_STREETS)
+                val style = if (it) {
+                    Style.SATELLITE_STREETS
                 } else {
-                    binding.mapViewList.getMapboxMap().loadStyleUri(Style.MAPBOX_STREETS)
+                    Style.MAPBOX_STREETS
                 }
+                binding.mapViewList.getMapboxMap().loadStyleUri(style)
             }
         }
 
-        viewModel.listPlaces.observe(viewLifecycleOwner) { places ->
-            lifecycleScope.launch {
-                places?.let {
-                    loadPlacesOnMap(places)
-                    if (places.isEmpty())
-                        Snackbar.make(
-                            binding.root,
-                            "No existen lugares para esta categoria",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                }
-            }
-        }
-
-        viewModel.navigationDetails.observe(viewLifecycleOwner) {
-            it?.let {
-                findNavController()
-                    .navigate(FragmentMapListDirections.actionFragmentMapListToFragmentPlaceDetails(it))
-                viewModel.onNavigationDetailsDone()
-            }
-        }
-
-        viewModel.placeSelected.observe(viewLifecycleOwner) {
-            if (it != null) {
-                loadPlaceCard(it.place, it.pointAnnotation)
-                binding.mapViewList.getMapboxMap().addOnMapClickListener(mapClickListener)
-            }
-        }
-
-        viewModel.userLocation.observe(viewLifecycleOwner) {
-            it?.let {
-                if (it) {
-                    permissions = UserPermissions(this)
-                    if (permissions.checkPermissions()) {
-                        Snackbar.make(binding.root, "Habilitado, obteniendo ubicacion", Snackbar.LENGTH_LONG).show()
-                    } else {
-                        permissions.showDialogPermissions()
-                    }
-                    viewModel.userLocationPermissionIdle()
-                } else {
-                    Log.i("leer", "false")
-                }
-            }
-        }
-
-        viewModel.cameraOptions.observe(viewLifecycleOwner) {
-            it?.let {
-                binding.mapViewList.getMapboxMap().setCamera(it)
-            }
+        /** Oyente cuando el mapa termine de cargar **/
+        binding.mapViewList.getMapboxMap().addOnStyleLoadedListener {
+            binding.mapViewList.getMapboxMap().setBounds(viewModel.lockCameraArea())
+            loadObservableDataOnMap()
         }
 
         /** Se agrega oyente de click al mapa para cerrar las vistas abiertas **/
@@ -134,11 +101,8 @@ class FragmentMapList : Fragment() {
             cameraZoomOutPlace()
             Log.i("leer", it.toString())
             binding.mapViewList.getMapboxMap().removeOnMapClickListener(mapClickListener)
+            removeCameraUserLocation()
             true
-        }
-
-        binding.mapViewList.getMapboxMap().addOnStyleLoadedListener {
-            binding.mapViewList.getMapboxMap().setBounds(viewModel.lockCameraArea())
         }
 
         binding.lifecycleOwner = viewLifecycleOwner
@@ -147,6 +111,87 @@ class FragmentMapList : Fragment() {
         setHasOptionsMenu(true)
 
         return binding.root
+    }
+
+    /** Funcion que vincula los datos observables con el mapa **/
+    private fun loadObservableDataOnMap() {
+        if (!viewModel.listPlaces.hasActiveObservers()) {
+            /** Observable sobre la lista de lugares **/
+            viewModel.listPlaces.observe(viewLifecycleOwner) { places ->
+                lifecycleScope.launch {
+                    places?.let {
+                        if (places.isEmpty()) {
+                            Snackbar.make(
+                                binding.root,
+                                "No existen lugares para esta categoria",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            loadPlacesOnMap(places)
+                        }
+                    }
+                }
+            }
+
+            /** Observable sobre el lugar seleccionado **/
+            viewModel.placeSelected.observe(viewLifecycleOwner) {
+                if (it != null) {
+                    loadPlaceCard(it.place, it.pointAnnotation)
+                    removeCameraUserLocation()
+                    binding.mapViewList.getMapboxMap().addOnMapClickListener(mapClickListener)
+                } else {
+                    cameraZoomOutPlace()
+                }
+            }
+
+            /** Observable sobre la navegacion hacia la pantalla detalles **/
+            viewModel.navigationDetails.observe(viewLifecycleOwner) {
+                it?.let {
+                    findNavController()
+                        .navigate(FragmentMapListDirections.actionFragmentMapListToFragmentPlaceDetails(it))
+                    viewModel.onNavigationDetailsDone()
+                }
+            }
+
+            /** Observable sobre la peticion de los permisos de ubicacion **/
+            viewModel.userPermission.observe(viewLifecycleOwner) {
+                it?.let {
+                    if (it) {
+                        permissions = UserPermissions(this)
+                        if (permissions.checkPermissions()) {
+                            viewModel.showUserLocationOnMap()
+                        } else {
+                            permissions.showDialogPermissions{ granted ->
+                                if (granted) viewModel.showUserLocationOnMap()
+                            }
+                        }
+                        viewModel.idleUserPermission()
+                    }
+                }
+            }
+
+            /** Observable sobre la ubicacion del usuario **/
+            viewModel.userLocation.observe(viewLifecycleOwner) {
+                it?.let {
+                    if (it) {
+                        startUserLocationUpdate()
+                        addCameraUserLocation()
+                        viewModel.showButtonLocationOnMap()
+                    } else {
+                        stopUserLocationUpdate()
+                        removeCameraUserLocation()
+                        viewModel.idleButtonLocationOnMap()
+                    }
+                }
+            }
+
+            /** Observable sobre el estado de la camara del lugar seleccionado **/
+            viewModel.cameraOptions.observe(viewLifecycleOwner) {
+                it?.let {
+                    binding.mapViewList.getMapboxMap().setCamera(it)
+                }
+            }
+        }
     }
 
     /** Metodo para cargar todos los lugares en el mapa **/
@@ -235,11 +280,17 @@ class FragmentMapList : Fragment() {
                     viewModel.getListPlaces(listString[item].lowercase())
                 }
                 binding.mapViewList.getMapboxMap().removeOnMapClickListener(mapClickListener)
-                binding.mapViewList.annotations.removeAnnotationManager(annotationManager)
-                viewAnnotation.removeViewAnnotation(cardViewMap.root)
-                viewModel.onPlaceIdle()
+                removeCameraUserLocation()
+                closePlaceOnMap()
             }
             .show()
+    }
+
+    /** Funcion para cerrar el lugar seleccionado **/
+    private fun closePlaceOnMap() {
+        binding.mapViewList.annotations.removeAnnotationManager(annotationManager)
+        viewAnnotation.removeViewAnnotation(cardViewMap.root)
+        viewModel.onPlaceIdle()
     }
 
     /** Metodo para enfocar la camara en el lugar cuando el usuario lo selecciona **/
@@ -253,6 +304,7 @@ class FragmentMapList : Fragment() {
             cameraOptions,
             mapAnimationOptions {
                 duration(3000)
+                animatorListener(onCameraAnimation)
             }
         )
         viewModel.loadCameraState(cameraOptions)
@@ -268,6 +320,7 @@ class FragmentMapList : Fragment() {
             },
             mapAnimationOptions {
                 duration(3000)
+                animatorListener(onCameraAnimation)
             }
         )
     }
@@ -289,9 +342,77 @@ class FragmentMapList : Fragment() {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        Log.i("leer", "onpause")
+    /** Funcion que habilita la ubicacion del dispositivo y lo muestra en el mapa **/
+    private fun startUserLocationUpdate() {
+        val locationComponentPlugin = binding.mapViewList.location
+        locationComponentPlugin.updateSettings {
+            enabled = true
+            locationPuck = LocationPuck2D(
+                bearingImage = AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.mapbox_user_puck_icon,
+                ),
+                shadowImage = AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.mapbox_user_icon_shadow,
+                ),
+                scaleExpression = interpolate {
+                    linear()
+                    zoom()
+                    stop {
+                        literal(0.0)
+                        literal(0.6)
+                    }
+                    stop {
+                        literal(20.0)
+                        literal(1.0)
+                    }
+                }.toJson()
+            )
+        }
+    }
+
+    /** Funcion que inhabilita la ubicacion del dispositivo y lo quita del mapa **/
+    private fun stopUserLocationUpdate() {
+        binding.mapViewList.location.enabled = false
+    }
+
+    /** Funcion que agrega el seguimiento de camara de la ubicacion **/
+    private fun addCameraUserLocation() {
+        binding.mapViewList.location.addOnIndicatorPositionChangedListener(onLocationChanged)
+    }
+
+    /** Funcion que elimina el seguimiento de camara de la ubicacion **/
+    private fun removeCameraUserLocation() {
+        binding.mapViewList.location.removeOnIndicatorPositionChangedListener(onLocationChanged)
+    }
+
+    /** Seguimiento de la camara al usuario en el mapa **/
+    private val onLocationChanged by lazy {
+        OnIndicatorPositionChangedListener {
+            val cameraOptions = CameraOptions.Builder()
+                .center(it)
+                .zoom(15.0)
+                .pitch(0.0)
+                .build()
+            binding.mapViewList.gestures.focalPoint = binding.mapViewList.getMapboxMap().pixelForCoordinate(it)
+            binding.mapViewList.getMapboxMap().setCamera(cameraOptions)
+            removeCameraUserLocation()
+        }
+    }
+
+    /** Oyente de animacion de camara del mapa **/
+    private val onCameraAnimation by lazy {
+        object : Animator.AnimatorListener{
+            override fun onAnimationStart(p0: Animator?) {
+                binding.userLocation.isEnabled = false
+            }
+            override fun onAnimationEnd(p0: Animator?) {
+                binding.userLocation.isEnabled = true
+            }
+            override fun onAnimationCancel(p0: Animator?) {}
+            override fun onAnimationRepeat(p0: Animator?) {}
+        }
     }
 }
 
@@ -300,3 +421,4 @@ class CloseViewMap(private val clickListener: () -> Unit, private val details: (
     fun onMapClick() = clickListener()
     fun onDetailsGo(place: Place) = details(place)
 }
+

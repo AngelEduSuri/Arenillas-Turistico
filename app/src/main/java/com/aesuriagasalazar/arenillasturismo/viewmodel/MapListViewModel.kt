@@ -1,5 +1,6 @@
 package com.aesuriagasalazar.arenillasturismo.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.*
 import com.aesuriagasalazar.arenillasturismo.model.Repository
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
@@ -11,7 +12,9 @@ import com.mapbox.maps.CoordinateBounds
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotation
 import kotlinx.coroutines.launch
 
-class MapListViewModel(private val repository: Repository): ViewModel() {
+class MapListViewModel(private val repository: Repository, application: Application): AndroidViewModel(
+    application
+) {
 
     /** Variables observers para la interaccion del usuario **/
 
@@ -35,13 +38,20 @@ class MapListViewModel(private val repository: Repository): ViewModel() {
     private val _placeSelected = MutableLiveData<PlaceShowMap?>()
     val placeSelected: LiveData<PlaceShowMap?> = _placeSelected
 
-    // Administra cuando el usuario quiere ver su ubicacion en el mapa
-    private val _userLocation = MutableLiveData<Boolean>()
-    val userLocation: LiveData<Boolean> = _userLocation
-
     // Controla la informacion de la camara del mapa
     private val _cameraOptions = MutableLiveData<CameraOptions>()
     val cameraOptions: LiveData<CameraOptions> = _cameraOptions
+
+    // Administra el permiso de ubicacion del dispositivo
+    private val _userPermission = MutableLiveData(false)
+    val userPermission: LiveData<Boolean> = _userPermission
+
+    // Controla la visualizacion de la ubicacion del usuario
+    private val _userLocation = MutableLiveData<Boolean>()
+    val userLocation: LiveData<Boolean> = _userLocation
+
+    private val _showButtonLocation = MutableLiveData(false)
+    val showButtonLocation: LiveData<Boolean> = _showButtonLocation
 
     // Cuando cargue el view model carga el mapa por defecto y obtiene la lista de lugares
     init {
@@ -76,7 +86,7 @@ class MapListViewModel(private val repository: Repository): ViewModel() {
         _navigationDetailsPlace.value = null
     }
 
-    /** @param Lugar seleccionado por el usuario
+    /** @param place seleccionado por el usuario
      * @param pointAnnotation informacion del lugar para mostrar el cartel con la imagen
      */
     fun onPlaceShow(place: Place, pointAnnotation: PointAnnotation) {
@@ -88,13 +98,31 @@ class MapListViewModel(private val repository: Repository): ViewModel() {
         _placeSelected.value = null
     }
 
-    /** Estable la ubicacion del usuario en verdadero **/
-    fun userLocationPermissionShow() {
+    /** Establece el permiso de ubicacion del usuario en verdadero o falso si se presiona otra vez **/
+    fun showUserPermission() {
+        _userPermission.value = true
+    }
+
+    fun idleUserPermission() {
+        _userPermission.value = false
+    }
+
+    /** Cuando es verdadero empieza a mostrar la ubicacion del usuario **/
+    fun showUserLocationOnMap(){
         _userLocation.value = true
     }
 
-    fun userLocationPermissionIdle() {
+    /** Cuando es false inabilita la ubicacion del usuario **/
+    fun idleUserLocationOnMap() {
         _userLocation.value = false
+    }
+
+    fun showButtonLocationOnMap() {
+        _showButtonLocation.value = true
+    }
+
+    fun idleButtonLocationOnMap() {
+        _showButtonLocation.value = false
     }
 
     /** Cambia la capa del mapa a predeterminado **/
@@ -133,11 +161,12 @@ class MapListViewModel(private val repository: Repository): ViewModel() {
  * y el factory se encarga de pasarlo al view model
  */
 class MapListViewModelFactory(
-    private val repository: Repository
+    private val repository: Repository,
+    private val application: Application
 ): ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MapListViewModel::class.java)) {
-            return MapListViewModel(repository) as T
+            return MapListViewModel(repository, application) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

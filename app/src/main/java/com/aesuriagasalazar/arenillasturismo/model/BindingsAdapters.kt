@@ -1,6 +1,7 @@
 package com.aesuriagasalazar.arenillasturismo.model
 
 import android.content.res.Resources
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
@@ -10,6 +11,7 @@ import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 import com.aesuriagasalazar.arenillasturismo.viewmodel.MapListViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mapbox.geojson.Point
 import com.mapbox.maps.*
 
@@ -32,7 +34,7 @@ object CategoryStatic {
     )
 }
 
-/** Funciones databinding para vincular las vistas con las funciones **/
+/** Funciones databinding para vincular las vistas con funciones **/
 
 @BindingAdapter("icon_category")
 fun imageResource(imageView: ImageView, res: Int) {
@@ -76,6 +78,20 @@ fun initCameraMapbox(mapView: MapView, place: Place) {
             .zoom(17.5)
             .build()
     )
+}
+
+@BindingAdapter("lock_camera_area")
+fun lockCameraMap(mapView: MapView, cameraBounds: CameraBoundsOptions) {
+    mapView.getMapboxMap().setBounds(cameraBounds)
+}
+
+@BindingAdapter("load_icon_location")
+fun loadIconButtonLocation(floatingButton: FloatingActionButton, value: Boolean) {
+    if (value) {
+        floatingButton.setImageResource(R.drawable.icon_my_location_24)
+    } else {
+        floatingButton.setImageResource(R.drawable.icon_location_disable_24)
+    }
 }
 
 /** Funcion de extension para obtener un String desde la id del recurso **/

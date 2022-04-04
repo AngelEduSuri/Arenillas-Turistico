@@ -36,13 +36,12 @@
             android:id="@+id/mapViewList"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            app:lock_camera_area="@{viewModel.lockCameraArea()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonListOnAr">
-
-        </com.mapbox.maps.MapView>
+            app:layout_constraintTop_toBottomOf="@+id/buttonListOnAr"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/userLocation"
@@ -51,14 +50,33 @@
             android:contentDescription="@string/my_location"
             app:backgroundTint="?attr/colorSecondary"
             app:elevation="8dp"
-            android:onClick="@{() -> viewModel.userLocationPermissionShow()}"
+            android:onClick="@{() -> viewModel.showUserPermission()}"
+            load_icon_location="@{viewModel.showButtonLocation}"
+            tools:src="@drawable/icon_location_disable_24"
             app:layout_constraintBottom_toTopOf="@+id/cardName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.95"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.98"
-            app:srcCompat="@drawable/icon_my_location_24"
+            app:tint="?attr/colorOnSecondary" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/userLocationOff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/my_location"
+            android:onClick="@{() -> viewModel.idleUserLocationOnMap()}"
+            android:visibility="@{viewModel.showButtonLocation ? View.VISIBLE : View.GONE}"
+            android:src="@drawable/icon_location_off_24"
+            app:backgroundTint="?attr/colorSecondary"
+            app:elevation="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/userLocation"
+            app:layout_constraintEnd_toEndOf="@id/userLocation"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@id/userLocation"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.98"
             app:tint="?attr/colorOnSecondary" />
 
         <com.google.android.material.card.MaterialCardView

@@ -25,18 +25,18 @@ class UserPermissions(private val fragment: Fragment) {
 
     fun checkPermissions() = request.checkStatus().allGranted()
 
-    fun showDialogPermissions() {
+    fun showDialogPermissions(granted: (Boolean) -> Unit) {
+        requestPermissions(granted)
         request.send()
     }
 
-    init {
-        requestPermissions()
-    }
-
-    private fun requestPermissions() {
+    private fun requestPermissions(granted: (Boolean) -> Unit) {
         request.liveData().observe(fragment) {
             when {
-                it.allGranted() -> { showGrantedSnackBar() }
+                it.allGranted() -> {
+                    granted(true)
+                    showGrantedSnackBar()
+                }
                 it.anyPermanentlyDenied() -> { showPermanentlyDeniedDialog() }
                 it.anyShouldShowRationale() -> { showRationaleDialog() }
             }
