@@ -27,6 +27,7 @@
     <string name="title_location">Ubicación</string>
     <string name="title_address">Dirección</string>
     <string name="title_map">Mapa</string>
+    <string name="title_augmented_reality">Realidad Aumentada</string>
 
     <!-- Title categories -->
     <string name="parks">Parque</string>

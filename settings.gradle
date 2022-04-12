@@ -25,6 +25,12 @@ dependencyResolutionManagement {
                 password = System.properties['MAPBOX_DOWNLOADS_TOKEN']
             }
         }
+        maven {
+            url 'https://cdn.wikitude.com/sdk/maven'
+        }
+        flatDir{
+            dirs 'libs'
+        }
     }
 }
 rootProject.name = "Arenillas Turismo"

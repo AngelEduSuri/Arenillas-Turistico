@@ -50,8 +50,12 @@ class MapListViewModel(private val repository: Repository, application: Applicat
     private val _userLocation = MutableLiveData<Boolean>()
     val userLocation: LiveData<Boolean> = _userLocation
 
+    // Controla la visualizacion del boton de ubicacion del usuario
     private val _showButtonLocation = MutableLiveData(false)
     val showButtonLocation: LiveData<Boolean> = _showButtonLocation
+
+    private val _augmentedRealityNav = MutableLiveData<Boolean>()
+    val augmentedRealityNav: LiveData<Boolean> = _augmentedRealityNav
 
     // Cuando cargue el view model carga el mapa por defecto y obtiene la lista de lugares
     init {
@@ -154,6 +158,16 @@ class MapListViewModel(private val repository: Repository, application: Applicat
             )
             .minZoom(10.0)
             .build()
+    }
+
+    /** Activa la navegacion hacia la ventana de realidad aumentada cuando se hace click en el boton **/
+    fun onClickAugmentedRealityNav() {
+        _augmentedRealityNav.value = true
+    }
+
+    /** Resetea el observable cuando el usuario navega hacia la vista de reliadad aumentada **/
+    fun onAugmentedRealityDone() {
+        _augmentedRealityNav.value = false
     }
 }
 

@@ -14,10 +14,11 @@ import com.fondesa.kpermissions.extension.permissionsBuilder
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 
-class UserPermissions(private val fragment: Fragment) {
+class CameraPermission(private val fragment: Fragment) {
 
     private val request by lazy {
         fragment.permissionsBuilder(
+            Manifest.permission.CAMERA,
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
         ).build()

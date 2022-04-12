@@ -23,7 +23,8 @@ import com.aesuriagasalazar.arenillasturismo.model.Repository
 import com.aesuriagasalazar.arenillasturismo.model.data.local.PlacesDatabase
 import com.aesuriagasalazar.arenillasturismo.model.data.remote.RealTimeDataBase
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
-import com.aesuriagasalazar.arenillasturismo.view.permissions.UserPermissions
+import com.aesuriagasalazar.arenillasturismo.view.permissions.CameraPermission
+import com.aesuriagasalazar.arenillasturismo.view.permissions.LocationPermission
 import com.aesuriagasalazar.arenillasturismo.viewmodel.MapListViewModel
 import com.aesuriagasalazar.arenillasturismo.viewmodel.MapListViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -36,7 +37,6 @@ import com.mapbox.maps.ViewAnnotationAnchor
 import com.mapbox.maps.dsl.cameraOptions
 import com.mapbox.maps.extension.style.expressions.dsl.generated.interpolate
 import com.mapbox.maps.plugin.LocationPuck2D
-import com.mapbox.maps.plugin.LocationPuck3D
 import com.mapbox.maps.plugin.animation.MapAnimationOptions.Companion.mapAnimationOptions
 import com.mapbox.maps.plugin.animation.flyTo
 import com.mapbox.maps.plugin.annotation.annotations
@@ -61,14 +61,20 @@ class FragmentMapList : Fragment() {
     private lateinit var mapClickListener: OnMapClickListener
     private lateinit var annotationManager: PointAnnotationManager
     private lateinit var viewAnnotation: ViewAnnotationManager
-    private lateinit var permissions: UserPermissions
+    private lateinit var locationPermission: LocationPermission
+    private lateinit var cameraPermission: CameraPermission
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_map_list, container, false)
-        cardViewMap = DataBindingUtil.inflate(layoutInflater, R.layout.item_place_map, binding.mapViewList, false)
+        cardViewMap = DataBindingUtil.inflate(
+            layoutInflater,
+            R.layout.item_place_map,
+            binding.mapViewList,
+            false
+        )
 
         viewModelFactory = MapListViewModelFactory(
             Repository(RealTimeDataBase(), PlacesDatabase.getDatabase(requireContext()).placeDao),
@@ -85,6 +91,25 @@ class FragmentMapList : Fragment() {
                     Style.MAPBOX_STREETS
                 }
                 binding.mapViewList.getMapboxMap().loadStyleUri(style)
+            }
+        }
+
+        /** Observable sobre la navegacion hacia la vista de realidad aumentada **/
+        viewModel.augmentedRealityNav.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it) {
+                    cameraPermission = CameraPermission(this)
+                    if (cameraPermission.checkPermissions()) {
+                        findNavController().navigate(FragmentMapListDirections.actionFragmentMapListToFragmentAugmentedReality())
+                        viewModel.onAugmentedRealityDone()
+                    } else {
+                        cameraPermission.showDialogPermissions { granted ->
+                            if (granted)
+                                findNavController().navigate(FragmentMapListDirections.actionFragmentMapListToFragmentAugmentedReality())
+                                viewModel.onAugmentedRealityDone()
+                        }
+                    }
+                }
             }
         }
 
@@ -148,7 +173,11 @@ class FragmentMapList : Fragment() {
             viewModel.navigationDetails.observe(viewLifecycleOwner) {
                 it?.let {
                     findNavController()
-                        .navigate(FragmentMapListDirections.actionFragmentMapListToFragmentPlaceDetails(it))
+                        .navigate(
+                            FragmentMapListDirections.actionFragmentMapListToFragmentPlaceDetails(
+                                it
+                            )
+                        )
                     viewModel.onNavigationDetailsDone()
                 }
             }
@@ -157,11 +186,11 @@ class FragmentMapList : Fragment() {
             viewModel.userPermission.observe(viewLifecycleOwner) {
                 it?.let {
                     if (it) {
-                        permissions = UserPermissions(this)
-                        if (permissions.checkPermissions()) {
+                        locationPermission = LocationPermission(this)
+                        if (locationPermission.checkPermissions()) {
                             viewModel.showUserLocationOnMap()
                         } else {
-                            permissions.showDialogPermissions{ granted ->
+                            locationPermission.showDialogPermissions { granted ->
                                 if (granted) viewModel.showUserLocationOnMap()
                             }
                         }
@@ -248,9 +277,10 @@ class FragmentMapList : Fragment() {
         val sourceDrawable = AppCompatResources.getDrawable(requireContext(), resourceId)
         val constantState = sourceDrawable?.constantState
         val drawable = constantState?.newDrawable()?.mutate()
-        val bitmap = drawable?.let { Bitmap.createBitmap(
-            drawable.intrinsicWidth/2-25, drawable.intrinsicHeight/2-25,
-            Bitmap.Config.ARGB_8888
+        val bitmap = drawable?.let {
+            Bitmap.createBitmap(
+                drawable.intrinsicWidth / 2 - 25, drawable.intrinsicHeight / 2 - 25,
+                Bitmap.Config.ARGB_8888
             )
         }
         val canvas = bitmap?.let { Canvas(it) }
@@ -395,7 +425,8 @@ class FragmentMapList : Fragment() {
                 .zoom(15.0)
                 .pitch(0.0)
                 .build()
-            binding.mapViewList.gestures.focalPoint = binding.mapViewList.getMapboxMap().pixelForCoordinate(it)
+            binding.mapViewList.gestures.focalPoint =
+                binding.mapViewList.getMapboxMap().pixelForCoordinate(it)
             binding.mapViewList.getMapboxMap().setCamera(cameraOptions)
             removeCameraUserLocation()
         }
@@ -403,13 +434,15 @@ class FragmentMapList : Fragment() {
 
     /** Oyente de animacion de camara del mapa **/
     private val onCameraAnimation by lazy {
-        object : Animator.AnimatorListener{
+        object : Animator.AnimatorListener {
             override fun onAnimationStart(p0: Animator?) {
                 binding.userLocation.isEnabled = false
             }
+
             override fun onAnimationEnd(p0: Animator?) {
                 binding.userLocation.isEnabled = true
             }
+
             override fun onAnimationCancel(p0: Animator?) {}
             override fun onAnimationRepeat(p0: Animator?) {}
         }
@@ -417,7 +450,10 @@ class FragmentMapList : Fragment() {
 }
 
 /** Clase que se vincula al data binding de la tarjeta de detalle **/
-class CloseViewMap(private val clickListener: () -> Unit, private val details: (place: Place) -> Unit) {
+class CloseViewMap(
+    private val clickListener: () -> Unit,
+    private val details: (place: Place) -> Unit
+) {
     fun onMapClick() = clickListener()
     fun onDetailsGo(place: Place) = details(place)
 }

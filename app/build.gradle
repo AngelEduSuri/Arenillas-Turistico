@@ -99,4 +99,9 @@ dependencies {
 
     // Location
     implementation 'com.google.android.gms:play-services-location:19.0.1'
+
+    // Wikitude
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.wikitude:js:9.10.0'
+    implementation 'com.google.ar:core:1.30.0'
 }

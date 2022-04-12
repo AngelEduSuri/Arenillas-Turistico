@@ -6,7 +6,6 @@ import android.content.IntentSender
 import android.location.LocationManager
 import android.util.Log
 import android.widget.Toast
-import com.aesuriagasalazar.arenillasturismo.view.map.UserLocationLiveData
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationServices

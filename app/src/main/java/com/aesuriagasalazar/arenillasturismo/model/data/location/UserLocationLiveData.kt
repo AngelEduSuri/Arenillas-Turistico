@@ -1,4 +1,4 @@
-package com.aesuriagasalazar.arenillasturismo.view.map
+package com.aesuriagasalazar.arenillasturismo.model.data.location
 
 import android.annotation.SuppressLint
 import android.content.Context
