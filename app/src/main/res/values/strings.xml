@@ -43,11 +43,17 @@
     <string name="filter">Filtrar</string>
     <string name="category_select">Seleccione una categoría</string>
 
-    <!-- Permissions titles -->
+    <!-- Permissions titles location-->
     <string name="msg_api_31">Para mostrar su ubicación necesita seleccionar la opcion "Precisa" a continuación</string>
     <string name="all_granted_location">Permiso de ubicación aceptado</string>
-    <string name="rationale_permissions">El permiso de ubicación es necesario para mostrar la ubicación del usuario.\n\n¿Desea intentarlo de nuevo?</string>
+    <string name="rationale_permissions_location">El permiso de ubicación es necesario para mostrar la ubicación del usuario.\n\n¿Desea intentarlo de nuevo?</string>
     <string name="permission_location_denied_permanently">Permiso de ubicación fue denegado permanentemente.\nPara obtener la ubicación necesita activar el permiso manualmente en:\n* Permisos de la aplicación o Accesos\n* Ubicación\n* Permitir\n\n¿Desea intentarlo?</string>
-    <string name="permissions_required">Permiso de Ubicación</string>
+    <string name="permissions_location_required">Permiso de Ubicación</string>
+
+    <!-- Permission titles augmented reality-->
+    <string name="all_granted_augmented_reality">Permiso de cámara y ubicación aceptado</string>
+    <string name="rationale_permissions_augmented_reality">El permiso de cámara y/o ubicación es necesario para visualizar y posicionar los lugares por medio de la realidad aumentada.\n\n¿Desea intentarlo de nuevo?</string>
+    <string name="permissions_augmented_reality_required">Permiso de Cámara y Ubicación</string>
+    <string name="permission_augmented_reality_denied_permanently">El permiso de cámara y/o ubicación fue denegado permanentemente.\nPara ver la realidad aumentada necesita activar los permiso manualmente en:\n* Permisos de la aplicación o Accesos\n* Seleccione Ubicación/Cámara o ambos\n* Permitir\n\n¿Desea intentarlo?</string>
 
 </resources>

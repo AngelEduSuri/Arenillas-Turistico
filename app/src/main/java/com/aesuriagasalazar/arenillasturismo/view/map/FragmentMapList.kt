@@ -23,7 +23,7 @@ import com.aesuriagasalazar.arenillasturismo.model.Repository
 import com.aesuriagasalazar.arenillasturismo.model.data.local.PlacesDatabase
 import com.aesuriagasalazar.arenillasturismo.model.data.remote.RealTimeDataBase
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
-import com.aesuriagasalazar.arenillasturismo.view.permissions.CameraPermission
+import com.aesuriagasalazar.arenillasturismo.view.permissions.AugmentedRealityPermissions
 import com.aesuriagasalazar.arenillasturismo.view.permissions.LocationPermission
 import com.aesuriagasalazar.arenillasturismo.viewmodel.MapListViewModel
 import com.aesuriagasalazar.arenillasturismo.viewmodel.MapListViewModelFactory
@@ -62,7 +62,7 @@ class FragmentMapList : Fragment() {
     private lateinit var annotationManager: PointAnnotationManager
     private lateinit var viewAnnotation: ViewAnnotationManager
     private lateinit var locationPermission: LocationPermission
-    private lateinit var cameraPermission: CameraPermission
+    private lateinit var augmentedRealityPermissions: AugmentedRealityPermissions
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -98,12 +98,12 @@ class FragmentMapList : Fragment() {
         viewModel.augmentedRealityNav.observe(viewLifecycleOwner) {
             it?.let {
                 if (it) {
-                    cameraPermission = CameraPermission(this)
-                    if (cameraPermission.checkPermissions()) {
+                    augmentedRealityPermissions = AugmentedRealityPermissions(this)
+                    if (augmentedRealityPermissions.checkPermissions()) {
                         findNavController().navigate(FragmentMapListDirections.actionFragmentMapListToFragmentAugmentedReality())
                         viewModel.onAugmentedRealityDone()
                     } else {
-                        cameraPermission.showDialogPermissions { granted ->
+                        augmentedRealityPermissions.showDialogPermissions { granted ->
                             if (granted)
                                 findNavController().navigate(FragmentMapListDirections.actionFragmentMapListToFragmentAugmentedReality())
                                 viewModel.onAugmentedRealityDone()

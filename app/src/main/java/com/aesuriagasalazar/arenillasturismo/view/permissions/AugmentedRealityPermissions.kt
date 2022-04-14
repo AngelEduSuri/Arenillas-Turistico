@@ -14,7 +14,7 @@ import com.fondesa.kpermissions.extension.permissionsBuilder
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 
-class CameraPermission(private val fragment: Fragment) {
+class AugmentedRealityPermissions(private val fragment: Fragment) {
 
     private val request by lazy {
         fragment.permissionsBuilder(
@@ -38,21 +38,25 @@ class CameraPermission(private val fragment: Fragment) {
                     granted(true)
                     showGrantedSnackBar()
                 }
-                it.anyPermanentlyDenied() -> { showPermanentlyDeniedDialog() }
-                it.anyShouldShowRationale() -> { showRationaleDialog() }
+                it.anyPermanentlyDenied() -> {
+                    showPermanentlyDeniedDialog()
+                }
+                it.anyShouldShowRationale() -> {
+                    showRationaleDialog()
+                }
             }
         }
     }
 
     private fun showGrantedSnackBar() {
-        val msg = fragment.getString(R.string.all_granted_location)
+        val msg = fragment.getString(R.string.all_granted_augmented_reality)
         Snackbar.make(fragment.requireView(), msg, Snackbar.LENGTH_LONG).show()
     }
 
     private fun showPermanentlyDeniedDialog() {
-        val msg = fragment.getString(R.string.permission_location_denied_permanently)
+        val msg = fragment.getString(R.string.permission_augmented_reality_denied_permanently)
         MaterialAlertDialogBuilder(fragment.requireContext())
-            .setTitle(R.string.permissions_required)
+            .setTitle(R.string.permissions_augmented_reality_required)
             .setMessage(msg)
             .setPositiveButton(R.string.accept) { _, _ ->
                 val intent = createAppSettingsIntent()
@@ -63,10 +67,10 @@ class CameraPermission(private val fragment: Fragment) {
     }
 
     private fun showRationaleDialog() {
-        val msg = fragment.getString(R.string.rationale_permissions)
+        val message = fragment.getString(R.string.rationale_permissions_augmented_reality)
         MaterialAlertDialogBuilder(fragment.requireContext())
-            .setTitle(R.string.permissions_required)
-            .setMessage(msg)
+            .setTitle(fragment.getString(R.string.permissions_augmented_reality_required))
+            .setMessage(message)
             .setPositiveButton(R.string.retry_again) { _, _ ->
                 // Send the request again.
                 request.send()

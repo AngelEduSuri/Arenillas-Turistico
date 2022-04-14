@@ -54,6 +54,7 @@ class MapListViewModel(private val repository: Repository, application: Applicat
     private val _showButtonLocation = MutableLiveData(false)
     val showButtonLocation: LiveData<Boolean> = _showButtonLocation
 
+    // Controla la navegacion hacia la pantalla de realidad aumentada
     private val _augmentedRealityNav = MutableLiveData<Boolean>()
     val augmentedRealityNav: LiveData<Boolean> = _augmentedRealityNav
 

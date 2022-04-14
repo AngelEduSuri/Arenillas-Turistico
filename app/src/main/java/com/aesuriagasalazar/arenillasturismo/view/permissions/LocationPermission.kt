@@ -51,7 +51,7 @@ class LocationPermission(private val fragment: Fragment) {
     private fun showPermanentlyDeniedDialog() {
         val msg = fragment.getString(R.string.permission_location_denied_permanently)
         MaterialAlertDialogBuilder(fragment.requireContext())
-            .setTitle(R.string.permissions_required)
+            .setTitle(R.string.permissions_location_required)
             .setMessage(msg)
             .setPositiveButton(R.string.accept) { _, _ ->
                 val intent = createAppSettingsIntent()
@@ -62,9 +62,9 @@ class LocationPermission(private val fragment: Fragment) {
     }
 
     private fun showRationaleDialog() {
-        val msg = fragment.getString(R.string.rationale_permissions)
+        val msg = fragment.getString(R.string.rationale_permissions_location)
         MaterialAlertDialogBuilder(fragment.requireContext())
-            .setTitle(R.string.permissions_required)
+            .setTitle(R.string.permissions_location_required)
             .setMessage(msg)
             .setPositiveButton(R.string.retry_again) { _, _ ->
                 // Send the request again.
