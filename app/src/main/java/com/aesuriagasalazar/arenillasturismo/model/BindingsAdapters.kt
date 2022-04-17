@@ -1,14 +1,13 @@
 package com.aesuriagasalazar.arenillasturismo.model
 
 import android.content.res.Resources
-import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import com.aesuriagasalazar.arenillasturismo.R
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
-import com.aesuriagasalazar.arenillasturismo.viewmodel.MapListViewModel
+import com.aesuriagasalazar.arenillasturismo.viewmodel.DataStatus
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -35,6 +34,21 @@ object CategoryStatic {
 }
 
 /** Funciones databinding para vincular las vistas con funciones **/
+
+@BindingAdapter("text_message")
+fun textMessage(textView: TextView, dataStatus: DataStatus?) {
+    dataStatus?.let {
+        val context = textView.context
+        when (dataStatus) {
+            DataStatus.UPDATING -> textView.text = context.getString(R.string.updating)
+            DataStatus.DOWNLOADING -> textView.text = context.getString(R.string.downloading)
+            DataStatus.ERROR -> textView.text = context.getString(R.string.error)
+            DataStatus.NO_NETWORK -> textView.text = context.getString(R.string.network)
+            DataStatus.SYNCHRONIZED -> textView.text = context.getString(R.string.sync)
+            DataStatus.LOCAL -> textView.text = context.getString(R.string.local)
+        }
+    }
+}
 
 @BindingAdapter("icon_category")
 fun imageResource(imageView: ImageView, res: Int) {

@@ -19,9 +19,8 @@ import com.aesuriagasalazar.arenillasturismo.databinding.FragmentMapListBinding
 import com.aesuriagasalazar.arenillasturismo.databinding.ItemPlaceMapBinding
 import com.aesuriagasalazar.arenillasturismo.model.CategoryStatic
 import com.aesuriagasalazar.arenillasturismo.model.IconMap
-import com.aesuriagasalazar.arenillasturismo.model.Repository
+import com.aesuriagasalazar.arenillasturismo.model.data.local.LocalRepository
 import com.aesuriagasalazar.arenillasturismo.model.data.local.PlacesDatabase
-import com.aesuriagasalazar.arenillasturismo.model.data.remote.RealTimeDataBase
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 import com.aesuriagasalazar.arenillasturismo.view.permissions.AugmentedRealityPermissions
 import com.aesuriagasalazar.arenillasturismo.view.permissions.LocationPermission
@@ -77,9 +76,7 @@ class FragmentMapList : Fragment() {
         )
 
         viewModelFactory = MapListViewModelFactory(
-            Repository(RealTimeDataBase(), PlacesDatabase.getDatabase(requireContext()).placeDao),
-            requireActivity().application
-        )
+            LocalRepository(PlacesDatabase.getDatabase(requireContext()).placeDao))
         viewModel = ViewModelProvider(this, viewModelFactory)[MapListViewModel::class.java]
 
         /** Observable sobre la capa del mapa **/

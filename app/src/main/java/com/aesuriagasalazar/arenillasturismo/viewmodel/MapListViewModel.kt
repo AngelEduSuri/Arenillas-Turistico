@@ -2,7 +2,8 @@ package com.aesuriagasalazar.arenillasturismo.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.aesuriagasalazar.arenillasturismo.model.Repository
+import com.aesuriagasalazar.arenillasturismo.model.data.local.LocalRepository
+import com.aesuriagasalazar.arenillasturismo.model.data.remote.RemoteRepository
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 import com.aesuriagasalazar.arenillasturismo.model.domain.asDomainModel
 import com.mapbox.geojson.Point
@@ -12,9 +13,9 @@ import com.mapbox.maps.CoordinateBounds
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotation
 import kotlinx.coroutines.launch
 
-class MapListViewModel(private val repository: Repository, application: Application): AndroidViewModel(
-    application
-) {
+class MapListViewModel(
+    private val repository: LocalRepository
+) : ViewModel() {
 
     /** Variables observers para la interaccion del usuario **/
 
@@ -113,7 +114,7 @@ class MapListViewModel(private val repository: Repository, application: Applicat
     }
 
     /** Cuando es verdadero empieza a mostrar la ubicacion del usuario **/
-    fun showUserLocationOnMap(){
+    fun showUserLocationOnMap() {
         _userLocation.value = true
     }
 
@@ -176,12 +177,11 @@ class MapListViewModel(private val repository: Repository, application: Applicat
  * y el factory se encarga de pasarlo al view model
  */
 class MapListViewModelFactory(
-    private val repository: Repository,
-    private val application: Application
-): ViewModelProvider.Factory{
+    private val repository: LocalRepository
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MapListViewModel::class.java)) {
-            return MapListViewModel(repository, application) as T
+            return MapListViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

@@ -11,6 +11,12 @@
     <string name="accept">Aceptar</string>
     <string name="cancel">Cancelar</string>
     <string name="retry_again">Reintentar</string>
+    <string name="updating">Actualizando la base de datos…</string>
+    <string name="downloading">Descangando la base de datos…</string>
+    <string name="error">Error obteniendo los datos remotos, compruebe su conexion a internet</string>
+    <string name="network">Se necesita una conexion a internet para obtener los datos remotos, habilite su conexion y vuelva abrir la app</string>
+    <string name="sync">¡Datos sincronizados!</string>
+    <string name="local">Cargando datos guardados localmente…</string>
 
     <!-- Title for buttons main menu -->
     <string name="map_of_places">MAPA DE SITIOS</string>

@@ -1,5 +1,6 @@
 package com.aesuriagasalazar.arenillasturismo.model.data.remote
 
+import android.util.Log
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 import com.google.firebase.database.*
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -11,7 +12,7 @@ class RealTimeDataBase {
 
     private val database = FirebaseDatabase.getInstance()
 
-    /** Convierto las callback de firebase en funciones de suspension para corrutinas **/
+    /** Se convierte las callback de firebase en funciones de suspension para corrutinas **/
     private suspend fun DatabaseReference.singleValueEvent() = suspendCancellableCoroutine<EventResponse> { continuation ->
         val valueEventListener = object: ValueEventListener {
             /**
@@ -34,7 +35,7 @@ class RealTimeDataBase {
     }
 
     /** Se mapea la respuesta de firebase en la data class ResponseFirebase **/
-    suspend fun firebaseOnCoroutine(): ResponseFirebase {
+    suspend fun getDataFromFirebaseOnCoroutine(): ResponseFirebase {
         val response = ResponseFirebase()
         when (val result = database.getReference(PATH).singleValueEvent()) {
             is EventResponse.Changed -> {
@@ -55,6 +56,17 @@ class RealTimeDataBase {
          * @return response devuelve la respuesta de firebase mapeada en la data class ResponseFirebase
          */
         return response
+    }
+
+    suspend fun getChildCountFromFirebaseOnCoroutine(): Int {
+        var count = 0
+        when (val result = database.getReference(PATH).singleValueEvent()) {
+            is EventResponse.Changed -> {
+                count = result.snapshot.childrenCount.toInt()
+            }
+            is EventResponse.Cancelled -> {}
+        }
+        return count
     }
 }
 

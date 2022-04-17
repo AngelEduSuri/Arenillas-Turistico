@@ -2,6 +2,7 @@ package com.aesuriagasalazar.arenillasturismo.view.detail
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -37,6 +38,7 @@ class FragmentPlaceDetails : Fragment() {
         val adapter = AdapterSliderImage(place.imagenes+place.miniatura)
 
         binding.place = place
+        Log.i("leer", place.toString())
         binding.lifecycleOwner = viewLifecycleOwner
         binding.imageSlider.setSliderAdapter(adapter)
         binding.imageSlider.setIndicatorAnimation(IndicatorAnimationType.WORM)

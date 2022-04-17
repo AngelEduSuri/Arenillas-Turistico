@@ -1,13 +1,14 @@
 package com.aesuriagasalazar.arenillasturismo.viewmodel
 
 import androidx.lifecycle.*
-import com.aesuriagasalazar.arenillasturismo.model.Repository
+import com.aesuriagasalazar.arenillasturismo.model.data.local.LocalRepository
+import com.aesuriagasalazar.arenillasturismo.model.data.remote.RemoteRepository
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 import com.aesuriagasalazar.arenillasturismo.model.domain.asDomainModel
 import kotlinx.coroutines.launch
 
 class PlaceListViewModel(
-    private val repository: Repository,
+    private val repository: LocalRepository,
     private val category: String
 ): ViewModel() {
 
@@ -27,9 +28,6 @@ class PlaceListViewModel(
     private fun loadDataFromRepository() {
         viewModelScope.launch {
             _loadingBar.value = true
-            if (repository.getItemsCount() <= 0) {
-                _error.value = repository.loadPlacesFromDataSourceRemote()
-            }
             _categoryList.value = repository.getPlacesCategory(category.lowercase()).asDomainModel()
             _loadingBar.value = false
         }
@@ -41,7 +39,7 @@ class PlaceListViewModel(
 }
 
 class PlaceListViewModelFactory(
-    private val repository: Repository,
+    private val repository: LocalRepository,
     private val category: String
 ): ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

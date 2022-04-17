@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -13,7 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aesuriagasalazar.arenillasturismo.R
 import com.aesuriagasalazar.arenillasturismo.databinding.FragmentPlacesListBinding
-import com.aesuriagasalazar.arenillasturismo.model.Repository
+import com.aesuriagasalazar.arenillasturismo.model.data.local.LocalRepository
+import com.aesuriagasalazar.arenillasturismo.model.data.remote.RemoteRepository
 import com.aesuriagasalazar.arenillasturismo.model.data.local.PlacesDatabase
 import com.aesuriagasalazar.arenillasturismo.model.data.remote.RealTimeDataBase
 import com.aesuriagasalazar.arenillasturismo.viewmodel.PlaceListViewModel
@@ -43,7 +43,7 @@ class FragmentPlacesList : Fragment() {
 
         /** El factory permite instanciar el viewmodel y mantener la instancia **/
         viewModelFactory = PlaceListViewModelFactory(
-            Repository(RealTimeDataBase(), PlacesDatabase.getDatabase(application).placeDao),
+            LocalRepository(PlacesDatabase.getDatabase(application).placeDao),
             FragmentPlacesListArgs.fromBundle(requireArguments()).category
         )
         viewModel = ViewModelProvider(this, viewModelFactory)[PlaceListViewModel::class.java]
