@@ -1,9 +1,7 @@
 package com.aesuriagasalazar.arenillasturismo.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.*
 import com.aesuriagasalazar.arenillasturismo.model.data.local.LocalRepository
-import com.aesuriagasalazar.arenillasturismo.model.data.remote.RemoteRepository
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 import com.aesuriagasalazar.arenillasturismo.model.domain.asDomainModel
 import com.mapbox.geojson.Point
@@ -18,6 +16,10 @@ class MapListViewModel(
 ) : ViewModel() {
 
     /** Variables observers para la interaccion del usuario **/
+
+    // Comprueba si el dispositivo es compatible con realidad aumentada //
+    private val _checkAugmentedReality = MutableLiveData<Boolean>()
+    val checkAugmentedReality: LiveData<Boolean> = _checkAugmentedReality
 
     // Cambia la capa del mapa entre satelite y predeterminado
     private val _layerMap = MutableLiveData<Boolean>()
@@ -160,6 +162,16 @@ class MapListViewModel(
             )
             .minZoom(10.0)
             .build()
+    }
+
+    /** Funcion que cambia la variable en verdadero cuando el dispositovo es compatible **/
+    fun onDeviceSupportAvailable() {
+        _checkAugmentedReality.value = true
+    }
+
+    /** Funcion que cambia a falso cuando el dispositivo no es compatible **/
+    fun onDeviceSupportNotAvailable() {
+        _checkAugmentedReality.value = false
     }
 
     /** Activa la navegacion hacia la ventana de realidad aumentada cuando se hace click en el boton **/

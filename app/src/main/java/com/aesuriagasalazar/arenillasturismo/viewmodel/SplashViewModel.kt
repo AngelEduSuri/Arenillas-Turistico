@@ -6,6 +6,15 @@ import com.aesuriagasalazar.arenillasturismo.model.network.NetworkStatus
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+enum class DataStatus {
+    UPDATING,
+    DOWNLOADING,
+    ERROR,
+    NO_NETWORK,
+    SYNCHRONIZED,
+    LOCAL
+}
+
 class SplashViewModel(
     private val remoteRepository: RemoteRepository,
     private val network: NetworkStatus
@@ -92,13 +101,4 @@ class SplashViewModelFactory(private val remoteRepository: RemoteRepository, pri
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
-}
-
-enum class DataStatus {
-    UPDATING,
-    DOWNLOADING,
-    ERROR,
-    NO_NETWORK,
-    SYNCHRONIZED,
-    LOCAL
 }

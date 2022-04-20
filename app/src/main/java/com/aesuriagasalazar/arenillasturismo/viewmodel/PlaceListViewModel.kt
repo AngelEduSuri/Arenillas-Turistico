@@ -2,7 +2,6 @@ package com.aesuriagasalazar.arenillasturismo.viewmodel
 
 import androidx.lifecycle.*
 import com.aesuriagasalazar.arenillasturismo.model.data.local.LocalRepository
-import com.aesuriagasalazar.arenillasturismo.model.data.remote.RemoteRepository
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 import com.aesuriagasalazar.arenillasturismo.model.domain.asDomainModel
 import kotlinx.coroutines.launch

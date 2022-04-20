@@ -21,6 +21,7 @@ import com.aesuriagasalazar.arenillasturismo.model.CategoryStatic
 import com.aesuriagasalazar.arenillasturismo.model.IconMap
 import com.aesuriagasalazar.arenillasturismo.model.data.local.LocalRepository
 import com.aesuriagasalazar.arenillasturismo.model.data.local.PlacesDatabase
+import com.aesuriagasalazar.arenillasturismo.model.data.location.GpsActivate
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 import com.aesuriagasalazar.arenillasturismo.view.permissions.AugmentedRealityPermissions
 import com.aesuriagasalazar.arenillasturismo.view.permissions.LocationPermission
@@ -48,7 +49,10 @@ import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListen
 import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.maps.viewannotation.ViewAnnotationManager
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
+import com.wikitude.architect.ArchitectView
+import com.wikitude.common.devicesupport.Feature
 import kotlinx.coroutines.launch
+import java.util.*
 
 @MapboxExperimental
 class FragmentMapList : Fragment() {
@@ -76,7 +80,8 @@ class FragmentMapList : Fragment() {
         )
 
         viewModelFactory = MapListViewModelFactory(
-            LocalRepository(PlacesDatabase.getDatabase(requireContext()).placeDao))
+            LocalRepository(PlacesDatabase.getDatabase(requireContext()).placeDao)
+        )
         viewModel = ViewModelProvider(this, viewModelFactory)[MapListViewModel::class.java]
 
         /** Observable sobre la capa del mapa **/
@@ -97,13 +102,10 @@ class FragmentMapList : Fragment() {
                 if (it) {
                     augmentedRealityPermissions = AugmentedRealityPermissions(this)
                     if (augmentedRealityPermissions.checkPermissions()) {
-                        findNavController().navigate(FragmentMapListDirections.actionFragmentMapListToFragmentAugmentedReality())
-                        viewModel.onAugmentedRealityDone()
+                        turnOnGpsAndNavigate()
                     } else {
                         augmentedRealityPermissions.showDialogPermissions { granted ->
-                            if (granted)
-                                findNavController().navigate(FragmentMapListDirections.actionFragmentMapListToFragmentAugmentedReality())
-                                viewModel.onAugmentedRealityDone()
+                            if (granted) turnOnGpsAndNavigate()
                         }
                     }
                 }
@@ -127,12 +129,26 @@ class FragmentMapList : Fragment() {
             true
         }
 
+        checkAugmentedRealityDeviceSupport()
+
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
         setHasOptionsMenu(true)
 
         return binding.root
+    }
+
+    /** Funcion que comprueba si wikitude es compatible en el dispositivo y con la funcionalidad GEO **/
+    private fun checkAugmentedRealityDeviceSupport() {
+        val callStatus = ArchitectView.isDeviceSupporting(requireContext(), EnumSet.of(Feature.GEO))
+        if (callStatus.isSuccess) {
+            Log.i("leer", "Dipositivo Compatible")
+            viewModel.onDeviceSupportAvailable()
+        } else {
+            Log.i("leer", "Dipositivo No Compatible")
+            viewModel.onDeviceSupportNotAvailable()
+        }
     }
 
     /** Funcion que vincula los datos observables con el mapa **/
@@ -442,6 +458,16 @@ class FragmentMapList : Fragment() {
 
             override fun onAnimationCancel(p0: Animator?) {}
             override fun onAnimationRepeat(p0: Animator?) {}
+        }
+    }
+
+    /** Funcion que comprueba que el gps esta activado, si lo es, navega hacia la realdiad aumentada **/
+    private fun turnOnGpsAndNavigate() {
+        GpsActivate(requireContext()).turnGPSOn {
+            if (it) {
+                findNavController().navigate(FragmentMapListDirections.actionFragmentMapListToFragmentAugmentedReality())
+                viewModel.onAugmentedRealityDone()
+            }
         }
     }
 }
