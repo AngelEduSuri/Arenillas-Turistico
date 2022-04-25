@@ -1,6 +1,5 @@
 package com.aesuriagasalazar.arenillasturismo.model.data.remote
 
-import android.util.Log
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 import com.google.firebase.database.*
 import kotlinx.coroutines.suspendCancellableCoroutine

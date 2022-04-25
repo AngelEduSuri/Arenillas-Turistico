@@ -8,7 +8,8 @@ import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 import com.aesuriagasalazar.arenillasturismo.model.domain.asDomainModel
 import kotlinx.coroutines.launch
 
-class AugmentedRealityViewModel(private val repository: LocalRepository, application: Application) : ViewModel() {
+class AugmentedRealityViewModel(private val repository: LocalRepository, application: Application) :
+    ViewModel() {
     val userLocation = UserLocationOnLiveData(application)
 
     private val _categoryList = MutableLiveData<List<Place>>()
@@ -23,7 +24,6 @@ class AugmentedRealityViewModel(private val repository: LocalRepository, applica
             _categoryList.value = repository.getAllPlaces().asDomainModel()
         }
     }
-
 }
 
 class AugmentedRealityViewModelFactory(

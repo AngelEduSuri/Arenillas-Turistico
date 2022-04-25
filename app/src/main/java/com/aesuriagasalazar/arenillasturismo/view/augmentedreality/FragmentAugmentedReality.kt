@@ -58,7 +58,6 @@ class FragmentAugmentedReality : Fragment() {
             it?.let {
                 val gson = Gson()
                 val place = gson.toJson(it)
-                Log.i("leer", "Json: $place")
                 binding.architectView.callJavascript("World.getPlacesFromDataBase(${place})")
             }
         }
