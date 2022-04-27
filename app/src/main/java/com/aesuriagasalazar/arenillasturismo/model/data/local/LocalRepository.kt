@@ -15,4 +15,8 @@ class LocalRepository(private val localDataBase: PlaceDao) {
     suspend fun getAllPlaces() = withContext(Dispatchers.IO) {
         localDataBase.getPlaces()
     }
+
+    suspend fun getPlaceForId(placeId: Int) = withContext(Dispatchers.IO) {
+        localDataBase.getPlaceForId(placeId)
+    }
 }

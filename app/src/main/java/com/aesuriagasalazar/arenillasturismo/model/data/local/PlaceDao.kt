@@ -1,10 +1,10 @@
 package com.aesuriagasalazar.arenillasturismo.model.data.local
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 
 /** Interfaz DAO (Data Access Object) que representa las consultas a la base de datos local **/
 @Dao
@@ -21,4 +21,7 @@ interface PlaceDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun savePlaces( videos: List<PlaceEntity>)
+
+    @Query(value = "SELECT * FROM list_places_table WHERE id = :id")
+    suspend fun getPlaceForId(id: Int): PlaceEntity
 }

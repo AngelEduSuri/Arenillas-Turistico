@@ -109,6 +109,9 @@ let World = {
   /* Funcion que se llama para agregar los geopoints en AR. */
   loadPlaceFromJsonData: function loadPlaceFromJsonDataFn(placesAR) {
 
+    /** Destruye todos los GeoLocation para resetear la escena */
+    AR.context.destroyAll();
+
     PlaceRadar.show();
 
     /* Lista vacia de lugares en la variable miembro de World. */
@@ -242,11 +245,11 @@ let World = {
     /* Update UI labels accordingly. */
     document.getElementById("panelRangeValue").innerHTML = maxRangeValue;
     document.getElementById("panelRangePlaces").innerHTML = (placesInRange != 1) ?
-        (placesInRange + " Places") : (placesInRange + " Place");
+        (placesInRange + " Lugares") : (placesInRange + " Lugar");
     document.getElementById("panelRangeSliderValue").innerHTML = slider_value;
 
     World.updateStatusMessage((placesInRange != 1) ?
-        (placesInRange + " places loaded") : (placesInRange + " place loaded"));
+        (placesInRange + " lugares cargadors") : (placesInRange + " lugar cargado"));
 
     /* Update culling distance, so only places within given range are rendered. */
     AR.context.scene.cullingDistance = Math.max(maxRangeMeters, 1);
@@ -292,6 +295,25 @@ let World = {
       /* No places are visible, because the are not loaded yet. */
       World.updateStatusMessage('No hay lugares disponible cerca', true);
     }
+  },
+
+  /** Funcion para filtar los lugares por categoria */
+  filterPlaces: function  reloadPlacesFn() {
+    if (World.placeList.length > 0) {
+      World.closePanel();
+    } else {
+      /** Recargar los lugares */
+      World.onError("Recargando los lugares...")
+    }
+  },
+
+  /** Funcion que se comunica con nativo para ir a la ventana de detalles */
+  onPoiDetailMoreButtonClicked: function onPoiDetailMoreButtonClickedFn() {
+    let currentPlace = World.currentMarker;
+    let jsonPlaceId = {
+      id : currentPlace.place.id,
+    };
+    AR.platform.sendJSONObject(jsonPlaceId);
   },
 };
 

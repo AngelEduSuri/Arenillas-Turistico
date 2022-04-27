@@ -3,7 +3,7 @@ package com.aesuriagasalazar.arenillasturismo.viewmodel
 import androidx.lifecycle.*
 import com.aesuriagasalazar.arenillasturismo.model.data.local.LocalRepository
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
-import com.aesuriagasalazar.arenillasturismo.model.domain.asDomainModel
+import com.aesuriagasalazar.arenillasturismo.model.domain.asDomainModelList
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraBoundsOptions
 import com.mapbox.maps.CameraOptions
@@ -74,9 +74,9 @@ class MapListViewModel(
         viewModelScope.launch {
             _loadingData.value = true
             if (category.isEmpty()) {
-                _listPlaces.value = repository.getAllPlaces().asDomainModel()
+                _listPlaces.value = repository.getAllPlaces().asDomainModelList()
             } else {
-                _listPlaces.value = repository.getPlacesCategory(category).asDomainModel()
+                _listPlaces.value = repository.getPlacesCategory(category).asDomainModelList()
             }
             _loadingData.value = false
         }

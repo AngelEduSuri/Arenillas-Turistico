@@ -1,21 +1,22 @@
 package com.aesuriagasalazar.arenillasturismo.view.augmentedreality
 
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.aesuriagasalazar.arenillasturismo.R
 import com.aesuriagasalazar.arenillasturismo.databinding.FragmentAugmentedRealityBinding
+import com.aesuriagasalazar.arenillasturismo.model.CategoryStatic
 import com.aesuriagasalazar.arenillasturismo.model.data.local.LocalRepository
 import com.aesuriagasalazar.arenillasturismo.model.data.local.PlacesDatabase
 import com.aesuriagasalazar.arenillasturismo.viewmodel.AugmentedRealityViewModel
 import com.aesuriagasalazar.arenillasturismo.viewmodel.AugmentedRealityViewModelFactory
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.wikitude.architect.ArchitectStartupConfiguration
+
 
 class FragmentAugmentedReality : Fragment() {
 
@@ -54,15 +55,35 @@ class FragmentAugmentedReality : Fragment() {
             }
         }
 
-        viewModel.categoryList.observe(viewLifecycleOwner) {
+        viewModel.placeList.observe(viewLifecycleOwner) {
             it?.let {
                 val gson = Gson()
-                val place = gson.toJson(it)
-                binding.architectView.callJavascript("World.getPlacesFromDataBase(${place})")
+                val placeList = gson.toJson(it)
+                binding.architectView.callJavascript("World.getPlacesFromDataBase(${placeList})")
+            }
+        }
+
+        viewModel.placeDetailNavigation.observe(viewLifecycleOwner) {
+            it?.let {
+                findNavController().navigate(
+                    FragmentAugmentedRealityDirections.actionFragmentAugmentedRealityToFragmentPlaceDetails(
+                        it
+                    )
+                )
+                viewModel.placeDetailNavigationDone()
+            }
+        }
+
+        binding.architectView.addArchitectJavaScriptInterfaceListener {
+            it?.let {
+                val placeId = it.getInt("id")
+                viewModel.getPlaceForId(placeId)
             }
         }
 
         binding.lifecycleOwner = viewLifecycleOwner
+
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -84,5 +105,43 @@ class FragmentAugmentedReality : Fragment() {
     override fun onLowMemory() {
         binding.architectView.onLowMemory()
         super.onLowMemory()
+    }
+
+    /** Funcion que infla el menu para el filtrado de luagres **/
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_filter_map, menu)
+    }
+
+    /** Funcion que detecta cuando se selecciono el menu **/
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.filter -> {
+                filterListForCategory()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    /** Metodo que se encarga de mostrar un dialog con las categorias para filtar los lugares **/
+    private fun filterListForCategory() {
+        val listString = arrayListOf(resources.getString(R.string.all)).also { array ->
+            CategoryStatic.getCategories().map {
+                array.add(resources.getString(it.title))
+            }
+        }
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(resources.getString(R.string.category_select))
+            .setItems(listString.toTypedArray()) { _, item ->
+                binding.architectView.callJavascript("World.closePanel()")
+                if (listString[item] == resources.getString(R.string.all)) {
+                    viewModel.getListPlacesForCategory("")
+                } else {
+                    viewModel.getListPlacesForCategory(listString[item].lowercase())
+                }
+            }
+            .show()
     }
 }

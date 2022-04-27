@@ -54,12 +54,13 @@ html, body {
 
 #panelPoiDetail {
     background-color: #eee;
-    height: 100%;
+    height: 40vh;
     right: 0;
     position: absolute;
     font-family: sans-serif;
     visibility: hidden;
     margin-top: env(safe-area-inset-top);
+    border-bottom-left-radius: 1rem;
 }
 
 #poiDetailDistance {
@@ -68,12 +69,13 @@ html, body {
 
 #panelRange {
     background-color: #eee;
-    height: 100%;
+    height: 40vh;
     left: 0;
     position: absolute;
     font-family: sans-serif;
     visibility: hidden;
     margin-top: env(safe-area-inset-top);
+    border-bottom-right-radius: 1rem;
 }
 
 #panelRangeValue {
@@ -142,7 +144,7 @@ html, body {
 
     #panelPoiDetail {
         top: 5vh;
-        width: 70vw;
+        width: 50vw;
     }
 
     #panelRange {
@@ -196,14 +198,16 @@ html, body {
 
     #panelPoiDetail {
         top: 5vw;
-        width: calc(70vh + env(safe-area-inset-right));
+        width: calc(35vw + env(safe-area-inset-right));
+        height: 100vh;
         padding-left: env(safe-area-inset-left);
         padding-right: env(safe-area-inset-right);
     }
 
     #panelRange {
         top: 5vw;
-        width: calc(70vh + env(safe-area-inset-left));
+        width: calc(35vw + env(safe-area-inset-left));
+        height: 100vh;
         padding-left: env(safe-area-inset-left);
         padding-right: env(safe-area-inset-right);
     }

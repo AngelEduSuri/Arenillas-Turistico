@@ -1,8 +1,7 @@
 package com.aesuriagasalazar.arenillasturismo.model.data.remote
 
 import com.aesuriagasalazar.arenillasturismo.model.data.local.PlaceDao
-import com.aesuriagasalazar.arenillasturismo.model.data.local.asEntityModel
-import com.aesuriagasalazar.arenillasturismo.model.domain.Place
+import com.aesuriagasalazar.arenillasturismo.model.data.local.asEntityModelList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -24,7 +23,7 @@ class RemoteRepository(
         val error = withContext(Dispatchers.IO) {
             val response = realTimeDataBase.getDataFromFirebaseOnCoroutine()
             val error = response.error
-            localDataBase.savePlaces(response.places.asEntityModel())
+            localDataBase.savePlaces(response.places.asEntityModelList())
             return@withContext error
         }
         return error

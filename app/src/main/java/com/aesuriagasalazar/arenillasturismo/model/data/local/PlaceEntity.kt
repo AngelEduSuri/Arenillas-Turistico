@@ -31,7 +31,7 @@ data class PlaceEntity(
 )
 
 /** Convierte la lista de datos en un modelo de entidad de base de datos Room **/
-fun List<Place>.asEntityModel(): List<PlaceEntity>{
+fun List<Place>.asEntityModelList(): List<PlaceEntity>{
     return map {
         PlaceEntity(
             id = it.id,

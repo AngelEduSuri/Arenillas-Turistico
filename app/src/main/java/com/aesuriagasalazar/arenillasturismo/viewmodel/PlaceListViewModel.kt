@@ -3,7 +3,7 @@ package com.aesuriagasalazar.arenillasturismo.viewmodel
 import androidx.lifecycle.*
 import com.aesuriagasalazar.arenillasturismo.model.data.local.LocalRepository
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
-import com.aesuriagasalazar.arenillasturismo.model.domain.asDomainModel
+import com.aesuriagasalazar.arenillasturismo.model.domain.asDomainModelList
 import kotlinx.coroutines.launch
 
 class PlaceListViewModel(
@@ -27,7 +27,7 @@ class PlaceListViewModel(
     private fun loadDataFromRepository() {
         viewModelScope.launch {
             _loadingBar.value = true
-            _categoryList.value = repository.getPlacesCategory(category.lowercase()).asDomainModel()
+            _categoryList.value = repository.getPlacesCategory(category.lowercase()).asDomainModelList()
             _loadingBar.value = false
         }
     }
