@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="menuFragment"
+            type="com.aesuriagasalazar.arenillasturismo.view.menu.FragmentMainMenu" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,170 +15,153 @@
         tools:context=".view.menu.FragmentMainMenu">
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/button_map"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/button_card_height"
-            android:layout_marginStart="@dimen/margin_card_button_vertical"
-            android:layout_marginEnd="@dimen/margin_card_button_horizontal"
-            android:layout_marginBottom="@dimen/margin_card_button_horizontal"
+            android:id="@+id/button_list"
             style="@style/CardStyleButton"
-            app:layout_constraintBottom_toTopOf="@+id/button_gallery"
-            app:layout_constraintEnd_toStartOf="@+id/button_list"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:onClick="@{() -> menuFragment.onNavigatePlaceList()}"
+            android:layout_margin="@dimen/margin_card_button_horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/button_map"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed">
+            app:layout_constraintVertical_chainStyle="spread">
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:padding="@dimen/margin_card_button_vertical"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.8"
-                    android:contentDescription="@string/map_of_places"
-                    android:src="@drawable/mapa" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.2"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:text="@string/map_of_places"
-                    android:textColor="@color/primaryTextColor"
-                    android:textSize="@dimen/title_size_button"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/button_list"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/button_card_height"
-            android:layout_marginStart="@dimen/margin_card_button_horizontal"
-            android:layout_marginEnd="@dimen/margin_card_button_vertical"
-            android:layout_marginBottom="@dimen/margin_card_button_horizontal"
-            style="@style/CardStyleButton"
-            app:layout_constraintBottom_toTopOf="@+id/button_contact"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button_map"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:padding="@dimen/margin_card_button_vertical"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.8"
+                    android:layout_height="match_parent"
                     android:contentDescription="@string/list_of_places"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/categories" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.2"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="@dimen/margin_card_button_vertical"
                     android:text="@string/list_of_places"
+                    android:fontFamily="@font/yeseva_one"
                     android:textColor="@color/primaryTextColor"
                     android:textSize="@dimen/title_size_button"
                     android:textStyle="bold" />
 
-            </LinearLayout>
+            </FrameLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/button_map"
+            style="@style/CardStyleButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:onClick="@{() -> menuFragment.onNavigatePlaceMap()}"
+            android:layout_margin="@dimen/margin_card_button_horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/button_gallery"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_list">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/map_of_places"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/map" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="@dimen/margin_card_button_vertical"
+                    android:text="@string/map_of_places"
+                    android:fontFamily="@font/yeseva_one"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="@dimen/title_size_button"
+                    android:textStyle="bold" />
+
+            </FrameLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/button_gallery"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/button_card_height"
-            android:layout_marginStart="@dimen/margin_card_button_vertical"
-            android:layout_marginEnd="@dimen/margin_card_button_horizontal"
-            android:layout_marginTop="@dimen/margin_card_button_horizontal"
             style="@style/CardStyleButton"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button_contact"
-            app:layout_constraintHorizontal_bias="0.5"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/margin_card_button_horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/button_contact"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_map">
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="@dimen/margin_card_button_vertical"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.8"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
                     android:contentDescription="@string/gallery"
                     android:src="@drawable/gallery" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.2"
+                    android:layout_height="wrap_content"
                     android:text="@string/gallery"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="@dimen/margin_card_button_vertical"
                     android:textColor="@color/primaryTextColor"
+                    android:fontFamily="@font/yeseva_one"
                     android:textSize="@dimen/title_size_button"
                     android:textStyle="bold" />
-            </LinearLayout>
+            </FrameLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/button_contact"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/button_card_height"
-            android:layout_marginStart="@dimen/margin_card_button_horizontal"
-            android:layout_marginEnd="@dimen/margin_card_button_vertical"
-            android:layout_marginTop="@dimen/margin_card_button_horizontal"
             style="@style/CardStyleButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/margin_card_button_horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button_gallery"
-            app:layout_constraintTop_toBottomOf="@+id/button_list">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_gallery">
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:padding="@dimen/margin_card_button_vertical"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.8"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
                     android:contentDescription="@string/contact"
                     android:src="@drawable/contact" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.2"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="@dimen/margin_card_button_vertical"
                     android:text="@string/contact"
                     android:textColor="@color/primaryTextColor"
                     android:textSize="@dimen/title_size_button"
+                    android:fontFamily="@font/yeseva_one"
                     android:textStyle="bold" />
 
-            </LinearLayout>
+            </FrameLayout>
 
         </com.google.android.material.card.MaterialCardView>
 

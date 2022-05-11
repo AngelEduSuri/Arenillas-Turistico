@@ -43,12 +43,14 @@
 
                 <TextView
                     android:id="@+id/title_place"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:textAlignment="center"
                     android:text="@{place.nombre}"
                     tools:text="Nombre del Lugar"
                     android:textStyle="bold"
                     android:textSize="25sp"
+                    android:fontFamily="@font/yeseva_one"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/image_place" />
@@ -59,6 +61,8 @@
                     android:layout_height="0dp"
                     android:text="@{place.descripcion}"
                     tools:text="Descripcion del Lugar"
+                    android:ellipsize="end"
+                    android:maxLines="2"
                     android:textSize="18sp"
                     android:padding="@dimen/margin_card_button_horizontal"
                     app:layout_constraintBottom_toTopOf="@+id/materialButton"

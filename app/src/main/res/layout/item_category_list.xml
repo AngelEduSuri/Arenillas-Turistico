@@ -30,40 +30,39 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="match_parent">
 
                 <ImageView
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:padding="@dimen/margin_card_button_horizontal"
-                    tools:src="@drawable/gallery"
+                    android:scaleType="centerCrop"
+                    tools:src="@drawable/icon_park"
                     icon_category="@{category.icon}"
                     android:contentDescription="@string/gallery" />
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.4"
-                    android:textAlignment="center"
-                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_card_button_horizontal"
+                    android:textColor="?attr/colorOnPrimary"
                     android:textSize="@dimen/title_size_button"
                     android:textStyle="bold"
+                    android:fontFamily="@font/yeseva_one"
                     title_category="@{category.title}"
-                    tools:text="@string/contact" />
+                    tools:text="@string/entertainment" />
 
                 <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
                     android:src="@drawable/icon_more_details"
-                    android:padding="20dp"
+                    android:layout_marginEnd="@dimen/margin_card_button_horizontal"
                     android:contentDescription="@string/button_more_details" />
 
-            </LinearLayout>
+            </FrameLayout>
 
         </com.google.android.material.card.MaterialCardView>
 

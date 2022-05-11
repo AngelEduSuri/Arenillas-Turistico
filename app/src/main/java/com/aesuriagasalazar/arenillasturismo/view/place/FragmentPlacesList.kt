@@ -13,9 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.aesuriagasalazar.arenillasturismo.R
 import com.aesuriagasalazar.arenillasturismo.databinding.FragmentPlacesListBinding
 import com.aesuriagasalazar.arenillasturismo.model.data.local.LocalRepository
-import com.aesuriagasalazar.arenillasturismo.model.data.remote.RemoteRepository
 import com.aesuriagasalazar.arenillasturismo.model.data.local.PlacesDatabase
-import com.aesuriagasalazar.arenillasturismo.model.data.remote.RealTimeDataBase
 import com.aesuriagasalazar.arenillasturismo.viewmodel.PlaceListViewModel
 import com.aesuriagasalazar.arenillasturismo.viewmodel.PlaceListViewModelFactory
 import com.google.android.material.snackbar.Snackbar
@@ -39,11 +37,9 @@ class FragmentPlacesList : Fragment() {
             false
         )
 
-        val application = requireNotNull(this.activity).application
-
-        /** El factory permite instanciar el viewmodel y mantener la instancia **/
+        /** El factory permite instanciar el viewmodel **/
         viewModelFactory = PlaceListViewModelFactory(
-            LocalRepository(PlacesDatabase.getDatabase(application).placeDao),
+            LocalRepository(PlacesDatabase.getDatabase(requireActivity().application).placeDao),
             FragmentPlacesListArgs.fromBundle(requireArguments()).category
         )
         viewModel = ViewModelProvider(this, viewModelFactory)[PlaceListViewModel::class.java]
@@ -52,7 +48,11 @@ class FragmentPlacesList : Fragment() {
         val manager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         val adapter = AdapterPlaceList(PlaceClickListener {
             findNavController()
-                .navigate(FragmentPlacesListDirections.actionFragmentPlacesListToFragmentPlaceDetails(it))
+                .navigate(
+                    FragmentPlacesListDirections.actionFragmentPlacesListToFragmentPlaceDetails(
+                        it
+                    )
+                )
         })
 
         /** Paso el viewmodel y el lifecycle a la vista xml para el data binding **/

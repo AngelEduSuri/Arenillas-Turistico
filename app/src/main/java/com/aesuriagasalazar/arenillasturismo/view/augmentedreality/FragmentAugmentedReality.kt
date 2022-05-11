@@ -74,6 +74,12 @@ class FragmentAugmentedReality : Fragment() {
             }
         }
 
+        viewModel.rangeValueSlider.observe(viewLifecycleOwner) {
+            it?.let {
+                binding.architectView.callJavascript("World.sliderValueRange($it)")
+            }
+        }
+
         binding.architectView.addArchitectJavaScriptInterfaceListener {
             it?.let {
                 val placeId = it.getInt("id")
@@ -81,6 +87,11 @@ class FragmentAugmentedReality : Fragment() {
             }
         }
 
+        binding.sliderRange.addOnChangeListener { _, value, _ ->
+            viewModel.onSliderValueChanged(value)
+        }
+
+        binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
         setHasOptionsMenu(true)

@@ -27,7 +27,6 @@
         <item name="android:clickable">true</item>
         <item name="cardElevation">8dp</item>
         <item name="cardCornerRadius">@dimen/rounded_card_button</item>
-        <item name="cardBackgroundColor">?attr/colorSecondary</item>
     </style>
 
     <style name="SliderImageStyle">

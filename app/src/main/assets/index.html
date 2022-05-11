@@ -11,68 +11,74 @@
   <title>My ARchitect World</title>
   <script src="https://www.wikitude.com/libs/architect.js"></script>
 
-    <!-- positioning of poi-radar -->
-    <link rel="stylesheet" href="css/poi-radar.css"/>
+  <!-- marker representation-->
+  <script defer src="js/mutiplePlaces/marker.js"></script>
 
-    <!-- marker representation-->
-    <script src="js/marker.js"></script>
+  <!-- World logic-->
+  <script defer type="text/javascript" src="js/mutiplePlaces/world.js"></script>
 
-    <!-- World logic-->
-    <script type="text/javascript" src="js/poiatlocation.js"></script>
+  <!-- radar component -->
+  <script defer type="text/javascript" src="js/mutiplePlaces/radar.js"></script>
 
-    <!-- radar component -->
-    <script type="text/javascript" src="js/radar.js"></script>
+  <!-- style the architect view -->
+  <link rel="stylesheet" href="css/styleMultiplePlace/world-style.css" />
 
-    <link rel="stylesheet" href="css/default.css"/>
+  <!-- positioning of poi-radar -->
+  <link rel="stylesheet" href="css/styleMultiplePlace/poi-radar.css" />
 </head>
 
 <body>
-
   <div id="mainHeader">
-    <button class="customButton" id="rangeButton" onclick="World.showRange();">Rango</button>
-    <button class="customButton" id="refreshButton" onclick="World.filterPlaces();">Filtrar</button>
-</div>
-<div class="radarContainer_left" id="radarContainer" onclick="PlaceRadar.clickedRadar()"></div>
+    <button class="customButton" id="rangeButton" onclick="World.showRange();">
+      Rango
+    </button>
+  </div>
+  <div class="radarContainer_left" id="radarContainer"></div>
 
-<div id="footer">
+  <div id="footer">
     <div id="popupButton">
-        <img id="popupButtonImage" src="assets/warning_icon.png"/>
-        <span id="popupButtonTooltip">Intento encontrar tu ubicación</span>
+      <img id="popupButtonImage" src="assets/warning_icon.png" />
+      <span id="popupButtonTooltip">Intento encontrar tu ubicación</span>
     </div>
-</div>
+  </div>
 
-<div id="panelPoiDetail">
+  <div id="panelPoiDetail">
     <div class="header">
-        <button class="customButton" id="closePanelPoiDetailButton" onclick="World.closePanel()">Cerrar</button>
-        <h3 class="headerTitle">Detalles</h3>
+      <button class="customButton" id="closePanelPoiDetailButton" onclick="World.closePanel()">
+        Cerrar
+      </button>
+      <h3 class="headerTitle">Detalles</h3>
     </div>
     <div class="content">
-        <h3 id="poiDetailTitle"></h3>
-        <h4 id="poiDetailDescription"></h4>
-        <h4> Distancia: <a id="poiDetailDistance"></a></h4>
-        <button class="customButton" id="#poiDetailMoreButton" onclick="World.onPoiDetailMoreButtonClicked();">Mas información</button>
+      <h3 id="poiDetailTitle"></h3>
+      <h4 id="poiDetailDescription"></h4>
+      <h4>Distancia: <a id="poiDetailDistance"></a></h4>
+      <button class="customButton" id="#poiDetailMoreButton" onclick="World.onPoiDetailMoreButtonClicked();">
+        Mas información
+      </button>
     </div>
-</div>
+  </div>
 
-<div id="panelRange">
+  <div id="panelRange">
     <div class="header">
-        <button class="customButton" id="closePanelRangeButton" onclick="World.closePanel()">Cerrar</button>
-        <h3 class="headerTitle">Rango</h3>
+      <button class="customButton" id="closePanelRangeButton" onclick="World.closePanel()">
+        Cerrar
+      </button>
+      <h3 class="headerTitle">Rango</h3>
     </div>
     <div class="content">
-        <h4> Rango: <a id="panelRangeValue"></a></h4>
-        <h4> Visible: <a id="panelRangePlaces"></a></h4>
-        <div id="panelRangeSliderContainer">
-            <span id="panelRangeSliderValue"></span>
-            <input id="panelRangeSlider" type="range" min="1" value="100" max="100" step="1"
-                   oninput="World.updateRangeValues()">
-        </div>
+      <h4>Rango: <a id="panelRangeValue"></a></h4>
+      <h4>Visible: <a id="panelRangePlaces"></a></h4>
+      <div id="panelRangeSliderContainer">
+        <span id="panelRangeSliderValue"></span>
+        <input id="panelRangeSlider" type="range" min="1" value="100" max="100" step="1"
+          oninput="World.updateRangeValues()" />
+      </div>
     </div>
-</div>
+  </div>
 
   <div class="locationValues">
     <p id="location"></p>
-    <p id="place"></p>
   </div>
 </body>
 

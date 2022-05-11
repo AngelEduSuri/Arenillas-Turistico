@@ -37,6 +37,7 @@ class PlaceListViewModel(
     }
 }
 
+@Suppress("UNCHECKED_CAST")
 class PlaceListViewModelFactory(
     private val repository: LocalRepository,
     private val category: String

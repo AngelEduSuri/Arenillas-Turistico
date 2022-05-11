@@ -25,16 +25,18 @@ class FragmentMainMenu : Fragment() {
             false
         )
 
-        binding.buttonList.setOnClickListener {
-            findNavController().navigate(FragmentMainMenuDirections.actionMainMenuToCategoryList())
-        }
-
-        binding.buttonMap.setOnClickListener {
-            findNavController().navigate(FragmentMainMenuDirections.actionMainMenuToFragmentMapList())
-        }
+        binding.menuFragment = this
 
         setHasOptionsMenu(true)
         return binding.root
+    }
+
+    fun onNavigatePlaceList() {
+        findNavController().navigate(FragmentMainMenuDirections.actionMainMenuToCategoryList())
+    }
+
+    fun onNavigatePlaceMap()  {
+        findNavController().navigate(FragmentMainMenuDirections.actionMainMenuToFragmentMapList())
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

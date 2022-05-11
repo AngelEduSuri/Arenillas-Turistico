@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">Arenillas Turístico</string>
     <string name="list_places">sitios</string>
     <string name="splash_image">splashImage</string>
@@ -17,6 +17,7 @@
     <string name="network">Se necesita una conexion a internet para obtener los datos remotos, habilite su conexion y vuelva abrir la app</string>
     <string name="sync">¡Datos sincronizados!</string>
     <string name="local">Cargando datos guardados localmente…</string>
+    <string name="range_place">Lugares a: %d%s del usuario</string>
 
     <!-- Title for buttons main menu -->
     <string name="map_of_places">MAPA DE SITIOS</string>
@@ -37,7 +38,7 @@
 
     <!-- Title categories -->
     <string name="parks">Parque</string>
-    <string name="food">Comida</string>
+    <string name="history">Histórico</string>
     <string name="nature">Naturaleza</string>
     <string name="sports">Deportivo</string>
     <string name="lodging">Hospedaje</string>
@@ -61,5 +62,6 @@
     <string name="rationale_permissions_augmented_reality">El permiso de cámara y/o ubicación es necesario para visualizar y posicionar los lugares por medio de la realidad aumentada.\n\n¿Desea intentarlo de nuevo?</string>
     <string name="permissions_augmented_reality_required">Permiso de Cámara y Ubicación</string>
     <string name="permission_augmented_reality_denied_permanently">El permiso de cámara y/o ubicación fue denegado permanentemente.\nPara ver la realidad aumentada necesita activar los permiso manualmente en:\n* Permisos de la aplicación o Accesos\n* Seleccione Ubicación/Cámara o ambos\n* Permitir\n\n¿Desea intentarlo?</string>
+    <string name="range_description">Rango de visualizacion de marcadores</string>
 
 </resources>

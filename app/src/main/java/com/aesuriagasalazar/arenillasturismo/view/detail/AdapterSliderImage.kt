@@ -5,7 +5,8 @@ import android.view.ViewGroup
 import com.aesuriagasalazar.arenillasturismo.databinding.ItemSliderImageBinding
 import com.smarteist.autoimageslider.SliderViewAdapter
 
-class AdapterSliderImage(private val images: List<String>): SliderViewAdapter<AdapterSliderImage.SliderViewHolder>() {
+class AdapterSliderImage(private val images: List<String>) :
+    SliderViewAdapter<AdapterSliderImage.SliderViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?) = SliderViewHolder.from(parent)
 
@@ -15,7 +16,8 @@ class AdapterSliderImage(private val images: List<String>): SliderViewAdapter<Ad
 
     override fun getCount() = images.size
 
-    class SliderViewHolder(private val binding: ItemSliderImageBinding) : SliderViewAdapter.ViewHolder(binding.root) {
+    class SliderViewHolder(private val binding: ItemSliderImageBinding) :
+        SliderViewAdapter.ViewHolder(binding.root) {
 
         fun bind(imageUrl: String) {
             binding.imageUrl = imageUrl

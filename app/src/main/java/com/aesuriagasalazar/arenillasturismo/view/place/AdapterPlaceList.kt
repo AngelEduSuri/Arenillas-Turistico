@@ -6,17 +6,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aesuriagasalazar.arenillasturismo.databinding.ItemPlaceListBinding
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 
-class AdapterPlaceList(private val placeClickListener: PlaceClickListener): RecyclerView.Adapter<AdapterPlaceList.ViewHolder>() {
+class AdapterPlaceList(private val placeClickListener: PlaceClickListener) :
+    RecyclerView.Adapter<AdapterPlaceList.ViewHolder>() {
 
     var listPlaces = emptyList<Place>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder.from(parent)
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(listPlaces[position], placeClickListener)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
+        holder.bind(listPlaces[position], placeClickListener)
 
     override fun getItemCount() = listPlaces.size
 
-    class ViewHolder private constructor(private val binding: ItemPlaceListBinding): RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder private constructor(private val binding: ItemPlaceListBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(place: Place, placeClick: PlaceClickListener) {
             binding.place = place

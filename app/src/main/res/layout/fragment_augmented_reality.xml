@@ -1,20 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="com.aesuriagasalazar.arenillasturismo.viewmodel.AugmentedRealityViewModel" />
     </data>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".view.augmentedreality.FragmentAugmentedReality">
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/titleRange"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:text="@{viewModel.titleRange}"
+            tools:text="@string/range_place"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/architect_view"
+            app:layout_constraintEnd_toStartOf="@+id/sliderRange"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/sliderRange"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:value="@{viewModel.rangeValueSlider}"
+            android:valueFrom="0.0"
+            android:stepSize="1.0"
+            android:valueTo="5.0"
+            android:contentDescription="@string/range_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/titleRange"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.wikitude.architect.ArchitectView
             android:id="@+id/architect_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sliderRange" />
 
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

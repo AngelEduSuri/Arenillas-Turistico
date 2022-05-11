@@ -30,7 +30,7 @@ class SplashViewModel(
         checkNetworkOnDevice()
     }
 
-    /** Funcion que comprueba si existen una conexion a internet **/
+    /** Funcion que comprueba si existe una conexion a internet **/
     private fun checkNetworkOnDevice() {
         viewModelScope.launch {
             if (network.isNetworkAvailable()) {
@@ -52,9 +52,9 @@ class SplashViewModel(
                 _navigateMenu.value = true
             }
             /** Datos locales son diferentes a datos remotos entonces se actualizan **/
-            countData > 0 && countData < remoteRepository.getItemsCountFromFirebase() -> {
+            countData > 0 || countData != remoteRepository.getItemsCountFromFirebase() -> {
                 _dataStatus.value = DataStatus.UPDATING
-                val response = remoteRepository.loadPlacesFromDataSourceRemote()
+                val response = remoteRepository.updateLocalDataBaseFromRemoteDataSource()
                 delay(500)
                 if (response.isNullOrEmpty()) {
                     _navigateMenu.value = true
@@ -93,6 +93,7 @@ class SplashViewModel(
     }
 }
 
+@Suppress("UNCHECKED_CAST")
 class SplashViewModelFactory(private val remoteRepository: RemoteRepository, private val network: NetworkStatus) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

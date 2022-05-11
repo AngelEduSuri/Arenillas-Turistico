@@ -12,26 +12,27 @@ class RealTimeDataBase {
     private val database = FirebaseDatabase.getInstance()
 
     /** Se convierte las callback de firebase en funciones de suspension para corrutinas **/
-    private suspend fun DatabaseReference.singleValueEvent() = suspendCancellableCoroutine<EventResponse> { continuation ->
-        val valueEventListener = object: ValueEventListener {
-            /**
-             * La respuesta de las callback se pasan a las sealed class
-             * @param error recibe la respuesta de error de firebase y se pasa a la sealed class
-             * */
-            override fun onCancelled(error: DatabaseError) {
-                continuation.resume(EventResponse.Cancelled(error))
-            }
+    private suspend fun DatabaseReference.singleValueEvent() =
+        suspendCancellableCoroutine<EventResponse> { continuation ->
+            val valueEventListener = object : ValueEventListener {
+                /**
+                 * La respuesta de las callback se pasan a las sealed class
+                 * @param error recibe la respuesta de error de firebase y se pasa a la sealed class
+                 * */
+                override fun onCancelled(error: DatabaseError) {
+                    continuation.resume(EventResponse.Cancelled(error))
+                }
 
-            /**
-             * @param snapshot se recibe la lista de firebase y se pasa a la sealed class
-             */
-            override fun onDataChange(snapshot: DataSnapshot) {
-                continuation.resume(EventResponse.Changed(snapshot))
+                /**
+                 * @param snapshot se recibe la lista de firebase y se pasa a la sealed class
+                 */
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    continuation.resume(EventResponse.Changed(snapshot))
+                }
             }
+            addListenerForSingleValueEvent(valueEventListener) // Se suscribe para los eventos
+            continuation.invokeOnCancellation { removeEventListener(valueEventListener) }
         }
-        addListenerForSingleValueEvent(valueEventListener) // Se suscribe para los eventos
-        continuation.invokeOnCancellation { removeEventListener(valueEventListener) }
-    }
 
     /** Se mapea la respuesta de firebase en la data class ResponseFirebase **/
     suspend fun getDataFromFirebaseOnCoroutine(): ResponseFirebase {
@@ -74,8 +75,8 @@ class RealTimeDataBase {
  * @property Cancelled se mapea el error de firebase
  * **/
 sealed class EventResponse {
-    data class Changed(val snapshot: DataSnapshot): EventResponse()
-    data class Cancelled(val error: DatabaseError): EventResponse()
+    data class Changed(val snapshot: DataSnapshot) : EventResponse()
+    data class Cancelled(val error: DatabaseError) : EventResponse()
 }
 
 /** Clase de datos que representa la respuesta de firebase
