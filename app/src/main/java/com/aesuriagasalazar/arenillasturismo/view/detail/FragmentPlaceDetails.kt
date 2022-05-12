@@ -3,9 +3,7 @@ package com.aesuriagasalazar.arenillasturismo.view.detail
 import android.graphics.text.LineBreaker
 import android.os.Build
 import android.os.Bundle
-import android.text.Layout.JUSTIFICATION_MODE_INTER_WORD
 import android.view.*
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.aesuriagasalazar.arenillasturismo.R
@@ -22,12 +20,7 @@ class FragmentPlaceDetails : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_place_details,
-            container,
-            false
-        )
+        binding = FragmentPlaceDetailsBinding.inflate(inflater)
 
         val place = FragmentPlaceDetailsArgs.fromBundle(requireArguments()).place
         val adapter = AdapterSliderImage(place.imagenes + place.miniatura)
@@ -41,11 +34,20 @@ class FragmentPlaceDetails : Fragment() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                binding.bodyDescription.justificationMode = LineBreaker.JUSTIFICATION_MODE_INTER_WORD
+                binding.bodyDescription.justificationMode =
+                    LineBreaker.JUSTIFICATION_MODE_INTER_WORD
             }
         }
 
         setHasOptionsMenu(true)
+
+        binding.buttonAr.setOnClickListener {
+            findNavController().navigate(
+                FragmentPlaceDetailsDirections.actionFragmentPlaceDetailsToFragmentAugmentedRealityDetail(
+                    place
+                )
+            )
+        }
         return binding.root
     }
 

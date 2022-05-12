@@ -188,6 +188,7 @@ class MapListViewModel(
 /** @param repository obtiene una instancia del repositorio
  * y el factory se encarga de pasarlo al view model
  */
+@Suppress("UNCHECKED_CAST")
 class MapListViewModelFactory(
     private val repository: LocalRepository
 ) : ViewModelProvider.Factory {

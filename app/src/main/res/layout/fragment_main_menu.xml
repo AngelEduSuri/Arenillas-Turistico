@@ -98,6 +98,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="@dimen/margin_card_button_horizontal"
+            android:onClick="@{() -> menuFragment.onNavigateGallery()}"
             app:layout_constraintBottom_toTopOf="@+id/button_contact"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

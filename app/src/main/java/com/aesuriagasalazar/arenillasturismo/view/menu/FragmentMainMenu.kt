@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.aesuriagasalazar.arenillasturismo.R
 import com.aesuriagasalazar.arenillasturismo.databinding.FragmentMainMenuBinding
@@ -18,12 +17,7 @@ class FragmentMainMenu : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_main_menu,
-            container,
-            false
-        )
+        binding = FragmentMainMenuBinding.inflate(inflater)
 
         binding.menuFragment = this
 
@@ -37,6 +31,10 @@ class FragmentMainMenu : Fragment() {
 
     fun onNavigatePlaceMap()  {
         findNavController().navigate(FragmentMainMenuDirections.actionMainMenuToFragmentMapList())
+    }
+
+    fun onNavigateGallery() {
+        findNavController().navigate(FragmentMainMenuDirections.actionMainMenuToFragmentGallery())
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

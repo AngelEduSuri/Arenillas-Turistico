@@ -1,6 +1,9 @@
 package com.aesuriagasalazar.arenillasturismo.model.data.local
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 
 /** Interfaz DAO (Data Access Object) que representa las consultas a la base de datos local **/
 @Dao
@@ -23,4 +26,7 @@ interface PlaceDao {
 
     @Query(value = "DELETE FROM list_places_table")
     suspend fun deleteAllPlaces()
+
+    @Query(value = "SELECT images FROM list_places_table")
+    suspend fun getImagePlaces(): List<String>
 }

@@ -1,9 +1,7 @@
 package com.aesuriagasalazar.arenillasturismo.model.domain
 
 import android.os.Parcelable
-import androidx.lifecycle.Transformations.map
 import com.aesuriagasalazar.arenillasturismo.model.data.local.PlaceEntity
-import com.mapbox.maps.extension.style.expressions.dsl.generated.max
 import kotlinx.android.parcel.Parcelize
 
 /** Data class que representa el dominio de la aplicacion, lugares turisticos **/

@@ -39,6 +39,17 @@ object CategoryStatic {
     )
 }
 
+fun List<String>.toImageList(): List<String> {
+    val list = mutableListOf<String>()
+    this.forEach {
+        val images = it.split("*")
+        images.forEach { image ->
+            list.add(image)
+        }
+    }
+    return list
+}
+
 /** Funciones databinding para vincular las vistas con funciones **/
 
 @BindingAdapter("text_message")
