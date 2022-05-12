@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.aesuriagasalazar.arenillasturismo.R
 import com.aesuriagasalazar.arenillasturismo.databinding.FragmentAugmentedRealityDetailBinding
 import com.aesuriagasalazar.arenillasturismo.model.data.local.LocalRepository
@@ -18,8 +18,13 @@ import com.wikitude.architect.ArchitectStartupConfiguration
 class FragmentAugmentedRealityDetail : Fragment() {
 
     private lateinit var binding: FragmentAugmentedRealityDetailBinding
-    private lateinit var viewModel: AugmentedRealityViewModel
-    private lateinit var viewModelFactory: AugmentedRealityViewModelFactory
+    private val viewModel: AugmentedRealityViewModel by viewModels {
+        AugmentedRealityViewModelFactory(
+            LocalRepository(
+                PlacesDatabase.getDatabase(requireContext()).placeDao
+            ), requireActivity().application
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,12 +32,6 @@ class FragmentAugmentedRealityDetail : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentAugmentedRealityDetailBinding.inflate(inflater)
-        viewModelFactory = AugmentedRealityViewModelFactory(
-            LocalRepository(
-                PlacesDatabase.getDatabase(requireContext()).placeDao
-            ), requireActivity().application
-        )
-        viewModel = ViewModelProvider(this, viewModelFactory)[AugmentedRealityViewModel::class.java]
 
         val place = FragmentAugmentedRealityDetailArgs.fromBundle(requireArguments()).place
 

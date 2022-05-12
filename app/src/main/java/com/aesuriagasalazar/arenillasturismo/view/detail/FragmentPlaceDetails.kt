@@ -39,8 +39,6 @@ class FragmentPlaceDetails : Fragment() {
             }
         }
 
-        setHasOptionsMenu(true)
-
         binding.buttonAr.setOnClickListener {
             findNavController().navigate(
                 FragmentPlaceDetailsDirections.actionFragmentPlaceDetailsToFragmentAugmentedRealityDetail(
@@ -48,6 +46,8 @@ class FragmentPlaceDetails : Fragment() {
                 )
             )
         }
+
+        setHasOptionsMenu(true)
         return binding.root
     }
 

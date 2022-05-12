@@ -6,11 +6,12 @@ import android.content.IntentSender
 import android.location.LocationManager
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.*
-import com.google.android.gms.tasks.Task
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.LocationSettingsStatusCodes
+import com.google.android.gms.location.SettingsClient
 
 class GpsActivate(private val context: Context) {
 

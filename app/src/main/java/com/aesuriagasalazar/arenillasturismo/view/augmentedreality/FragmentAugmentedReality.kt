@@ -2,9 +2,8 @@ package com.aesuriagasalazar.arenillasturismo.view.augmentedreality
 
 import android.os.Bundle
 import android.view.*
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.aesuriagasalazar.arenillasturismo.R
 import com.aesuriagasalazar.arenillasturismo.databinding.FragmentAugmentedRealityBinding
@@ -21,22 +20,20 @@ import com.wikitude.architect.ArchitectStartupConfiguration
 class FragmentAugmentedReality : Fragment() {
 
     private lateinit var binding: FragmentAugmentedRealityBinding
-    private lateinit var viewModel: AugmentedRealityViewModel
-    private lateinit var viewModelFactory: AugmentedRealityViewModelFactory
+    private val viewModel: AugmentedRealityViewModel by viewModels {
+        AugmentedRealityViewModelFactory(
+            LocalRepository(
+                PlacesDatabase.getDatabase(requireContext()).placeDao
+            ), requireActivity().application
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_augmented_reality, container, false)
-        viewModelFactory = AugmentedRealityViewModelFactory(
-            LocalRepository(
-                PlacesDatabase.getDatabase(requireContext()).placeDao
-            ), requireActivity().application
-        )
-        viewModel = ViewModelProvider(this, viewModelFactory)[AugmentedRealityViewModel::class.java]
+        binding = FragmentAugmentedRealityBinding.inflate(inflater)
 
         val config = ArchitectStartupConfiguration()
         config.licenseKey = getString(R.string.wikitude_access_token)

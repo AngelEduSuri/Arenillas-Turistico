@@ -22,12 +22,7 @@ class FragmentCategoryList : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_category_list,
-            container,
-            false
-        )
+        binding = FragmentCategoryListBinding.inflate(inflater)
 
         val manager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         val adapter = AdapterCategoryList(CategoryStatic.getCategories(), CategoryClickListener {

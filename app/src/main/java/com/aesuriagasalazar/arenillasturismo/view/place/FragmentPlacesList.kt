@@ -5,12 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.aesuriagasalazar.arenillasturismo.R
 import com.aesuriagasalazar.arenillasturismo.databinding.FragmentPlacesListBinding
 import com.aesuriagasalazar.arenillasturismo.model.data.local.LocalRepository
 import com.aesuriagasalazar.arenillasturismo.model.data.local.PlacesDatabase
@@ -21,8 +19,14 @@ import com.google.android.material.snackbar.Snackbar
 class FragmentPlacesList : Fragment() {
 
     private lateinit var binding: FragmentPlacesListBinding
-    private lateinit var viewModel: PlaceListViewModel
-    private lateinit var viewModelFactory: PlaceListViewModelFactory
+
+    private val viewModel: PlaceListViewModel by viewModels {
+        /** El factory permite instanciar el viewmodel con parametros **/
+        PlaceListViewModelFactory(
+            LocalRepository(PlacesDatabase.getDatabase(requireActivity().application).placeDao),
+            FragmentPlacesListArgs.fromBundle(requireArguments()).category
+        )
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
@@ -30,19 +34,7 @@ class FragmentPlacesList : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         /** Inflado de la vista por data binding **/
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_places_list,
-            container,
-            false
-        )
-
-        /** El factory permite instanciar el viewmodel **/
-        viewModelFactory = PlaceListViewModelFactory(
-            LocalRepository(PlacesDatabase.getDatabase(requireActivity().application).placeDao),
-            FragmentPlacesListArgs.fromBundle(requireArguments()).category
-        )
-        viewModel = ViewModelProvider(this, viewModelFactory)[PlaceListViewModel::class.java]
+        binding = FragmentPlacesListBinding.inflate(inflater)
 
         /** Configuracion del recyclerview **/
         val manager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

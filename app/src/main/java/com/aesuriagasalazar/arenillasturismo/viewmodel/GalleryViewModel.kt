@@ -2,7 +2,6 @@ package com.aesuriagasalazar.arenillasturismo.viewmodel
 
 import androidx.lifecycle.*
 import com.aesuriagasalazar.arenillasturismo.model.data.local.LocalRepository
-import com.aesuriagasalazar.arenillasturismo.model.toImageList
 import kotlinx.coroutines.launch
 
 class GalleryViewModel(private val repository: LocalRepository): ViewModel() {
@@ -23,7 +22,7 @@ class GalleryViewModel(private val repository: LocalRepository): ViewModel() {
     private fun getGalleryPlaces() {
         viewModelScope.launch {
             _loadingBar.value = true
-            _imageGalleryList.value = repository.getImagePlaces().toImageList()
+            _imageGalleryList.value = repository.getImagePlaces()
             _loadingBar.value = false
         }
     }

@@ -50,6 +50,8 @@
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/menu/menu_share.xml" value="0.2222222222222222" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1595" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1595" />
+        <entry key="app/src/main/res/drawable/icon_more_details.xml" value="0.2965" />
+        <entry key="app/src/main/res/layout/fragment_image_full_screen.xml" value="0.3555253623188406" />
       </map>
     </option>
   </component>

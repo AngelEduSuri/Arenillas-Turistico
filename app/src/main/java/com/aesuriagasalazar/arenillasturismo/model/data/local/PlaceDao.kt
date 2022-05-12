@@ -19,14 +19,11 @@ interface PlaceDao {
     suspend fun getListCount(): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun savePlaces( videos: List<PlaceEntity>)
+    suspend fun savePlaces(videos: List<PlaceEntity>)
 
     @Query(value = "SELECT * FROM list_places_table WHERE id = :id")
     suspend fun getPlaceForId(id: Int): PlaceEntity
 
     @Query(value = "DELETE FROM list_places_table")
     suspend fun deleteAllPlaces()
-
-    @Query(value = "SELECT images FROM list_places_table")
-    suspend fun getImagePlaces(): List<String>
 }

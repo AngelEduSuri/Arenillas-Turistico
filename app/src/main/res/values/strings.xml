@@ -67,5 +67,6 @@
     <string name="permission_augmented_reality_denied_permanently">El permiso de cámara y/o ubicación fue denegado permanentemente.\nPara ver la realidad aumentada necesita activar los permiso manualmente en:\n* Permisos de la aplicación o Accesos\n* Seleccione Ubicación/Cámara o ambos\n* Permitir\n\n¿Desea intentarlo?</string>
     <string name="range_description">Rango de visualizacion de marcadores</string>
     <string name="image_full_screen_description">Imagen en tamaño grande</string>
+    <string name="back_description">Boton de regreso a galeria</string>
 
 </resources>

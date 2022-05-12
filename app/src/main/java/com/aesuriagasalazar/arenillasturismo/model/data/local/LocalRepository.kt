@@ -1,5 +1,6 @@
 package com.aesuriagasalazar.arenillasturismo.model.data.local
 
+import com.aesuriagasalazar.arenillasturismo.model.domain.asDomainModelList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -21,6 +22,14 @@ class LocalRepository(private val localDataBase: PlaceDao) {
     }
 
     suspend fun getImagePlaces() = withContext(Dispatchers.IO) {
-        localDataBase.getImagePlaces()
+        val imageList = mutableListOf<String>()
+        val placeList = localDataBase.getPlaces().asDomainModelList()
+        placeList.forEach {
+            imageList.add(it.miniatura)
+            it.imagenes.forEach { image ->
+                imageList.add(image)
+            }
+        }
+        return@withContext imageList
     }
 }

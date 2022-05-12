@@ -9,9 +9,8 @@ import android.view.*
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.aesuriagasalazar.arenillasturismo.R
@@ -59,30 +58,24 @@ class FragmentMapList : Fragment() {
 
     private lateinit var binding: FragmentMapListBinding
     private lateinit var cardViewMap: ItemPlaceMapBinding
-    private lateinit var viewModel: MapListViewModel
-    private lateinit var viewModelFactory: MapListViewModelFactory
     private lateinit var mapClickListener: OnMapClickListener
     private lateinit var annotationManager: PointAnnotationManager
     private lateinit var viewAnnotation: ViewAnnotationManager
     private lateinit var locationPermission: LocationPermission
     private lateinit var augmentedRealityPermissions: AugmentedRealityPermissions
 
+    private val viewModel: MapListViewModel by viewModels {
+        MapListViewModelFactory(
+            LocalRepository(PlacesDatabase.getDatabase(requireContext()).placeDao)
+        )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_map_list, container, false)
-        cardViewMap = DataBindingUtil.inflate(
-            layoutInflater,
-            R.layout.item_place_map,
-            binding.mapViewList,
-            false
-        )
-
-        viewModelFactory = MapListViewModelFactory(
-            LocalRepository(PlacesDatabase.getDatabase(requireContext()).placeDao)
-        )
-        viewModel = ViewModelProvider(this, viewModelFactory)[MapListViewModel::class.java]
+        binding = FragmentMapListBinding.inflate(inflater)
+        cardViewMap = ItemPlaceMapBinding.inflate(layoutInflater, binding.mapViewList, false)
 
         /** Observable sobre la capa del mapa **/
         viewModel.layerMap.observe(viewLifecycleOwner) {
