@@ -17,8 +17,16 @@
     <string name="network">Se necesita una conexion a internet para obtener los datos remotos, habilite su conexion y vuelva abrir la app</string>
     <string name="sync">¡Datos sincronizados!</string>
     <string name="local">Cargando datos guardados localmente…</string>
+    <string name="range_description">Rango de visualizacion de marcadores</string>
+    <string name="image_full_screen_description">Imagen en tamaño grande</string>
+    <string name="back_description">Boton de regreso a galeria</string>
+    <string name="name_user_hint">Nombre</string>
+    <string name="user_email_hint">Correo electrónico</string>
+    <string name="user_help_hint">¿Cómo puedo ayudarte?</string>
     <string name="range_place">Lugares a: %d%s del usuario</string>
     <string name="gallery_description">Galería de imagenes de todos los lugares agregados</string>
+    <string name="name_user">Opcional</string>
+    <string name="message_user">*Requerido</string>
 
     <!-- Title for buttons main menu -->
     <string name="map_of_places">MAPA DE SITIOS</string>
@@ -38,6 +46,7 @@
     <string name="title_gallery">Galería de imágenes</string>
     <string name="title_augmented_reality">Realidad Aumentada</string>
     <string name="title_full_screen">Imagen</string>
+    <string name="title_contact">Contáctanos</string>
 
     <!-- Title categories -->
     <string name="parks">Parque</string>
@@ -65,8 +74,6 @@
     <string name="rationale_permissions_augmented_reality">El permiso de cámara y/o ubicación es necesario para visualizar y posicionar los lugares por medio de la realidad aumentada.\n\n¿Desea intentarlo de nuevo?</string>
     <string name="permissions_augmented_reality_required">Permiso de Cámara y Ubicación</string>
     <string name="permission_augmented_reality_denied_permanently">El permiso de cámara y/o ubicación fue denegado permanentemente.\nPara ver la realidad aumentada necesita activar los permiso manualmente en:\n* Permisos de la aplicación o Accesos\n* Seleccione Ubicación/Cámara o ambos\n* Permitir\n\n¿Desea intentarlo?</string>
-    <string name="range_description">Rango de visualizacion de marcadores</string>
-    <string name="image_full_screen_description">Imagen en tamaño grande</string>
-    <string name="back_description">Boton de regreso a galeria</string>
+    <string name="send_user_message">ENVIAR</string>
 
 </resources>

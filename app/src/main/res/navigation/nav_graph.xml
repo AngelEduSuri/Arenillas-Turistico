@@ -32,6 +32,9 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_mainMenu_to_fragmentContactUser"
+            app:destination="@id/fragmentContactUser" />
     </fragment>
 
     <fragment
@@ -156,4 +159,9 @@
             android:name="place"
             app:argType="com.aesuriagasalazar.arenillasturismo.model.domain.Place" />
     </fragment>
+    <fragment
+        android:id="@+id/fragmentContactUser"
+        android:name="com.aesuriagasalazar.arenillasturismo.view.contact.FragmentContactUser"
+        android:label="@string/title_contact"
+        tools:layout="@layout/fragment_contact_user" />
 </navigation>

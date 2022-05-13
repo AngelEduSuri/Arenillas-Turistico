@@ -84,11 +84,12 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center_horizontal"
                     android:layout_marginBottom="@dimen/margin_card_button_vertical"
+                    android:fontFamily="@font/yeseva_one"
                     android:text="@string/map_of_places"
                     android:textColor="@color/primaryTextColor"
-                    android:fontFamily="@font/yeseva_one"
                     android:textSize="@dimen/title_size_button"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:ignore="TextContrastCheck" />
 
             </FrameLayout>
 
@@ -138,6 +139,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="@dimen/margin_card_button_horizontal"
+            android:onClick="@{() -> menuFragment.onNavigateContact()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

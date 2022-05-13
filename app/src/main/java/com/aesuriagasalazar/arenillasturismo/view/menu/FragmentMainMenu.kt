@@ -37,6 +37,10 @@ class FragmentMainMenu : Fragment() {
         findNavController().navigate(FragmentMainMenuDirections.actionMainMenuToFragmentGallery())
     }
 
+    fun onNavigateContact() {
+        findNavController().navigate(FragmentMainMenuDirections.actionMainMenuToFragmentContactUser())
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_share, menu)
