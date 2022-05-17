@@ -16,4 +16,6 @@
     <color name="secondaryDarkColor">#890000</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#ffffff</color>
+
+    <color name="textUnderlineHyperLink">#FF3700B3</color>
 </resources>

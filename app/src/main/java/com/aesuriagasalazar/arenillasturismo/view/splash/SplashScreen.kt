@@ -22,7 +22,8 @@ class SplashScreen : AppCompatActivity() {
         SplashViewModelFactory(
             RemoteRepository(
                 RealTimeDataBase(),
-                PlacesDatabase.getDatabase(application).placeDao
+                PlacesDatabase.getDatabase(application).placeDao,
+                null
             ),
             NetworkStatus(this)
         )

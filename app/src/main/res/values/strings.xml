@@ -27,6 +27,13 @@
     <string name="gallery_description">Galería de imagenes de todos los lugares agregados</string>
     <string name="name_user">Opcional</string>
     <string name="message_user">*Requerido</string>
+    <string name="send_email">O escribirme a:</string>
+    <string name="my_email">angelsuriaga@hotmail.com</string>
+    <string name="message_field_empty">Rellene los campos requeridos</string>
+    <string name="message_field_send">Mensaje enviado con ID: %s, recibirá una respuesta pronto</string>
+    <string name="message_field_failure">Error al enviar su mensaje: %s</string>
+    <string name="no_network_message">Se necesita una conexión a internet para enviar su mensaje</string>
+    <string name="email_choise">Seleccione su app de email:</string>
 
     <!-- Title for buttons main menu -->
     <string name="map_of_places">MAPA DE SITIOS</string>

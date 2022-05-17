@@ -43,34 +43,35 @@ class SplashViewModel(
 
     /** Funcion que comprueba los datos remotos **/
     private suspend fun loadDataFromRemote() {
-        val countData = remoteRepository.getItemsCountFromLocal()
-        when {
-            /** Datos locales son iguales a los datos remotos, entonces estan sincronizados**/
-            countData == remoteRepository.getItemsCountFromFirebase() -> {
-                _dataStatus.value = DataStatus.SYNCHRONIZED
-                delay(1000)
-                _navigateMenu.value = true
-            }
-            /** Datos locales son diferentes a datos remotos entonces se actualizan **/
-            countData > 0 || countData != remoteRepository.getItemsCountFromFirebase() -> {
-                _dataStatus.value = DataStatus.UPDATING
-                val response = remoteRepository.updateLocalDataBaseFromRemoteDataSource()
-                delay(500)
-                if (response.isNullOrEmpty()) {
+        remoteRepository.getItemsCountFromLocal()?.let {
+            when {
+                /** Datos locales son iguales a los datos remotos, entonces estan sincronizados**/
+                it == remoteRepository.getItemsCountFromFirebase() -> {
+                    _dataStatus.value = DataStatus.SYNCHRONIZED
+                    delay(1000)
                     _navigateMenu.value = true
-                } else {
-                    _dataStatus.value = DataStatus.ERROR
                 }
-            }
-            /** Datos locales son 0 (no existen), entonces se descarga los datos de Firebase **/
-            countData <= 0 -> {
-                _dataStatus.value = DataStatus.DOWNLOADING
-                val response = remoteRepository.loadPlacesFromDataSourceRemote()
-                delay(500)
-                if (response.isNullOrEmpty()) {
-                    _navigateMenu.value = true
-                } else {
-                    _dataStatus.value = DataStatus.ERROR
+                /** Datos locales son diferentes a datos remotos entonces se actualizan **/
+                it > 0 || it != remoteRepository.getItemsCountFromFirebase() -> {
+                    _dataStatus.value = DataStatus.UPDATING
+                    val response = remoteRepository.updateLocalDataBaseFromRemoteDataSource()
+                    delay(500)
+                    if (response.isNullOrEmpty()) {
+                        _navigateMenu.value = true
+                    } else {
+                        _dataStatus.value = DataStatus.ERROR
+                    }
+                }
+                /** Datos locales son 0 (no existen), entonces se descarga los datos de Firebase **/
+                it <= 0 -> {
+                    _dataStatus.value = DataStatus.DOWNLOADING
+                    val response = remoteRepository.loadPlacesFromDataSourceRemote()
+                    delay(500)
+                    if (response.isNullOrEmpty()) {
+                        _navigateMenu.value = true
+                    } else {
+                        _dataStatus.value = DataStatus.ERROR
+                    }
                 }
             }
         }
@@ -78,12 +79,14 @@ class SplashViewModel(
 
     /** Funcion que comprueba si existen datos locales **/
     private suspend fun loadDataFromLocal() {
-        if (remoteRepository.getItemsCountFromLocal() <=0) {
-            _dataStatus.value = DataStatus.NO_NETWORK
-        } else {
-            _dataStatus.value = DataStatus.LOCAL
-            delay(2000)
-            _navigateMenu.value = true
+        remoteRepository.getItemsCountFromLocal()?.let {
+            if (it <=0) {
+                _dataStatus.value = DataStatus.NO_NETWORK
+            } else {
+                _dataStatus.value = DataStatus.LOCAL
+                delay(2000)
+                _navigateMenu.value = true
+            }
         }
     }
 

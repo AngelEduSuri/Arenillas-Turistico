@@ -1,12 +1,16 @@
 package com.aesuriagasalazar.arenillasturismo.model
 
 import android.content.res.Resources
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import com.aesuriagasalazar.arenillasturismo.R
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
+import com.aesuriagasalazar.arenillasturismo.viewmodel.ContactUserViewModel
 import com.aesuriagasalazar.arenillasturismo.viewmodel.DataStatus
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -135,6 +139,14 @@ fun loadIconButtonLocation(floatingButton: FloatingActionButton, value: Boolean)
         floatingButton.setImageResource(R.drawable.icon_my_location_24)
     } else {
         floatingButton.setImageResource(R.drawable.icon_location_disable_24)
+    }
+}
+
+@BindingAdapter("text_underline")
+fun textUnderLine(textView: TextView, text: String) {
+    SpannableString(text).apply {
+        setSpan(UnderlineSpan(), 0, length, 0)
+        textView.text = this
     }
 }
 
