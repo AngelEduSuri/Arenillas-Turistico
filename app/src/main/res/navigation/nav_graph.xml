@@ -35,6 +35,9 @@
         <action
             android:id="@+id/action_mainMenu_to_fragmentContactUser"
             app:destination="@id/fragmentContactUser" />
+        <action
+            android:id="@+id/action_mainMenu_to_fragmentAugmentedReality"
+            app:destination="@id/fragmentAugmentedReality" />
     </fragment>
 
     <fragment
@@ -83,13 +86,6 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/mainMenu"
             app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_fragmentPlaceDetails_to_fragmentAugmentedRealityDetail"
-            app:destination="@id/fragmentAugmentedRealityDetail"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/fragmentMapList"
@@ -101,13 +97,6 @@
             app:destination="@id/fragmentPlaceDetails"
             app:enterAnim="@anim/up_transition"
             app:exitAnim="@anim/down_transition"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-        <action
-            android:id="@+id/action_fragmentMapList_to_fragmentAugmentedReality"
-            app:destination="@id/fragmentAugmentedReality"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
@@ -150,14 +139,6 @@
         <argument
             android:name="image"
             app:argType="string" />
-    </fragment>
-    <fragment
-        android:id="@+id/fragmentAugmentedRealityDetail"
-        android:name="com.aesuriagasalazar.arenillasturismo.view.augmentedreality.FragmentAugmentedRealityDetail"
-        android:label="@string/title_augmented_reality">
-        <argument
-            android:name="place"
-            app:argType="com.aesuriagasalazar.arenillasturismo.model.domain.Place" />
     </fragment>
     <fragment
         android:id="@+id/fragmentContactUser"

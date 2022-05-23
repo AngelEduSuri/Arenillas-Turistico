@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.1239488731920619" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/drawable-v24/escudo_de_arenillas.xml" value="0.8" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1595" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/drawable-v24/location_entertaiment.xml" value="0.1715" />
@@ -50,12 +51,18 @@
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/menu/menu_share.xml" value="0.2222222222222222" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1595" />
         <entry key="..\:/Users/angel/AndroidStudioProjects/ArenillasTurismo/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1595" />
+        <entry key="app/src/main/res/drawable/icon_contact_support_24.xml" value="0.19" />
         <entry key="app/src/main/res/drawable/icon_more_details.xml" value="0.2965" />
+        <entry key="app/src/main/res/drawable/icon_share_24.xml" value="0.19" />
         <entry key="app/src/main/res/layout-land/fragment_main_menu.xml" value="0.30158730158730157" />
+        <entry key="app/src/main/res/layout/fragment_augmented_reality.xml" value="0.35597826086956524" />
         <entry key="app/src/main/res/layout/fragment_contact_user.xml" value="0.3555253623188406" />
         <entry key="app/src/main/res/layout/fragment_image_full_screen.xml" value="0.3555253623188406" />
         <entry key="app/src/main/res/layout/fragment_main_menu.xml" value="0.35597826086956524" />
+        <entry key="app/src/main/res/layout/fragment_map_list.xml" value="0.35597826086956524" />
         <entry key="app/src/main/res/layout/fragment_place_details.xml" value="0.3555253623188406" />
+        <entry key="app/src/main/res/menu/menu_contact.xml" value="0.35625" />
+        <entry key="app/src/main/res/menu/menu_home.xml" value="0.35625" />
       </map>
     </option>
   </component>

@@ -17,15 +17,16 @@
             android:id="@+id/titleRange"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:layout_marginStart="8dp"
             android:gravity="center_vertical"
             android:text="@{viewModel.titleRange}"
-            tools:text="@string/range_place"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/architect_view"
+            app:layout_constraintBottom_toBottomOf="@+id/sliderRange"
             app:layout_constraintEnd_toStartOf="@+id/sliderRange"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/range_place" />
 
         <com.google.android.material.slider.Slider
             android:id="@+id/sliderRange"
@@ -48,7 +49,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sliderRange" />
+            app:layout_constraintTop_toBottomOf="@+id/placeDetected" />
+
+        <TextView
+            android:id="@+id/placeDetected"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:textStyle="bold"
+            android:text="@{viewModel.placeDetected}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleRange" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

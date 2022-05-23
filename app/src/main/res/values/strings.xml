@@ -5,7 +5,7 @@
     <string name="hello_blank_fragment">Soy el la vista movil</string>
     <string name="share">Compartir</string>
     <string name="home">Menú</string>
-    <string name="content_description_share">Comparte el enlace de la aplicacion</string>
+    <string name="content_description_contact">Formulario de contacto</string>
     <string name="button_more_details">Más Información</string>
     <string name="button_go_to_ar">Ver en realidad aumentada</string>
     <string name="accept">Aceptar</string>
@@ -34,12 +34,15 @@
     <string name="message_field_failure">Error al enviar su mensaje: %s</string>
     <string name="no_network_message">Se necesita una conexión a internet para enviar su mensaje</string>
     <string name="email_choise">Seleccione su app de email:</string>
+    <string name="place_undetected">Buscando lugares cercanos al usuario…</string>
+    <string name="place_detected">Lugar encontrado: %s</string>
 
     <!-- Title for buttons main menu -->
     <string name="map_of_places">MAPA DE SITIOS</string>
     <string name="list_of_places">LISTA DE SITIOS</string>
     <string name="gallery">GALERÍA</string>
     <string name="contact">CONTACTO</string>
+    <string name="augmented_reality">REALIDAD AUMENTADA</string>
 
     <!-- Title for labels fragments -->
     <string name="title_menu">Menú</string>

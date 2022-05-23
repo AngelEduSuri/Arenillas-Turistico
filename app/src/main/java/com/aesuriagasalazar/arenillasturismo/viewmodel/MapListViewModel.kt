@@ -17,10 +17,6 @@ class MapListViewModel(
 
     /** Variables observers para la interaccion del usuario **/
 
-    // Comprueba si el dispositivo es compatible con realidad aumentada //
-    private val _checkAugmentedReality = MutableLiveData<Boolean>()
-    val checkAugmentedReality: LiveData<Boolean> = _checkAugmentedReality
-
     // Cambia la capa del mapa entre satelite y predeterminado
     private val _layerMap = MutableLiveData<Boolean>()
     val layerMap: LiveData<Boolean> = _layerMap
@@ -56,10 +52,6 @@ class MapListViewModel(
     // Controla la visualizacion del boton de ubicacion del usuario
     private val _showButtonLocation = MutableLiveData(false)
     val showButtonLocation: LiveData<Boolean> = _showButtonLocation
-
-    // Controla la navegacion hacia la pantalla de realidad aumentada
-    private val _augmentedRealityNav = MutableLiveData<Boolean>()
-    val augmentedRealityNav: LiveData<Boolean> = _augmentedRealityNav
 
     // Cuando cargue el view model carga el mapa por defecto y obtiene la lista de lugares
     init {
@@ -162,26 +154,6 @@ class MapListViewModel(
             )
             .minZoom(10.0)
             .build()
-    }
-
-    /** Funcion que cambia la variable en verdadero cuando el dispositovo es compatible **/
-    fun onDeviceSupportAvailable() {
-        _checkAugmentedReality.value = true
-    }
-
-    /** Funcion que cambia a falso cuando el dispositivo no es compatible **/
-    fun onDeviceSupportNotAvailable() {
-        _checkAugmentedReality.value = false
-    }
-
-    /** Activa la navegacion hacia la ventana de realidad aumentada cuando se hace click en el boton **/
-    fun onClickAugmentedRealityNav() {
-        _augmentedRealityNav.value = true
-    }
-
-    /** Resetea el observable cuando el usuario navega hacia la vista de reliadad aumentada **/
-    fun onAugmentedRealityDone() {
-        _augmentedRealityNav.value = false
     }
 }
 

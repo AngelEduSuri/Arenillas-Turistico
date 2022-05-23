@@ -10,12 +10,12 @@ import com.aesuriagasalazar.arenillasturismo.databinding.FragmentAugmentedRealit
 import com.aesuriagasalazar.arenillasturismo.model.CategoryStatic
 import com.aesuriagasalazar.arenillasturismo.model.data.local.LocalRepository
 import com.aesuriagasalazar.arenillasturismo.model.data.local.PlacesDatabase
+import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 import com.aesuriagasalazar.arenillasturismo.viewmodel.AugmentedRealityViewModel
 import com.aesuriagasalazar.arenillasturismo.viewmodel.AugmentedRealityViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.wikitude.architect.ArchitectStartupConfiguration
-
 
 class FragmentAugmentedReality : Fragment() {
 
@@ -56,18 +56,7 @@ class FragmentAugmentedReality : Fragment() {
             it?.let {
                 val gson = Gson()
                 val placeList = gson.toJson(it)
-                binding.architectView.callJavascript("World.getPlacesFromDataBase(${placeList})")
-            }
-        }
-
-        viewModel.placeDetailNavigation.observe(viewLifecycleOwner) {
-            it?.let {
-                findNavController().navigate(
-                    FragmentAugmentedRealityDirections.actionFragmentAugmentedRealityToFragmentPlaceDetails(
-                        it
-                    )
-                )
-                viewModel.placeDetailNavigationDone()
+                binding.architectView.callJavascript("World.setPlacesFromDataBase(${placeList})")
             }
         }
 
@@ -77,10 +66,24 @@ class FragmentAugmentedReality : Fragment() {
             }
         }
 
+        viewModel.onNavigateDetailPlace.observe(viewLifecycleOwner) {
+            it?.let {
+                findNavController().navigate(
+                    FragmentAugmentedRealityDirections.actionFragmentAugmentedRealityToFragmentPlaceDetails(
+                        it
+                    )
+                )
+                viewModel.onNavigateDetailDone()
+            }
+        }
+
         binding.architectView.addArchitectJavaScriptInterfaceListener {
             it?.let {
-                val placeId = it.getInt("id")
-                viewModel.getPlaceForId(placeId)
+                if (it.has("place")) {
+                    setNameOnNativeEnvironment(it.getString("place"))
+                } else if (it.has("id")) {
+                    setPlaceIdToNavigateDetails(it.getInt("id"))
+                }
             }
         }
 
@@ -93,6 +96,18 @@ class FragmentAugmentedReality : Fragment() {
 
         setHasOptionsMenu(true)
         return binding.root
+    }
+
+    private fun setPlaceIdToNavigateDetails(id: Int) {
+        viewModel.getPlaceForId(id)
+    }
+
+    private fun setNameOnNativeEnvironment(name: String) {
+        if (name.isEmpty()) {
+            viewModel.getNamePlaceFromJs(resources.getString(R.string.place_undetected))
+        } else {
+            viewModel.getNamePlaceFromJs(resources.getString(R.string.place_detected, name))
+        }
     }
 
     override fun onResume() {
@@ -152,4 +167,43 @@ class FragmentAugmentedReality : Fragment() {
             }
             .show()
     }
+
+    private fun fakePlaces() = listOf(
+        Place(
+            id = 1,
+            nombre = "Punto Uno",
+            categoria = "parque",
+            descripcion = "Descripcion del Punto 1 es un parque",
+            direccion = "",
+            longitud = -80.06500416509033,
+            latitud = -3.5588211103159764,
+            altitud = 78,
+            miniatura = "https://i.ibb.co/LzHsNBS/parque-palmales-viejo-thumbnail.jpg",
+        ),
+
+        Place(
+            id = 2,
+            nombre = "Punto Dos",
+            categoria = "naturaleza",
+            descripcion = "Descripcion del Punto 2 es naturaleza",
+            direccion = "",
+            longitud = -80.0650403749101,
+            latitud = -3.558659149585619,
+            altitud = 75,
+            miniatura = "https://i.ibb.co/8DBgJk3/represa-tahuin-1.jpg"
+        ),
+
+        Place(
+            id = 3,
+            nombre = "Punto Cerca",
+            categoria = "hospedaje",
+            descripcion = "Descripcion del Punto 3 es un lugar de hospedaje",
+            direccion = "",
+            longitud = -80.06489305684134,
+            latitud = -3.5586257013151985,
+            altitud = 73,
+            miniatura = "https://i.ibb.co/6Pw6Kyc/puente-metalico-thumbnail.jpg"
+        ),
+
+        )
 }

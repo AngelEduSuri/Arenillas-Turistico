@@ -99,7 +99,7 @@
             android:layout_height="0dp"
             android:layout_margin="@dimen/margin_card_button_horizontal"
             android:onClick="@{() -> menuFragment.onNavigateGallery()}"
-            app:layout_constraintBottom_toTopOf="@+id/button_contact"
+            app:layout_constraintBottom_toTopOf="@+id/button_augmented_reality"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_map">
@@ -130,12 +130,12 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/button_contact"
+            android:id="@+id/button_augmented_reality"
             style="@style/CardStyleButton"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="@dimen/margin_card_button_horizontal"
-            android:onClick="@{() -> menuFragment.onNavigateContact()}"
+            android:onClick="@{() -> menuFragment.onNavigateAugmentedReality()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -149,15 +149,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:contentDescription="@string/contact"
-                    android:src="@drawable/contact" />
+                    android:contentDescription="@string/augmented_reality"
+                    android:src="@drawable/augmented_reality" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center_horizontal"
                     android:layout_marginBottom="@dimen/margin_card_button_vertical"
-                    android:text="@string/contact"
+                    android:text="@string/augmented_reality"
                     android:textColor="@color/primaryTextColor"
                     android:textSize="@dimen/title_size_button"
                     android:fontFamily="@font/yeseva_one"

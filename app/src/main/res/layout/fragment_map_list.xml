@@ -16,24 +16,6 @@
         android:layout_height="match_parent"
         tools:context=".view.map.FragmentMapList">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonListOnAr"
-            style="@style/ButtonArStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="4dp"
-            android:text="@string/button_go_to_ar"
-            android:onClick="@{() -> viewModel.onClickAugmentedRealityNav()}"
-            android:visibility="@{viewModel.checkAugmentedReality ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toTopOf="@+id/mapViewList"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <com.mapbox.maps.MapView
             android:id="@+id/mapViewList"
             android:layout_width="0dp"
@@ -43,7 +25,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonListOnAr"/>
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/userLocation"

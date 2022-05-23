@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
@@ -20,9 +19,7 @@ import com.aesuriagasalazar.arenillasturismo.model.CategoryStatic
 import com.aesuriagasalazar.arenillasturismo.model.IconMap
 import com.aesuriagasalazar.arenillasturismo.model.data.local.LocalRepository
 import com.aesuriagasalazar.arenillasturismo.model.data.local.PlacesDatabase
-import com.aesuriagasalazar.arenillasturismo.model.data.location.GpsActivate
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
-import com.aesuriagasalazar.arenillasturismo.view.permissions.AugmentedRealityPermissions
 import com.aesuriagasalazar.arenillasturismo.view.permissions.LocationPermission
 import com.aesuriagasalazar.arenillasturismo.viewmodel.MapListViewModel
 import com.aesuriagasalazar.arenillasturismo.viewmodel.MapListViewModelFactory
@@ -48,10 +45,7 @@ import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListen
 import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.maps.viewannotation.ViewAnnotationManager
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
-import com.wikitude.architect.ArchitectView
-import com.wikitude.common.devicesupport.Feature
 import kotlinx.coroutines.launch
-import java.util.*
 
 @MapboxExperimental
 class FragmentMapList : Fragment() {
@@ -62,7 +56,6 @@ class FragmentMapList : Fragment() {
     private lateinit var annotationManager: PointAnnotationManager
     private lateinit var viewAnnotation: ViewAnnotationManager
     private lateinit var locationPermission: LocationPermission
-    private lateinit var augmentedRealityPermissions: AugmentedRealityPermissions
 
     private val viewModel: MapListViewModel by viewModels {
         MapListViewModelFactory(
@@ -89,22 +82,6 @@ class FragmentMapList : Fragment() {
             }
         }
 
-        /** Observable sobre la navegacion hacia la vista de realidad aumentada **/
-        viewModel.augmentedRealityNav.observe(viewLifecycleOwner) {
-            it?.let {
-                if (it) {
-                    augmentedRealityPermissions = AugmentedRealityPermissions(this)
-                    if (augmentedRealityPermissions.checkPermissions()) {
-                        turnOnGpsAndNavigate()
-                    } else {
-                        augmentedRealityPermissions.showDialogPermissions { granted ->
-                            if (granted) turnOnGpsAndNavigate()
-                        }
-                    }
-                }
-            }
-        }
-
         /** Oyente cuando el mapa termine de cargar **/
         binding.mapViewList.getMapboxMap().addOnStyleLoadedListener {
             binding.mapViewList.getMapboxMap().setBounds(viewModel.lockCameraArea())
@@ -116,13 +93,10 @@ class FragmentMapList : Fragment() {
             viewModel.onPlaceIdle()
             viewAnnotation.removeViewAnnotation(cardViewMap.root)
             cameraZoomOutPlace()
-            Log.i("leer", it.toString())
             binding.mapViewList.getMapboxMap().removeOnMapClickListener(mapClickListener)
             removeCameraUserLocation()
             true
         }
-
-        checkAugmentedRealityDeviceSupport()
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
@@ -130,18 +104,6 @@ class FragmentMapList : Fragment() {
         setHasOptionsMenu(true)
 
         return binding.root
-    }
-
-    /** Funcion que comprueba si wikitude es compatible en el dispositivo y con la funcionalidad GEO **/
-    private fun checkAugmentedRealityDeviceSupport() {
-        val callStatus = ArchitectView.isDeviceSupporting(requireContext(), EnumSet.of(Feature.GEO))
-        if (callStatus.isSuccess) {
-            Log.i("leer", "Dipositivo Compatible")
-            viewModel.onDeviceSupportAvailable()
-        } else {
-            Log.i("leer", "Dipositivo No Compatible")
-            viewModel.onDeviceSupportNotAvailable()
-        }
     }
 
     /** Funcion que vincula los datos observables con el mapa **/
@@ -334,7 +296,6 @@ class FragmentMapList : Fragment() {
         val cameraOptions = CameraOptions.Builder()
             .center(Point.fromLngLat(place.longitud, place.latitud, place.altitud.toDouble()))
             .zoom(15.0)
-            .pitch(65.0)
             .build()
         binding.mapViewList.getMapboxMap().flyTo(
             cameraOptions,
@@ -428,7 +389,7 @@ class FragmentMapList : Fragment() {
         OnIndicatorPositionChangedListener {
             val cameraOptions = CameraOptions.Builder()
                 .center(it)
-                .zoom(15.0)
+                .zoom(14.0)
                 .pitch(0.0)
                 .build()
             binding.mapViewList.gestures.focalPoint =
@@ -451,16 +412,6 @@ class FragmentMapList : Fragment() {
 
             override fun onAnimationCancel(p0: Animator?) {}
             override fun onAnimationRepeat(p0: Animator?) {}
-        }
-    }
-
-    /** Funcion que comprueba que el gps esta activado, si lo es, navega hacia la realdiad aumentada **/
-    private fun turnOnGpsAndNavigate() {
-        GpsActivate(requireContext()).turnGPSOn {
-            if (it) {
-                findNavController().navigate(FragmentMapListDirections.actionFragmentMapListToFragmentAugmentedReality())
-                viewModel.onAugmentedRealityDone()
-            }
         }
     }
 }

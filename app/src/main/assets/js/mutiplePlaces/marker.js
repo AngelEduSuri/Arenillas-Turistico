@@ -1,13 +1,12 @@
 class Marker {
   constructor(place) {
     this.place = place;
-    this.isSelected = false;
 
     /** Crea el lugar con los datos geograficos */
     let markerLocation = new AR.GeoLocation(
       this.place.latitud,
       this.place.longitud,
-      this.place.altitud
+      // this.place.altitud
     );
 
     /** Crea la imagen de fondo del lugar */
@@ -17,7 +16,6 @@ class Marker {
       {
         zOrder: 0,
         opacity: 1.0,
-        onClick: Marker.prototype.getOnClickTrigger(this),
       }
     );
 
@@ -28,18 +26,21 @@ class Marker {
       {
         zOrder: 0,
         opacity: 0.0,
-        onClick: null,
       }
     );
 
     /** Crea la imagen del lugar real */
-    this.placeImageThumbnail = new AR.ImageDrawable(new AR.ImageResource(this.place.miniatura), 2.5, {
-      zOrder: 0,
-      enabled: false,
-      translate: {
-        y: 3.3,
-      },
-    });
+    this.placeImageThumbnail = new AR.ImageDrawable(
+      new AR.ImageResource(this.place.miniatura),
+      2.5,
+      {
+        zOrder: 0,
+        enabled: false,
+        translate: {
+          y: 3.3,
+        },
+      }
+    );
 
     /** Crea la etiqueta del nombre del lugar */
     this.titleLabel = new AR.Label(this.place.nombre.trunc(20), 0.6, {
@@ -54,6 +55,20 @@ class Marker {
       },
     });
 
+    /** Crea la etiqueta de la descricion del lugar */
+    this.descriptionLabel = new AR.Label(this.place.descripcion.trunc(30), 0.4, {
+      zOrder: 1,
+      translate: {
+        y: -2.5,
+      },
+      style: {
+        textColor: "#FFFFFF",
+        fontStyle: AR.CONST.FONT_STYLE.BOLD,
+        backgroundColor: "#00813A",
+      },
+      enabled: false,
+    });
+
     /** Crea la etiqueta de la distancia del lugar */
     this.distanceLabel = new AR.Label("", 0.5, {
       zOrder: 1,
@@ -64,6 +79,17 @@ class Marker {
         textColor: "#FFFFFF",
         fontStyle: AR.CONST.FONT_STYLE.BOLD,
         backgroundColor: "#00813A",
+      },
+    });
+
+    /** Crea la imagen que indica el boton de click para mas informacion */
+    this.buttonMoreInfo = new AR.ImageDrawable(World.buttonMoreDrawable, 1, {
+      enabled: false,
+      translate: {
+        y: -4,
+      },
+      onClick: () => {
+        World.onButtonMoreInfoClick(this);
       },
     });
 
@@ -110,6 +136,8 @@ class Marker {
           this.placeImageThumbnail,
           this.titleLabel,
           this.distanceLabel,
+          this.descriptionLabel,
+          this.buttonMoreInfo,
         ],
         indicator: this.directionIndicatorDrawable,
         radar: this.radardrawables,
@@ -120,58 +148,40 @@ class Marker {
   }
 }
 
-/** Funcion que se herreda del click en el marcador. */
-Marker.prototype.getOnClickTrigger = (marker) =>
-  function () {
-    if (marker.isSelected) {
-      Marker.prototype.setDeselected(marker);
-    } else {
-      Marker.prototype.setSelected(marker);
-      try {
-        // Envio el marcador seleccionado al World
-        World.onMarkerSelected(marker);
-      } catch (err) {
-        alert(err);
-      }
-    }
-
-    return true;
-  };
-
 /** Funcion para seleccionar el marcador. */
 Marker.prototype.setSelected = (marker) => {
-  marker.isSelected = true;
+  marker.descriptionLabel.enabled = true;
 
   marker.directionIndicatorDrawable.enabled = true;
+  marker.buttonMoreInfo.enabled = true;
   marker.placeImageDrawableIdle.opacity = 0.0;
   marker.placeImageDrawableSelected.opacity = 1.0;
 
-  marker.placeImageDrawableIdle.onClick = null;
-  marker.placeImageDrawableSelected.onClick =
-    Marker.prototype.getOnClickTrigger(marker);
   marker.placeImageThumbnail.enabled = true;
   marker.markerObject.drawables.radar = marker.radardrawablesSelected;
 
   marker.titleLabel.style.backgroundColor = "#6854E4";
   marker.distanceLabel.style.backgroundColor = "#6854E4";
+  marker.descriptionLabel.style.backgroundColor = "#6854E4";
+  World.onMarkerSelected(marker);
 };
 
 /** Funcion para deselecionar el marcador. */
 Marker.prototype.setDeselected = (marker) => {
-  marker.isSelected = false;
+  marker.descriptionLabel.enabled = false;
 
   marker.directionIndicatorDrawable.enabled = false;
+  marker.buttonMoreInfo.enabled = false;
   marker.placeImageDrawableIdle.opacity = 1.0;
   marker.placeImageDrawableSelected.opacity = 0.0;
 
-  marker.placeImageDrawableIdle.onClick =
-    Marker.prototype.getOnClickTrigger(marker);
-  marker.placeImageDrawableSelected.onClick = null;
   marker.placeImageThumbnail.enabled = false;
   marker.markerObject.drawables.radar = marker.radardrawables;
 
   marker.titleLabel.style.backgroundColor = "#00813A";
   marker.distanceLabel.style.backgroundColor = "#00813A";
+  marker.descriptionLabel.style.backgroundColor = "#00813A";
+  World.onMarkerDeselected(marker);
 };
 
 /* Will truncate all strings longer than given max-length "n". e.g. "foobar".trunc(3) -> "foo...". */

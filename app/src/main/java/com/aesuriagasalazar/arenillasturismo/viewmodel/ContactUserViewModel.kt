@@ -23,6 +23,9 @@ class ContactUserViewModel(
     private val _onContactUserEvent = MutableLiveData(ContactUserUiState())
     val onContactUserEvent: LiveData<ContactUserUiState> = _onContactUserEvent
 
+    private val _progressBar = MutableLiveData<Boolean>(false)
+    val progressBar: LiveData<Boolean> = _progressBar
+
     fun onSendEmailProvider() {
         _onContactUserEvent.value = onContactUserEvent.value?.copy(emailProvider = true)
     }
@@ -48,10 +51,12 @@ class ContactUserViewModel(
             onSendMessageStateResponse(MessageState.FieldEmpty)
         } else {
             onContactUserEvent.value?.let {
+                _progressBar.value = true
                 val messageBody = MessageBody(it.name, it.email, it.message).checkIfNameIsEmpty()
                 repository.sendMessageFromUser(messageBody)?.let { response ->
                     if (response.success.isNotEmpty()) {
                         onSendMessageStateResponse(MessageState.Done(response.success))
+                        _progressBar.value = false
                     }
                     if (!response.failure.isNullOrEmpty()) {
                         onSendMessageStateResponse(MessageState.Error(response.failure))

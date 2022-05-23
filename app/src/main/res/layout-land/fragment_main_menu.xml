@@ -19,9 +19,9 @@
             style="@style/CardStyleButton"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:onClick="@{() -> menuFragment.onNavigatePlaceList()}"
             android:layout_margin="@dimen/margin_card_button_horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/button_gallery"
+            android:onClick="@{() -> menuFragment.onNavigatePlaceList()}"
+            app:layout_constraintBottom_toTopOf="@+id/guideline2"
             app:layout_constraintEnd_toStartOf="@+id/button_map"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread"
@@ -44,9 +44,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center_horizontal"
                     android:layout_marginBottom="@dimen/margin_card_button_vertical"
+                    android:fontFamily="@font/yeseva_one"
                     android:text="@string/list_of_places"
                     android:textColor="@color/primaryTextColor"
-                    android:fontFamily="@font/yeseva_one"
                     android:textSize="@dimen/title_size_button"
                     android:textStyle="bold" />
 
@@ -59,9 +59,9 @@
             style="@style/CardStyleButton"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:onClick="@{() -> menuFragment.onNavigatePlaceMap()}"
             android:layout_margin="@dimen/margin_card_button_horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/button_contact"
+            android:onClick="@{() -> menuFragment.onNavigatePlaceMap()}"
+            app:layout_constraintBottom_toTopOf="@+id/guideline2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/button_list"
@@ -103,10 +103,10 @@
             android:layout_margin="@dimen/margin_card_button_horizontal"
             android:onClick="@{() -> menuFragment.onNavigateGallery()}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button_contact"
+            app:layout_constraintEnd_toStartOf="@+id/button_augmented_reality"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_list">
+            app:layout_constraintTop_toTopOf="@+id/guideline2">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -124,27 +124,27 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center_horizontal"
                     android:layout_marginBottom="@dimen/margin_card_button_vertical"
+                    android:fontFamily="@font/yeseva_one"
                     android:text="@string/gallery"
                     android:textColor="@color/primaryTextColor"
                     android:textSize="@dimen/title_size_button"
-                    android:fontFamily="@font/yeseva_one"
                     android:textStyle="bold" />
             </FrameLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/button_contact"
+            android:id="@+id/button_augmented_reality"
             style="@style/CardStyleButton"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="@dimen/margin_card_button_horizontal"
-            android:onClick="@{() -> menuFragment.onNavigateContact()}"
+            android:onClick="@{() -> menuFragment.onNavigateAugmentedReality()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/button_gallery"
-            app:layout_constraintTop_toBottomOf="@+id/button_map">
+            app:layout_constraintTop_toTopOf="@+id/guideline2">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -153,24 +153,31 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:contentDescription="@string/contact"
+                    android:contentDescription="@string/augmented_reality"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/contact" />
+                    android:src="@drawable/augmented_reality" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center_horizontal"
                     android:layout_marginBottom="@dimen/margin_card_button_vertical"
-                    android:text="@string/contact"
-                    android:textColor="@color/primaryTextColor"
                     android:fontFamily="@font/yeseva_one"
+                    android:text="@string/augmented_reality"
+                    android:textColor="@color/primaryTextColor"
                     android:textSize="@dimen/title_size_button"
                     android:textStyle="bold" />
 
             </FrameLayout>
 
         </com.google.android.material.card.MaterialCardView>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.50121653" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

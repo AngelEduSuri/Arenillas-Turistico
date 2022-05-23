@@ -1,7 +1,6 @@
 package com.aesuriagasalazar.arenillasturismo.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.aesuriagasalazar.arenillasturismo.R
 import com.aesuriagasalazar.arenillasturismo.model.data.local.LocalRepository
@@ -11,19 +10,24 @@ import com.aesuriagasalazar.arenillasturismo.model.domain.asDomainModel
 import com.aesuriagasalazar.arenillasturismo.model.domain.asDomainModelList
 import kotlinx.coroutines.launch
 
-class AugmentedRealityViewModel(private val repository: LocalRepository, application: Application) :
-    ViewModel() {
+class AugmentedRealityViewModel(
+    private val repository: LocalRepository,
+    application: Application
+) : ViewModel() {
 
     val userLocation = UserLocationOnLiveData(application)
+
+    private val _placeDetected = MutableLiveData<String>()
+    val placeDetected: LiveData<String> = _placeDetected
 
     private val _placeList = MutableLiveData<List<Place>>()
     val placeList: LiveData<List<Place>> = _placeList
 
-    private val _placeDetailNavigation = MutableLiveData<Place?>()
-    val placeDetailNavigation: LiveData<Place?> = _placeDetailNavigation
-
     private val _rangeValueSlider = MutableLiveData(0.0f)
     val rangeValueSlider: LiveData<Float> = _rangeValueSlider
+
+    private val _onNavigateDetailPlace = MutableLiveData<Place?>()
+    val onNavigateDetailPlace: LiveData<Place?> = _onNavigateDetailPlace
 
     val titleRange: LiveData<String> = Transformations.map(rangeValueSlider) {
         return@map when (it) {
@@ -38,7 +42,6 @@ class AugmentedRealityViewModel(private val repository: LocalRepository, applica
 
     init {
         loadDataFromRepository()
-        Log.i("leer", titleRange.value.toString())
     }
 
     private fun loadDataFromRepository() {
@@ -57,18 +60,24 @@ class AugmentedRealityViewModel(private val repository: LocalRepository, applica
         }
     }
 
-    fun getPlaceForId(placeId: Int) {
+    fun getNamePlaceFromJs(place: String) {
         viewModelScope.launch {
-            _placeDetailNavigation.value = repository.getPlaceForId(placeId).asDomainModel()
+            _placeDetected.value = place
         }
-    }
-
-    fun placeDetailNavigationDone() {
-        _placeDetailNavigation.value = null
     }
 
     fun onSliderValueChanged(value: Float) {
         _rangeValueSlider.value = value
+    }
+
+    fun getPlaceForId(id: Int) {
+        viewModelScope.launch {
+            _onNavigateDetailPlace.value = repository.getPlaceForId(id).asDomainModel()
+        }
+    }
+
+    fun onNavigateDetailDone() {
+        _onNavigateDetailPlace.value = null
     }
 }
 

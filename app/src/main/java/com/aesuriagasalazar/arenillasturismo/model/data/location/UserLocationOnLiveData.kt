@@ -73,8 +73,8 @@ class UserLocationOnLiveData(private val context: Context) : LiveData<UserLocati
     /** Objeto complementario que establece las actualizaciones de ubicacion como el intervalo y prioridad **/
     companion object {
         val locationRequest: LocationRequest = LocationRequest.create().apply {
-            interval = 10000
-            fastestInterval = 5000
+            interval = 5000
+            fastestInterval = 3000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
     }

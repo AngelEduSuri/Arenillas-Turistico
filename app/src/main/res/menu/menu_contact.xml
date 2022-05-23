@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/share"
-        android:title="@string/share"
-        android:icon="@drawable/icon_share_24"
-        android:contentDescription="@string/content_description_share"
+        android:id="@+id/contact"
+        android:title="@string/contact"
+        android:icon="@drawable/icon_contact_support_24"
+        android:contentDescription="@string/content_description_contact"
         app:showAsAction="ifRoom"/>
 </menu>

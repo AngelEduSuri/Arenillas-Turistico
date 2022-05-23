@@ -1,59 +1,33 @@
-/* Implementacion de la experiencia en Realidad Aumentada (aka "World"). */
+/* Implementacion de la experiencia en Realidad Aumentada ("World"). */
 let World = {
-  /* Sera true cuando se los datos esten listos. */
+  /* Sera true cuando los datos esten listos. */
   initiallyLoadedData: false,
 
   /* Assets para los lugares. */
   indicatorMarkerDrawable: null,
+  buttonMoreDrawable: null,
 
   /* Lista de AR.GeoObjects que se estan mostrando en la escena (World). */
   placeList: [],
 
-  /* El ultimo marcado que esta seleccionado. */
+  /* El ultimo marcado que esta cercano al usuario. */
   currentMarker: null,
-
-  /** Contador para actualizar la ubicacion. */
-  locationUpdateCounter: 0,
-
-  /** Actualiza los marcadores con la nueva ubicacion.  */
-  updatePlacemarkDistancesEveryXLocationUpdates: 10,
 
   /* Funcion que recibe las actualizaciones de ubicacion desde el entorno nativo binding.architectView.setLocation(). */
   locationChanged: (latitude, longitude, altitude, accuracy) => {
-    let myLocation = {
-      latitude: latitude,
-      longitude: longitude,
-      altitude: altitude,
-      accuracy: accuracy,
-    };
-
-    /** Se mapea informacion en la vista architectView html. */
-    document.getElementById("location").innerText =
-      "Latitud: " +
-      myLocation.latitude +
-      ", Longitud: " +
-      myLocation.longitude +
-      ", Altitud: " +
-      myLocation.altitude +
-      ", Precision: " +
-      myLocation.accuracy;
+    document.getElementById("location").innerHTML = `Ubicacion: ${altitude}`
 
     /** Comprueba si ya estan cargados los datos. */
     if (!World.initiallyLoadedData) {
       World.initiallyLoadedData = true;
-    } else if (World.locationUpdateCounter === 0) {
+    } else {
       /** Llama a la funcion que actualiza la distancia de los marcadores periodicamente. */
-      World.updateDistanceToUserValues();
+      World.checkDistanceIfUserIsNear();
     }
-
-    /** Ayuda a actualizar los marcadores cada por cada 10 ubicaciones activas. */
-    World.locationUpdateCounter =
-      ++World.locationUpdateCounter %
-      World.updatePlacemarkDistancesEveryXLocationUpdates;
   },
 
   /** Lista de lugares que se reciben de la base de datos desde nativo. **/
-  getPlacesFromDataBase: (places) => {
+  setPlacesFromDataBase: (places) => {
     let listOfPlaces = [];
 
     /** Se asigna los marcadores para cada categoria de lugar */
@@ -90,7 +64,7 @@ let World = {
       }
 
       /** Se mapea la informacion que se necesita en un objeto JavaScript. */
-      let placeAr = {
+      let marker = {
         id: place.id,
         nombre: place.nombre,
         latitud: place.latitud,
@@ -105,7 +79,7 @@ let World = {
       };
 
       /** Se almacena los objetos en la lista. */
-      listOfPlaces.push(placeAr);
+      listOfPlaces.push(marker);
     });
 
     /** Se pasa esa lista para que se cargue en la escena World. */
@@ -127,188 +101,67 @@ let World = {
       "assets/indicator_ar.png"
     );
 
+    /** Recurso de imagen usado para el boton de mas informacion */
+    World.buttonMoreDrawable = new AR.ImageResource("assets/more_info.png");
+
     /* Se recorre la lista de lugares, se los almacena en la variable miembro World. */
     placesAR.forEach((placeAR) => {
       World.placeList.push(new Marker(placeAR));
     });
 
-    /* Actualiza los marcadores en sus ubicaciones. */
-    World.updateDistanceToUserValues();
-
     /* Mensaje a modo de feedback para conocer los lugares cargados en la escena World. */
-    World.updateStatusMessage(World.placeList.length - 1 + " lugares cargados");
+    World.updateStatusMessage(World.placeList.length + " lugares cargados");
   },
 
-  /** Funcion que recibe el marcador seleccionado. */
+  /** Funcion que recibe el marcador que esta cerca del usuario */
   onMarkerSelected: (marker) => {
-    /* Se cierra el panel en caso de estar abierto. */
-    World.closePanel();
-
-    /** Pasamos el marcador recibido desde la clase Marker como marcador actual. */
     World.currentMarker = marker;
-
-    /** Mostramos el panel de detalles */
-    document.getElementById("poiDetailTitle").innerHTML = marker.place.nombre;
-    // document.getElementById("poiDetailDescription").innerHTML =
-    //   marker.place.direccion;
-
-    /** Se recalcula la distancia en caso de que el marcador devuelva un undefined. */
-    if (undefined === marker.distanceToUser) {
-      marker.distanceToUser = marker.markerObject.locations[0].distanceToUser();
-    }
-
-    /** Se convierte la distancia en metro o kilometro */
-    let distanceToUserValue =
-      marker.distanceToUser > 999
-        ? (marker.distanceToUser / 1000).toFixed(2) + " km"
-        : Math.round(marker.distanceToUser) + " m";
-
-    /** Se pasa la distancia convertida al marcador html para el usuario. */
-    document.getElementById("poiDetailDistance").innerHTML =
-      distanceToUserValue;
-
-    /** Se hace visible el panel. */
-    document.getElementById("panelPoiDetail").style.visibility = "visible";
   },
 
-  /* Funcion que recibe el click en la pantalla pero no el objeto AR. */
-  onScreenClick: () => {
-    /** Click en cualquier parte vacia de la pantalla, cierra el panel. */
-    World.closePanel();
-  },
-
-  /** Funcion que cierra el panel de detalles. */
-  closePanel: function closePanelFn() {
-    /** Ocultamos el panel. */
-    document.getElementById("panelPoiDetail").style.visibility = "hidden";
-    document.getElementById("panelRange").style.visibility = "hidden";
-
+  /* Funcion que desmarca al marcador cuando el usuario esta lejos de rango. */
+  onMarkerDeselected: (marker) => {
     if (World.currentMarker != null) {
-      /* Se deselecciona el marcador cuando el usuario sale del panel de detalle. */
-      World.currentMarker.setDeselected(World.currentMarker);
-      World.currentMarker = null;
+      if (World.currentMarker.place.id === marker.place.id) {
+        World.currentMarker = null;
+      }
     }
   },
 
-  /** Devuelve la distancia en metros del marcador de posición con maxdistance. */
-  getMaxDistance: () => {
-    /** Ordena los lugares por distancia para que el primer lugar sea el que tenga la distancia máxima. */
-    World.placeList.sort(World.sortByDistanceSortingDescending);
-
-    /** Se usa la distancia del usuario con el lugar para determinar la distancia maxima. */
-    let maxDistanceMeters = World.placeList[0].distanceToUser;
-
-    /** Devuelve la distancia máxima multiplicada por un valor > 1.0 para que quede algo de espacio
-     * y los pequeños movimientos del usuario no hagan que los lugares lejanos desaparezcan. */
-    return maxDistanceMeters * 1.1;
+  /* Funcion que detecta el click del usuario en el boton. */
+  onButtonMoreInfoClick: (marker) => {
+    let placeClicked = {
+      id: marker.place.id,
+    };
+    AR.platform.sendJSONObject(placeClicked);
   },
-
-  /** Funcion para ordenar los lugares por distancia. */
-  sortByDistanceSorting: (a, b) => a.distanceToUser - b.distanceToUser,
-
-  /** Funcion para ordenar los lugares por distancia descendente. */
-  sortByDistanceSortingDescending: (a, b) =>
-    b.distanceToUser - a.distanceToUser,
 
   /** Funcion que permite establecer/actualizar todos los marcadores  */
   updateDistanceToUserValues: () => {
-    for (let i = 0; i < World.placeList.length; i++) {
-      World.placeList[i].distanceToUser =
-        World.placeList[i].markerObject.locations[0].distanceToUser();
+    World.placeList.forEach((marker) => {
+      marker.distanceToUser = marker.markerObject.locations[0].distanceToUser();
 
       let distanceToUserValue =
-        World.placeList[i].distanceToUser > 999
-          ? (World.placeList[i].distanceToUser / 1000).toFixed(2) + " km"
-          : Math.round(World.placeList[i].distanceToUser) + " m";
+        marker.distanceToUser > 999
+          ? (marker.distanceToUser / 1000).toFixed(2) + " km"
+          : Math.round(marker.distanceToUser) + " m";
 
-      World.placeList[i].distanceLabel.text = distanceToUserValue;
-    }
+      marker.distanceLabel.text = distanceToUserValue;
+    });
   },
 
-  /** Funcion para actualizar el rango de visualizacion de los lugares en AR */
-  updateRangeValues: () => {
-    /* Get current slider value (0..100);. */
-    let slider_value = document.getElementById("panelRangeSlider").value;
-    /* Max range relative to the maximum distance of all visible places. */
-    let maxRangeMeters = Math.round(
-      World.getMaxDistance() * (slider_value / 100)
-    );
-
-    /* Range in meters including metric m/km. */
-    let maxRangeValue =
-      maxRangeMeters > 999
-        ? (maxRangeMeters / 1000).toFixed(2) + " km"
-        : Math.round(maxRangeMeters) + " m";
-
-    /* Number of places within max-range. */
-    let placesInRange = World.getNumberOfVisiblePlacesInRange(maxRangeMeters);
-
-    /* Update UI labels accordingly. */
-    document.getElementById("panelRangeValue").innerHTML = maxRangeValue;
-    document.getElementById("panelRangePlaces").innerHTML =
-      placesInRange != 1
-        ? placesInRange + " Lugares"
-        : placesInRange + " Lugar";
-    document.getElementById("panelRangeSliderValue").innerHTML = slider_value;
-
-    World.updateStatusMessage(
-      placesInRange != 1
-        ? placesInRange + " lugares cargadors"
-        : placesInRange + " lugar cargado"
-    );
-
-    /* Update culling distance, so only places within given range are rendered. */
-    AR.context.scene.cullingDistance = Math.max(maxRangeMeters, 1);
-
-    /* Update radar's maxDistance so radius of radar is updated too. */
-    PlaceRadar.setMaxDistance(Math.max(maxRangeMeters, 1));
-  },
-
-  /** Funcion que devuelve el numero de lugares dentro del rango establecido. */
-  getNumberOfVisiblePlacesInRange: (maxRangeMeters) => {
-    /* Sort markers by distance. */
-    World.placeList.sort(World.sortByDistanceSorting);
-
-    /* Loop through list and stop once a placemark is out of range ( -> very basic implementation ). */
-    for (let i = 0; i < World.placeList.length; i++) {
-      if (World.placeList[i].distanceToUser > maxRangeMeters) {
-        return i;
-      }
-    }
-
-    /* In case no placemark is out of range -> all are visible. */
-    return World.placeList.length;
-  },
-
-  /** */
-  handlePanelMovements: () => {
-    PlaceRadar.updatePosition();
-  },
-
-  /** Funcion que ejecuta la visualizacion del rango cuando se presiona el bonton Rango */
-  showRange: () => {
-    if (World.placeList.length > 0) {
-      World.closePanel();
-
-      /* Update labels on every range movement. */
-      World.updateRangeValues();
-      World.handlePanelMovements();
-
-      /* Open panel. */
-      document.getElementById("panelRange").style.visibility = "visible";
+  /** Funcion que se comunica con nativo para enviar el lugar detectado. */
+  onMarkerDetected: () => {
+    if (World.currentMarker != null) {
+      let placeSelected = {
+        place: World.currentMarker.place.nombre,
+      };
+      AR.platform.sendJSONObject(placeSelected);
     } else {
-      /* No places are visible, because the are not loaded yet. */
-      World.updateStatusMessage("No hay lugares disponible cerca", true);
+      let placeSelected = {
+        place: "",
+      };
+      AR.platform.sendJSONObject(placeSelected);
     }
-  },
-
-  /** Funcion que se comunica con nativo para ir a la ventana de detalles */
-  onPoiDetailMoreButtonClicked: () => {
-    let currentPlace = World.currentMarker;
-    let jsonPlaceId = {
-      id: currentPlace.place.id,
-    };
-    AR.platform.sendJSONObject(jsonPlaceId);
   },
 
   /* Mensaje de estado que se muestra en el boton "i"- alienado en la parte inferior centro. */
@@ -324,6 +177,7 @@ let World = {
     alert(error);
   },
 
+  /** Funcion del eslider en nativo para limitar el rango de visualizacion de los marcadores */
   sliderValueRange: (value) => {
     let distanceVisible = 0;
     switch (value) {
@@ -348,15 +202,27 @@ let World = {
     }
     AR.context.scene.cullingDistance = distanceVisible;
     PlaceRadar.setMaxDistance(distanceVisible);
+
+    /* Update labels on every range movement. */
+    PlaceRadar.updatePosition();
+  },
+
+  /** Funcion que comprueba si el usuario esta cerca de un marcador */
+  checkDistanceIfUserIsNear: () => {
+    World.updateDistanceToUserValues();
+
+    World.placeList.forEach((marker) => {
+      if (marker.distanceToUser <= 25) {
+        marker.setSelected(marker);
+      } else {
+        marker.setDeselected(marker);
+      }
+      World.onMarkerDetected();
+    });
   },
 };
 
 /** Funcion que recibe los datos del usuario desde el entorno nativo y se los pasa a la funcion miembro de la escena World. */
 AR.context.onLocationChanged = (latitude, longitude, altitude, accuracy) => {
   World.locationChanged(latitude, longitude, altitude, accuracy);
-};
-
-/** Funcion que detecta cuando se hace click en la pantalla. */
-AR.context.onScreenClick = () => {
-  World.onScreenClick();
 };

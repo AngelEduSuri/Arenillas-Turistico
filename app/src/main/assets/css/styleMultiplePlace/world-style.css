@@ -4,15 +4,6 @@ html, body {
     overflow: hidden
 }
 
-#mainHeader {
-    background-color: #ddd;
-    position: absolute;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    padding-top: env(safe-area-inset-top);
-}
-
 #footer {
     position: absolute;
     text-align: center;
@@ -52,51 +43,6 @@ html, body {
     visibility: visible
 }
 
-#panelPoiDetail {
-    background-color: #eee;
-    height: 40vh;
-    right: 0;
-    position: absolute;
-    font-family: sans-serif;
-    visibility: hidden;
-    margin-top: env(safe-area-inset-top);
-    border-bottom-left-radius: 1rem;
-}
-
-#poiDetailDistance {
-    color: #3979db;
-}
-
-#panelRange {
-    background-color: #eee;
-    height: 40vh;
-    left: 0;
-    position: absolute;
-    font-family: sans-serif;
-    visibility: hidden;
-    margin-top: env(safe-area-inset-top);
-    border-bottom-right-radius: 1rem;
-}
-
-#panelRangeValue {
-    color: #3979db;
-}
-
-#panelRangePlaces {
-    color: #3979db;
-}
-
-#panelRangeSliderContainer {
-    display: flex;
-    align-items: center;
-}
-
-#panelRangeSliderValue{
-    background-color: #ccc;
-    border-radius: 4px;
-    text-align: center;
-}
-
 .header {
     background-color: #ddd;
     position: absolute;
@@ -124,11 +70,6 @@ html, body {
 
 .content {
     position: absolute;
-}
-
-.locationValues {
-    position: absolute;
-    bottom: env(safe-area-inset-bottom);
 }
 
 @media screen and (orientation: portrait) {
