@@ -104,6 +104,7 @@
                 android:layout_marginTop="8dp"
                 android:onClick="@{() -> viewModel.onSendMessageClick()}"
                 android:text="@string/send_user_message"
+                android:enabled="@{!viewModel.progressBar}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayoutMessage" />

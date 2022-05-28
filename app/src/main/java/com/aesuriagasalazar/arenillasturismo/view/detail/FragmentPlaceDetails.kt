@@ -38,15 +38,7 @@ class FragmentPlaceDetails : Fragment() {
                     LineBreaker.JUSTIFICATION_MODE_INTER_WORD
             }
         }
-
-        binding.buttonAr.setOnClickListener {
-            findNavController().navigate(
-                FragmentPlaceDetailsDirections.actionFragmentPlaceDetailsToFragmentAugmentedRealityDetail(
-                    place
-                )
-            )
-        }
-
+        
         setHasOptionsMenu(true)
         return binding.root
     }

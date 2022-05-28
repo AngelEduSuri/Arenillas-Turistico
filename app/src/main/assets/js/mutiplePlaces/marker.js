@@ -6,15 +6,14 @@ class Marker {
     let markerLocation = new AR.GeoLocation(
       this.place.latitud,
       this.place.longitud,
-      // this.place.altitud
+      this.place.altitud
     );
 
     /** Crea la imagen de fondo del lugar */
     this.placeImageDrawableIdle = new AR.ImageDrawable(
       new AR.ImageResource(this.place.fondo),
-      2.5,
+      2.0,
       {
-        zOrder: 0,
         opacity: 1.0,
       }
     );
@@ -22,9 +21,8 @@ class Marker {
     /** Crea la imagen de fondo del lugar seleccionado */
     this.placeImageDrawableSelected = new AR.ImageDrawable(
       new AR.ImageResource(this.place.fondoSeleccionado),
-      2.5,
+      2.0,
       {
-        zOrder: 0,
         opacity: 0.0,
       }
     );
@@ -32,21 +30,20 @@ class Marker {
     /** Crea la imagen del lugar real */
     this.placeImageThumbnail = new AR.ImageDrawable(
       new AR.ImageResource(this.place.miniatura),
-      2.5,
+      2.0,
       {
-        zOrder: 0,
         enabled: false,
         translate: {
-          y: 3.3,
+          y: 2.8,
         },
       }
     );
 
     /** Crea la etiqueta del nombre del lugar */
-    this.titleLabel = new AR.Label(this.place.nombre.trunc(20), 0.6, {
+    this.titleLabel = new AR.Label(this.place.nombre.trunc(20), 0.5, {
       zOrder: 1,
       translate: {
-        y: 1.6,
+        y: 1.4,
       },
       style: {
         textColor: "#FFFFFF",
@@ -55,25 +52,24 @@ class Marker {
       },
     });
 
-    /** Crea la etiqueta de la descricion del lugar */
-    this.descriptionLabel = new AR.Label(this.place.descripcion.trunc(30), 0.4, {
-      zOrder: 1,
-      translate: {
-        y: -2.5,
+    this.descriptionLabel = new AR.HtmlDrawable(
+      {
+        html: `<div style="padding: 1.5rem;border-radius: 3rem;background-color: #6854E4;height:55rem;overflow: hidden; text-align: justify;"><span style="font-size: 4.6rem;color: white;">${this.place.descripcion}</span></div>`,
       },
-      style: {
-        textColor: "#FFFFFF",
-        fontStyle: AR.CONST.FONT_STYLE.BOLD,
-        backgroundColor: "#00813A",
-      },
-      enabled: false,
-    });
+      3,
+      {
+        translate: {
+          y: -3.5,
+        },
+        enabled: false,
+      }
+    );
 
     /** Crea la etiqueta de la distancia del lugar */
-    this.distanceLabel = new AR.Label("", 0.5, {
+    this.distanceLabel = new AR.Label("", 0.4, {
       zOrder: 1,
       translate: {
-        y: -1.8,
+        y: -1.5,
       },
       style: {
         textColor: "#FFFFFF",
@@ -86,8 +82,9 @@ class Marker {
     this.buttonMoreInfo = new AR.ImageDrawable(World.buttonMoreDrawable, 1, {
       enabled: false,
       translate: {
-        y: -4,
+        y: -5.2,
       },
+      verticalAnchor: AR.CONST.VERTICAL_ANCHOR.TOP,
       onClick: () => {
         World.onButtonMoreInfoClick(this);
       },
@@ -162,7 +159,6 @@ Marker.prototype.setSelected = (marker) => {
 
   marker.titleLabel.style.backgroundColor = "#6854E4";
   marker.distanceLabel.style.backgroundColor = "#6854E4";
-  marker.descriptionLabel.style.backgroundColor = "#6854E4";
   World.onMarkerSelected(marker);
 };
 
@@ -180,7 +176,6 @@ Marker.prototype.setDeselected = (marker) => {
 
   marker.titleLabel.style.backgroundColor = "#00813A";
   marker.distanceLabel.style.backgroundColor = "#00813A";
-  marker.descriptionLabel.style.backgroundColor = "#00813A";
   World.onMarkerDeselected(marker);
 };
 

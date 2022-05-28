@@ -55,6 +55,7 @@
         <entry key="app/src/main/res/drawable/icon_more_details.xml" value="0.2965" />
         <entry key="app/src/main/res/drawable/icon_share_24.xml" value="0.19" />
         <entry key="app/src/main/res/layout-land/fragment_main_menu.xml" value="0.30158730158730157" />
+        <entry key="app/src/main/res/layout-land/fragment_place_details.xml" value="0.30158730158730157" />
         <entry key="app/src/main/res/layout/fragment_augmented_reality.xml" value="0.35597826086956524" />
         <entry key="app/src/main/res/layout/fragment_contact_user.xml" value="0.3555253623188406" />
         <entry key="app/src/main/res/layout/fragment_image_full_screen.xml" value="0.3555253623188406" />

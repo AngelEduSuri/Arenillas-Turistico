@@ -54,8 +54,7 @@ class FragmentAugmentedReality : Fragment() {
 
         viewModel.placeList.observe(viewLifecycleOwner) {
             it?.let {
-                val gson = Gson()
-                val placeList = gson.toJson(it)
+                val placeList = Gson().run { toJson(it) }
                 binding.architectView.callJavascript("World.setPlacesFromDataBase(${placeList})")
             }
         }
@@ -197,7 +196,7 @@ class FragmentAugmentedReality : Fragment() {
             id = 3,
             nombre = "Punto Cerca",
             categoria = "hospedaje",
-            descripcion = "Descripcion del Punto 3 es un lugar de hospedaje",
+            descripcion = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
             direccion = "",
             longitud = -80.06489305684134,
             latitud = -3.5586257013151985,

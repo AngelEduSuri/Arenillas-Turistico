@@ -15,8 +15,7 @@ let World = {
 
   /* Funcion que recibe las actualizaciones de ubicacion desde el entorno nativo binding.architectView.setLocation(). */
   locationChanged: (latitude, longitude, altitude, accuracy) => {
-    document.getElementById("location").innerHTML = `Ubicacion: ${altitude}`
-
+  
     /** Comprueba si ya estan cargados los datos. */
     if (!World.initiallyLoadedData) {
       World.initiallyLoadedData = true;
@@ -212,7 +211,7 @@ let World = {
     World.updateDistanceToUserValues();
 
     World.placeList.forEach((marker) => {
-      if (marker.distanceToUser <= 25) {
+      if (marker.distanceToUser <= 13) {
         marker.setSelected(marker);
       } else {
         marker.setDeselected(marker);
