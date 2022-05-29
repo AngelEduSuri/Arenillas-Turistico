@@ -20,7 +20,7 @@ class RemoteRepository(
     suspend fun getItemsCountFromLocal() = localDataBase?.getListCount()
 
     /** Funcion de suspension que obtiene la lista de Firebase y se guarda en local **/
-    suspend fun loadPlacesFromDataSourceRemote(): String? {
+    suspend fun saveLocalDataBaseFromDataSourceRemote(): String? {
         /** Se ejecuta en una corrutina en otro hilo Dispatchers.IO **/
         val error = withContext(Dispatchers.IO) {
             val response = realTimeDataBase?.getDataFromFirebaseOnCoroutine()
@@ -35,19 +35,13 @@ class RemoteRepository(
     /** Funcion de suspension que borra la base local y la actualiza con los datos remotos **/
     suspend fun updateLocalDataBaseFromRemoteDataSource(): String? {
         val error = withContext(Dispatchers.IO) {
-            localDataBase?.deleteAllPlaces()
             val response = realTimeDataBase?.getDataFromFirebaseOnCoroutine()
             response?.let {
-                localDataBase?.savePlaces(response.places.asEntityModelList())
+                localDataBase?.updatePlaces(response.places.asEntityModelList())
                 return@withContext response.error
             }
         }
         return error
-    }
-
-    /** Funcion de suspension que obtiene la cantidad de lugares guardados en remoto**/
-    suspend fun getItemsCountFromFirebase() = withContext(Dispatchers.IO) {
-        return@withContext realTimeDataBase?.getChildCountFromFirebaseOnCoroutine()
     }
 
     /** Funcion de suspension que obtiene la respuesta del envio del mensaje de contaco a firestore **/

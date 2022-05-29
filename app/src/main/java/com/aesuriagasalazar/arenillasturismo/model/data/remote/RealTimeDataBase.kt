@@ -1,5 +1,7 @@
 package com.aesuriagasalazar.arenillasturismo.model.data.remote
 
+import com.aesuriagasalazar.arenillasturismo.model.data.remote.EventResponse.Cancelled
+import com.aesuriagasalazar.arenillasturismo.model.data.remote.EventResponse.Changed
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 import com.google.firebase.database.*
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -20,14 +22,14 @@ class RealTimeDataBase {
                  * @param error recibe la respuesta de error de firebase y se pasa a la sealed class
                  * */
                 override fun onCancelled(error: DatabaseError) {
-                    continuation.resume(EventResponse.Cancelled(error))
+                    continuation.resume(Cancelled(error))
                 }
 
                 /**
                  * @param snapshot se recibe la lista de firebase y se pasa a la sealed class
                  */
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    continuation.resume(EventResponse.Changed(snapshot))
+                    continuation.resume(Changed(snapshot))
                 }
             }
             addListenerForSingleValueEvent(valueEventListener) // Se suscribe para los eventos
@@ -38,7 +40,7 @@ class RealTimeDataBase {
     suspend fun getDataFromFirebaseOnCoroutine(): ResponseFirebase {
         val response = ResponseFirebase()
         when (val result = database.getReference(PATH).singleValueEvent()) {
-            is EventResponse.Changed -> {
+            is Changed -> {
                 val snapshot = result.snapshot
                 if (snapshot.exists()) {
                     val placesDatabase = snapshot.children.mapNotNull {
@@ -47,7 +49,7 @@ class RealTimeDataBase {
                     response.places = placesDatabase
                 }
             }
-            is EventResponse.Cancelled -> {
+            is Cancelled -> {
                 val message = result.error.toException().message
                 response.error = message
             }
@@ -56,17 +58,6 @@ class RealTimeDataBase {
          * @return response devuelve la respuesta de firebase mapeada en la data class ResponseFirebase
          */
         return response
-    }
-
-    suspend fun getChildCountFromFirebaseOnCoroutine(): Int {
-        var count = 0
-        when (val result = database.getReference(PATH).singleValueEvent()) {
-            is EventResponse.Changed -> {
-                count = result.snapshot.childrenCount.toInt()
-            }
-            is EventResponse.Cancelled -> {}
-        }
-        return count
     }
 }
 

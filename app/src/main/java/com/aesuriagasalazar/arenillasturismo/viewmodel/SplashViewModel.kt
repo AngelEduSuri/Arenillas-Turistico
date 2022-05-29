@@ -11,7 +11,6 @@ enum class DataStatus {
     DOWNLOADING,
     ERROR,
     NO_NETWORK,
-    SYNCHRONIZED,
     LOCAL
 }
 
@@ -45,14 +44,8 @@ class SplashViewModel(
     private suspend fun loadDataFromRemote() {
         remoteRepository.getItemsCountFromLocal()?.let {
             when {
-                /** Datos locales son iguales a los datos remotos, entonces estan sincronizados**/
-                it == remoteRepository.getItemsCountFromFirebase() -> {
-                    _dataStatus.value = DataStatus.SYNCHRONIZED
-                    delay(1000)
-                    _navigateMenu.value = true
-                }
                 /** Datos locales son diferentes a datos remotos entonces se actualizan **/
-                it > 0 || it != remoteRepository.getItemsCountFromFirebase() -> {
+                it > 0 -> {
                     _dataStatus.value = DataStatus.UPDATING
                     val response = remoteRepository.updateLocalDataBaseFromRemoteDataSource()
                     delay(500)
@@ -65,7 +58,7 @@ class SplashViewModel(
                 /** Datos locales son 0 (no existen), entonces se descarga los datos de Firebase **/
                 it <= 0 -> {
                     _dataStatus.value = DataStatus.DOWNLOADING
-                    val response = remoteRepository.loadPlacesFromDataSourceRemote()
+                    val response = remoteRepository.saveLocalDataBaseFromDataSourceRemote()
                     delay(500)
                     if (response.isNullOrEmpty()) {
                         _navigateMenu.value = true

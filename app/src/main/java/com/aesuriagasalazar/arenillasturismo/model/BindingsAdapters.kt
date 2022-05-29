@@ -3,14 +3,12 @@ package com.aesuriagasalazar.arenillasturismo.model
 import android.content.res.Resources
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import com.aesuriagasalazar.arenillasturismo.R
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
-import com.aesuriagasalazar.arenillasturismo.viewmodel.ContactUserViewModel
 import com.aesuriagasalazar.arenillasturismo.viewmodel.DataStatus
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -54,7 +52,6 @@ fun textMessage(textView: TextView, dataStatus: DataStatus?) {
             DataStatus.DOWNLOADING -> textView.text = context.getString(R.string.downloading)
             DataStatus.ERROR -> textView.text = context.getString(R.string.error)
             DataStatus.NO_NETWORK -> textView.text = context.getString(R.string.network)
-            DataStatus.SYNCHRONIZED -> textView.text = context.getString(R.string.sync)
             DataStatus.LOCAL -> textView.text = context.getString(R.string.local)
         }
     }

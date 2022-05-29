@@ -55,6 +55,8 @@
             text_message="@{viewModel.dataStatus}"
             android:textColor="@color/white"
             android:textAlignment="center"
+            tools:text="@string/updating"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
