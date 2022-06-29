@@ -32,7 +32,7 @@ class RemoteRepository(
         return error
     }
 
-    /** Funcion de suspension que borra la base local y la actualiza con los datos remotos **/
+    /** Funcion de suspension que actualiza con los datos remotos **/
     suspend fun updateLocalDataBaseFromRemoteDataSource(): String? {
         val error = withContext(Dispatchers.IO) {
             val response = realTimeDataBase?.getDataFromFirebaseOnCoroutine()

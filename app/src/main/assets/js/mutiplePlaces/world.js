@@ -15,13 +15,14 @@ let World = {
 
   /* Funcion que recibe las actualizaciones de ubicacion desde el entorno nativo binding.architectView.setLocation(). */
   locationChanged: (latitude, longitude, altitude, accuracy) => {
-  
     /** Comprueba si ya estan cargados los datos. */
     if (!World.initiallyLoadedData) {
       World.initiallyLoadedData = true;
     } else {
       /** Llama a la funcion que actualiza la distancia de los marcadores periodicamente. */
-      World.checkDistanceIfUserIsNear();
+      if (World.placeList.length != 0) {
+        World.checkDistanceIfUserIsNear();
+      }
     }
   },
 
@@ -211,7 +212,8 @@ let World = {
     World.updateDistanceToUserValues();
 
     World.placeList.forEach((marker) => {
-      if (marker.distanceToUser <= 13) {
+      /** Comprueba si el usuario se encuentra a menos de 25 metros del lugar */
+      if (marker.distanceToUser <= 25) {
         marker.setSelected(marker);
       } else {
         marker.setDeselected(marker);

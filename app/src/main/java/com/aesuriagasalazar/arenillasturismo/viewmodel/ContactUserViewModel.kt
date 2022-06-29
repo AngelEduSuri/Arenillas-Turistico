@@ -23,7 +23,7 @@ class ContactUserViewModel(
     private val _onContactUserEvent = MutableLiveData(ContactUserUiState())
     val onContactUserEvent: LiveData<ContactUserUiState> = _onContactUserEvent
 
-    private val _progressBar = MutableLiveData<Boolean>(false)
+    private val _progressBar = MutableLiveData(false)
     val progressBar: LiveData<Boolean> = _progressBar
 
     fun onSendEmailProvider() {

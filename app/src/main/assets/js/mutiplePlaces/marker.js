@@ -27,18 +27,6 @@ class Marker {
       }
     );
 
-    /** Crea la imagen del lugar real */
-    this.placeImageThumbnail = new AR.ImageDrawable(
-      new AR.ImageResource(this.place.miniatura),
-      2.0,
-      {
-        enabled: false,
-        translate: {
-          y: 2.8,
-        },
-      }
-    );
-
     /** Crea la etiqueta del nombre del lugar */
     this.titleLabel = new AR.Label(this.place.nombre.trunc(20), 0.5, {
       zOrder: 1,
@@ -118,6 +106,18 @@ class Marker {
       },
     });
 
+    /** Crea la imagen del lugar real */
+    this.placeImageThumbnail = new AR.ImageDrawable(
+      new AR.ImageResource(this.place.miniatura),
+      2.0,
+      {
+        enabled: false,
+        translate: {
+          y: 2.8,
+        },
+      }
+    );
+
     this.radardrawables = [];
     this.radardrawables.push(this.radarCircle);
 
@@ -130,17 +130,16 @@ class Marker {
         cam: [
           this.placeImageDrawableIdle,
           this.placeImageDrawableSelected,
-          this.placeImageThumbnail,
           this.titleLabel,
           this.distanceLabel,
           this.descriptionLabel,
           this.buttonMoreInfo,
+          this.placeImageThumbnail,
         ],
         indicator: this.directionIndicatorDrawable,
         radar: this.radardrawables,
       },
     });
-
     return this;
   }
 }

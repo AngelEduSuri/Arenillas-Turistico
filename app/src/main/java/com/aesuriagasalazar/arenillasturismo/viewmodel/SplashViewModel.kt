@@ -10,7 +10,7 @@ enum class DataStatus {
     UPDATING,
     DOWNLOADING,
     ERROR,
-    NO_NETWORK,
+    NO_DATA,
     LOCAL
 }
 
@@ -41,7 +41,7 @@ class SplashViewModel(
     }
 
     /** Funcion que comprueba los datos remotos **/
-    private suspend fun loadDataFromRemote() {
+    suspend fun loadDataFromRemote() {
         remoteRepository.getItemsCountFromLocal()?.let {
             when {
                 /** Datos locales son diferentes a datos remotos entonces se actualizan **/
@@ -71,10 +71,10 @@ class SplashViewModel(
     }
 
     /** Funcion que comprueba si existen datos locales **/
-    private suspend fun loadDataFromLocal() {
+    suspend fun loadDataFromLocal() {
         remoteRepository.getItemsCountFromLocal()?.let {
             if (it <=0) {
-                _dataStatus.value = DataStatus.NO_NETWORK
+                _dataStatus.value = DataStatus.NO_DATA
             } else {
                 _dataStatus.value = DataStatus.LOCAL
                 delay(2000)

@@ -12,6 +12,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingVertical="@dimen/padding_layout"
+        android:paddingHorizontal="@dimen/padding_layout"
         tools:context=".view.menu.FragmentMainMenu">
 
         <com.google.android.material.card.MaterialCardView

@@ -1,6 +1,7 @@
 package com.aesuriagasalazar.arenillasturismo.model
 
 import android.content.res.Resources
+import android.graphics.Bitmap
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.widget.ImageView
@@ -12,6 +13,10 @@ import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 import com.aesuriagasalazar.arenillasturismo.viewmodel.DataStatus
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.ViewTarget
+import com.bumptech.glide.request.transition.Transition
+import com.davemorrissey.labs.subscaleview.ImageSource
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraBoundsOptions
@@ -21,6 +26,7 @@ import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.CircleAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createCircleAnnotationManager
+
 
 /** Data class para representar las categorias de los lugares
  * @constructor Crea un objeto category
@@ -51,7 +57,7 @@ fun textMessage(textView: TextView, dataStatus: DataStatus?) {
             DataStatus.UPDATING -> textView.text = context.getString(R.string.updating)
             DataStatus.DOWNLOADING -> textView.text = context.getString(R.string.downloading)
             DataStatus.ERROR -> textView.text = context.getString(R.string.error)
-            DataStatus.NO_NETWORK -> textView.text = context.getString(R.string.network)
+            DataStatus.NO_DATA -> textView.text = context.getString(R.string.network)
             DataStatus.LOCAL -> textView.text = context.getString(R.string.local)
         }
     }
@@ -78,7 +84,7 @@ fun textResource(textView: TextView, textId: Int) {
 fun imageUrl(imageView: ImageView, url: String) {
     Glide
         .with(imageView.context)
-        .load(url)
+        .load(url.toUri())
         .centerCrop()
         .apply(
             RequestOptions()
@@ -88,10 +94,12 @@ fun imageUrl(imageView: ImageView, url: String) {
         .into(imageView)
 }
 
-@BindingAdapter("image_load_slider")
-fun imageUrlSlider(imageView: ImageView, imageUrl: String) {
+@BindingAdapter("image_load_zoom")
+fun loadUrlFullScreen(scaledView: SubsamplingScaleImageView, imageUrl: String) {
+
     Glide
-        .with(imageView.context)
+        .with(scaledView)
+        .asBitmap()
         .load(imageUrl.toUri())
         .fitCenter()
         .apply(
@@ -99,7 +107,11 @@ fun imageUrlSlider(imageView: ImageView, imageUrl: String) {
                 .placeholder(R.drawable.loading_animation)
                 .error(R.drawable.broken_image)
         )
-        .into(imageView)
+        .into(object : ViewTarget<SubsamplingScaleImageView, Bitmap>(scaledView){
+            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                scaledView.setImage(ImageSource.bitmap(resource))
+            }
+        })
 }
 
 @BindingAdapter("load_init_camera")
@@ -180,3 +192,4 @@ object IconMap {
         }
     }
 }
+

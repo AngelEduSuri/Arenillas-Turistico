@@ -1,21 +1,24 @@
 package com.aesuriagasalazar.arenillasturismo.view.augmentedreality
 
+import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.aesuriagasalazar.arenillasturismo.R
 import com.aesuriagasalazar.arenillasturismo.databinding.FragmentAugmentedRealityBinding
 import com.aesuriagasalazar.arenillasturismo.model.CategoryStatic
 import com.aesuriagasalazar.arenillasturismo.model.data.local.LocalRepository
 import com.aesuriagasalazar.arenillasturismo.model.data.local.PlacesDatabase
-import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 import com.aesuriagasalazar.arenillasturismo.viewmodel.AugmentedRealityViewModel
 import com.aesuriagasalazar.arenillasturismo.viewmodel.AugmentedRealityViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.wikitude.architect.ArchitectStartupConfiguration
+import kotlinx.coroutines.launch
 
 class FragmentAugmentedReality : Fragment() {
 
@@ -42,20 +45,24 @@ class FragmentAugmentedReality : Fragment() {
         binding.architectView.load("index.html")
 
         viewModel.userLocation.observe(viewLifecycleOwner) {
-            it?.let {
-                binding.architectView.setLocation(
-                    it.latitude,
-                    it.longitude,
-                    it.altitude,
-                    it.accuracy
-                )
+            it.let {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    binding.architectView.setLocation(
+                        it.latitude,
+                        it.longitude,
+                        it.altitude,
+                        it.accuracy
+                    )
+                }
             }
         }
 
         viewModel.placeList.observe(viewLifecycleOwner) {
             it?.let {
-                val placeList = Gson().run { toJson(it) }
-                binding.architectView.callJavascript("World.setPlacesFromDataBase(${placeList})")
+                viewLifecycleOwner.lifecycleScope.launch {
+                    val placeList = Gson().run { toJson(it) }
+                    binding.architectView.callJavascript("World.setPlacesFromDataBase(${placeList})")
+                }
             }
         }
 
@@ -78,10 +85,12 @@ class FragmentAugmentedReality : Fragment() {
 
         binding.architectView.addArchitectJavaScriptInterfaceListener {
             it?.let {
-                if (it.has("place")) {
-                    setNameOnNativeEnvironment(it.getString("place"))
-                } else if (it.has("id")) {
-                    setPlaceIdToNavigateDetails(it.getInt("id"))
+                viewLifecycleOwner.lifecycleScope.launch {
+                    if (it.has("place")) {
+                        setNameOnNativeEnvironment(it.getString("place"))
+                    } else if (it.has("id")) {
+                        setPlaceIdToNavigateDetails(it.getInt("id"))
+                    }
                 }
             }
         }
@@ -109,12 +118,15 @@ class FragmentAugmentedReality : Fragment() {
         }
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onResume() {
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         binding.architectView.onResume()
         super.onResume()
     }
 
     override fun onPause() {
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
         binding.architectView.onPause()
         super.onPause()
     }
@@ -157,7 +169,6 @@ class FragmentAugmentedReality : Fragment() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(resources.getString(R.string.category_select))
             .setItems(listString.toTypedArray()) { _, item ->
-                binding.architectView.callJavascript("World.closePanel()")
                 if (listString[item] == resources.getString(R.string.all)) {
                     viewModel.getListPlacesForCategory("")
                 } else {
@@ -166,43 +177,4 @@ class FragmentAugmentedReality : Fragment() {
             }
             .show()
     }
-
-    private fun fakePlaces() = listOf(
-        Place(
-            id = 1,
-            nombre = "Punto Uno",
-            categoria = "parque",
-            descripcion = "Descripcion del Punto 1 es un parque",
-            direccion = "",
-            longitud = -80.06500416509033,
-            latitud = -3.5588211103159764,
-            altitud = 78,
-            miniatura = "https://i.ibb.co/LzHsNBS/parque-palmales-viejo-thumbnail.jpg",
-        ),
-
-        Place(
-            id = 2,
-            nombre = "Punto Dos",
-            categoria = "naturaleza",
-            descripcion = "Descripcion del Punto 2 es naturaleza",
-            direccion = "",
-            longitud = -80.0650403749101,
-            latitud = -3.558659149585619,
-            altitud = 75,
-            miniatura = "https://i.ibb.co/8DBgJk3/represa-tahuin-1.jpg"
-        ),
-
-        Place(
-            id = 3,
-            nombre = "Punto Cerca",
-            categoria = "hospedaje",
-            descripcion = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
-            direccion = "",
-            longitud = -80.06489305684134,
-            latitud = -3.5586257013151985,
-            altitud = 73,
-            miniatura = "https://i.ibb.co/6Pw6Kyc/puente-metalico-thumbnail.jpg"
-        ),
-
-        )
 }

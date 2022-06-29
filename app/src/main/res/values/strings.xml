@@ -33,9 +33,17 @@
     <string name="message_field_send">Mensaje enviado con ID: %s, recibirá una respuesta pronto</string>
     <string name="message_field_failure">Error al enviar su mensaje: %s</string>
     <string name="no_network_message">Se necesita una conexión a internet para enviar su mensaje</string>
-    <string name="email_choise">Seleccione su app de email:</string>
+    <string name="email_choice">Seleccione su app de email:</string>
     <string name="place_undetected">Buscando lugares cercanos al usuario…</string>
     <string name="place_detected">Lugar encontrado: %s</string>
+    <string name="max_distance_augmented_reality">15000</string>
+    <string name="user_out_of_city">Fuera de la ciudad</string>
+    <string name="gps_is_required">GPS desactivado</string>
+    <string name="gps_context_augmented_reality">Se necesitan los datos que proporciona el GPS para usar la realidad aumentada, ya que los objetos geolocalizados necesitan conocer su ubicación.\n¿Desea activar el GPS?</string>
+    <string name="center_city_latitude">-3.5560868218088775</string>
+    <string name="center_city_longitude">-80.06484580379286</string>
+    <string name="city_name_provider">Arenillas</string>
+    <string name="augmented_reality_context">La experiencia de realidad aumentada solo está disponible si el usuario se encuentra dentro del área del canton Arenillas</string>
 
     <!-- Title for buttons main menu -->
     <string name="map_of_places">MAPA DE SITIOS</string>
@@ -53,7 +61,7 @@
     <string name="title_location">Ubicación</string>
     <string name="title_address">Dirección</string>
     <string name="title_map">Mapa</string>
-    <string name="title_gallery">Galería de imágenes</string>
+    <string name="title_gallery">Galería de fotos</string>
     <string name="title_augmented_reality">Realidad Aumentada</string>
     <string name="title_full_screen">Imagen</string>
     <string name="title_contact">Contáctanos</string>
@@ -78,6 +86,7 @@
     <string name="rationale_permissions_location">El permiso de ubicación es necesario para mostrar la ubicación del usuario.\n\n¿Desea intentarlo de nuevo?</string>
     <string name="permission_location_denied_permanently">Permiso de ubicación fue denegado permanentemente.\nPara obtener la ubicación necesita activar el permiso manualmente en:\n* Permisos de la aplicación o Accesos\n* Ubicación\n* Permitir\n\n¿Desea intentarlo?</string>
     <string name="permissions_location_required">Permiso de Ubicación</string>
+    <string name="gps_required_location">Se necesitan los datos que proporciona el GPS para mostrar su ubicación en el mapa.\n¿Desea activar el GPS?</string>
 
     <!-- Permission titles augmented reality-->
     <string name="all_granted_augmented_reality">Permiso de cámara y ubicación aceptado</string>

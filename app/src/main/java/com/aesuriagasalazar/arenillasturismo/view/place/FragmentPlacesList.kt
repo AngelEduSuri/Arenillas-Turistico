@@ -14,7 +14,6 @@ import com.aesuriagasalazar.arenillasturismo.model.data.local.LocalRepository
 import com.aesuriagasalazar.arenillasturismo.model.data.local.PlacesDatabase
 import com.aesuriagasalazar.arenillasturismo.viewmodel.PlaceListViewModel
 import com.aesuriagasalazar.arenillasturismo.viewmodel.PlaceListViewModelFactory
-import com.google.android.material.snackbar.Snackbar
 
 class FragmentPlacesList : Fragment() {
 
@@ -24,7 +23,6 @@ class FragmentPlacesList : Fragment() {
         /** El factory permite instanciar el viewmodel con parametros **/
         PlaceListViewModelFactory(
             LocalRepository(PlacesDatabase.getDatabase(requireActivity().application).placeDao),
-            FragmentPlacesListArgs.fromBundle(requireArguments()).category
         )
     }
 
@@ -35,6 +33,8 @@ class FragmentPlacesList : Fragment() {
     ): View {
         /** Inflado de la vista por data binding **/
         binding = FragmentPlacesListBinding.inflate(inflater)
+
+        viewModel.loadDataFromRepository(FragmentPlacesListArgs.fromBundle(requireArguments()).category)
 
         /** Configuracion del recyclerview **/
         val manager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -58,16 +58,6 @@ class FragmentPlacesList : Fragment() {
             it?.let {
                 adapter.listPlaces = it
                 adapter.notifyDataSetChanged()
-            }
-        }
-
-        viewModel.error.observe(viewLifecycleOwner) {
-            it?.let {
-                if (it.isNotEmpty()) {
-                    Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
-                    findNavController().popBackStack()
-                    viewModel.clearError()
-                }
             }
         }
 

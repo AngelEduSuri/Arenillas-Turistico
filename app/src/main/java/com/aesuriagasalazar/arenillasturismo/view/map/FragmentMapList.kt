@@ -1,10 +1,14 @@
 package com.aesuriagasalazar.arenillasturismo.view.map
 
 import android.animation.Animator
+import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Bundle
 import android.view.*
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
@@ -19,12 +23,12 @@ import com.aesuriagasalazar.arenillasturismo.model.CategoryStatic
 import com.aesuriagasalazar.arenillasturismo.model.IconMap
 import com.aesuriagasalazar.arenillasturismo.model.data.local.LocalRepository
 import com.aesuriagasalazar.arenillasturismo.model.data.local.PlacesDatabase
+import com.aesuriagasalazar.arenillasturismo.model.data.location.GpsActivateManager
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 import com.aesuriagasalazar.arenillasturismo.view.permissions.LocationPermission
 import com.aesuriagasalazar.arenillasturismo.viewmodel.MapListViewModel
 import com.aesuriagasalazar.arenillasturismo.viewmodel.MapListViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapboxExperimental
@@ -56,11 +60,31 @@ class FragmentMapList : Fragment() {
     private lateinit var annotationManager: PointAnnotationManager
     private lateinit var viewAnnotation: ViewAnnotationManager
     private lateinit var locationPermission: LocationPermission
+    private lateinit var turnOnGps: GpsActivateManager
 
     private val viewModel: MapListViewModel by viewModels {
         MapListViewModelFactory(
             LocalRepository(PlacesDatabase.getDatabase(requireContext()).placeDao)
         )
+    }
+
+    private lateinit var resultForIntentGPS: ActivityResultLauncher<IntentSenderRequest>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        resultForIntentGPS =
+            registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
+                it?.let {
+                    when (it.resultCode) {
+                        Activity.RESULT_OK -> {
+                            viewModel.showUserLocationOnMap()
+                        }
+                        Activity.RESULT_CANCELED -> {
+                            showMessageIfNeedGps()
+                        }
+                    }
+                }
+            }
     }
 
     override fun onCreateView(
@@ -113,15 +137,7 @@ class FragmentMapList : Fragment() {
             viewModel.listPlaces.observe(viewLifecycleOwner) { places ->
                 lifecycleScope.launch {
                     places?.let {
-                        if (places.isEmpty()) {
-                            Snackbar.make(
-                                binding.root,
-                                "No existen lugares para esta categoria",
-                                Snackbar.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            loadPlacesOnMap(places)
-                        }
+                        loadPlacesOnMap(places)
                     }
                 }
             }
@@ -156,13 +172,23 @@ class FragmentMapList : Fragment() {
                     if (it) {
                         locationPermission = LocationPermission(this)
                         if (locationPermission.checkPermissions()) {
-                            viewModel.showUserLocationOnMap()
+                            viewModel.onGpsStateActivated()
                         } else {
                             locationPermission.showDialogPermissions { granted ->
-                                if (granted) viewModel.showUserLocationOnMap()
+                                if (granted) viewModel.onGpsStateActivated()
                             }
                         }
                         viewModel.idleUserPermission()
+                    }
+                }
+            }
+
+            /** Observable que comprueba el estado del gps **/
+            viewModel.gpsCheckState.observe(viewLifecycleOwner) {
+                it?.let {
+                    if (it) {
+                        checkGpsState()
+                        viewModel.onGpsStateDeactivated()
                     }
                 }
             }
@@ -171,13 +197,9 @@ class FragmentMapList : Fragment() {
             viewModel.userLocation.observe(viewLifecycleOwner) {
                 it?.let {
                     if (it) {
-                        startUserLocationUpdate()
-                        addCameraUserLocation()
-                        viewModel.showButtonLocationOnMap()
+                        startUserLocationOnMap()
                     } else {
-                        stopUserLocationUpdate()
-                        removeCameraUserLocation()
-                        viewModel.idleButtonLocationOnMap()
+                        stopUserLocationOnMap()
                     }
                 }
             }
@@ -270,7 +292,7 @@ class FragmentMapList : Fragment() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(resources.getString(R.string.category_select))
             .setItems(listString.toTypedArray()) { _, item ->
-                /** Se resetea los puntos en el mapa y se oyentes y vistas que esten abiertas **/
+                /** Se resetea los puntos en el mapa, oyentes y vistas que esten abiertas **/
                 cameraZoomOutPlace()
                 if (listString[item] == resources.getString(R.string.all)) {
                     viewModel.getListPlaces()
@@ -339,8 +361,22 @@ class FragmentMapList : Fragment() {
         }
     }
 
+    /** Funcion que empieza a obtener las actualizaciones de ubicacion y camara **/
+    private fun startUserLocationOnMap() {
+        userLocationUpdate()
+        addCameraUserLocation()
+        viewModel.showButtonLocationOnMap()
+    }
+
+    /** Funcion detiene las actualizaciones de ubicacion y camara **/
+    private fun stopUserLocationOnMap() {
+        stopUserLocationUpdate()
+        removeCameraUserLocation()
+        viewModel.idleButtonLocationOnMap()
+    }
+
     /** Funcion que habilita la ubicacion del dispositivo y lo muestra en el mapa **/
-    private fun startUserLocationUpdate() {
+    private fun userLocationUpdate() {
         val locationComponentPlugin = binding.mapViewList.location
         locationComponentPlugin.updateSettings {
             enabled = true
@@ -367,6 +403,27 @@ class FragmentMapList : Fragment() {
                 }.toJson()
             )
         }
+    }
+
+    private fun checkGpsState() {
+        turnOnGps = GpsActivateManager(requireContext())
+        turnOnGps.turnOnGpsBuilder {
+            if (it == null) {
+                viewModel.showUserLocationOnMap()
+            } else {
+                resultForIntentGPS.launch(it)
+            }
+        }
+    }
+
+    /** Dialog cuando el usuario no acepto la peticion de activar el GPS **/
+    private fun showMessageIfNeedGps() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(resources.getString(R.string.gps_is_required))
+            .setMessage(resources.getString(R.string.gps_required_location))
+            .setPositiveButton(R.string.accept) { _, _ -> viewModel.onGpsStateActivated() }
+            .setNegativeButton(R.string.cancel) { _, _ -> }
+            .show()
     }
 
     /** Funcion que inhabilita la ubicacion del dispositivo y lo quita del mapa **/
@@ -415,6 +472,7 @@ class FragmentMapList : Fragment() {
         }
     }
 }
+
 
 /** Clase que se vincula al data binding de la tarjeta de detalle **/
 class CloseViewMap(

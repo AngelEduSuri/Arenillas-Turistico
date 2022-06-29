@@ -80,7 +80,7 @@ class FragmentContactUser : Fragment() {
             putExtra(Intent.EXTRA_EMAIL, arrayOf(resources.getString(R.string.my_email)))
             type = "message/rfc822"
         }
-        startActivity(Intent.createChooser(intent, resources.getString(R.string.email_choise)))
+        startActivity(Intent.createChooser(intent, resources.getString(R.string.email_choice)))
         viewModel.onSendMessageDone()
     }
 

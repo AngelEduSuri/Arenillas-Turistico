@@ -41,17 +41,21 @@ class MapListViewModel(
     private val _cameraOptions = MutableLiveData<CameraOptions>()
     val cameraOptions: LiveData<CameraOptions> = _cameraOptions
 
-    // Administra el permiso de ubicacion del dispositivo
-    private val _userPermission = MutableLiveData(false)
-    val userPermission: LiveData<Boolean> = _userPermission
-
-    // Controla la visualizacion de la ubicacion del usuario
-    private val _userLocation = MutableLiveData<Boolean>()
-    val userLocation: LiveData<Boolean> = _userLocation
-
     // Controla la visualizacion del boton de ubicacion del usuario
     private val _showButtonLocation = MutableLiveData(false)
     val showButtonLocation: LiveData<Boolean> = _showButtonLocation
+
+    // Controla el permiso de ubicacion del dispositivo
+    private val _userPermission = MutableLiveData(false)
+    val userPermission: LiveData<Boolean> = _userPermission
+
+    // Controla el estado del gps
+    private val _gpsCheckState = MutableLiveData(false)
+    val gpsCheckState: LiveData<Boolean> = _gpsCheckState
+
+    // Controla la visualizacion de la ubicacion del usuario
+    private val _userLocation = MutableLiveData(false)
+    val userLocation: LiveData<Boolean> = _userLocation
 
     // Cuando cargue el view model carga el mapa por defecto y obtiene la lista de lugares
     init {
@@ -117,12 +121,24 @@ class MapListViewModel(
         _userLocation.value = false
     }
 
+    /** True muestra el boton de desactivar ubicacion **/
     fun showButtonLocationOnMap() {
         _showButtonLocation.value = true
     }
 
+    /** False quita el boton de desactivar ubicacion **/
     fun idleButtonLocationOnMap() {
         _showButtonLocation.value = false
+    }
+
+    /** True comprueba el estado del gps si esta activado o no **/
+    fun onGpsStateActivated() {
+        _gpsCheckState.value = true
+    }
+
+    /** False desactiva la comprobacion del gps si esta activado o no **/
+    fun onGpsStateDeactivated() {
+        _gpsCheckState.value = false
     }
 
     /** Cambia la capa del mapa a predeterminado **/
@@ -155,6 +171,7 @@ class MapListViewModel(
             .minZoom(10.0)
             .build()
     }
+
 }
 
 /** @param repository obtiene una instancia del repositorio

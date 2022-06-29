@@ -7,9 +7,8 @@ import com.aesuriagasalazar.arenillasturismo.model.domain.asDomainModelList
 import kotlinx.coroutines.launch
 
 class PlaceListViewModel(
-    private val repository: LocalRepository,
-    private val category: String
-): ViewModel() {
+    private val repository: LocalRepository
+) : ViewModel() {
 
     private val _loadingBar = MutableLiveData<Boolean>()
     val loadingBar: LiveData<Boolean> = _loadingBar
@@ -17,34 +16,23 @@ class PlaceListViewModel(
     private val _categoryList = MutableLiveData<List<Place>>()
     val categoryList: LiveData<List<Place>> = _categoryList
 
-    private val _error = MutableLiveData<String>()
-    val error: LiveData<String> = _error
-
-    init {
-        loadDataFromRepository()
-    }
-
-    private fun loadDataFromRepository() {
+    fun loadDataFromRepository(category: String) {
         viewModelScope.launch {
             _loadingBar.value = true
-            _categoryList.value = repository.getPlacesCategory(category.lowercase()).asDomainModelList()
+            _categoryList.value =
+                repository.getPlacesCategory(category.lowercase()).asDomainModelList()
             _loadingBar.value = false
         }
-    }
-
-    fun clearError() {
-        _error.value = ""
     }
 }
 
 @Suppress("UNCHECKED_CAST")
 class PlaceListViewModelFactory(
-    private val repository: LocalRepository,
-    private val category: String
-): ViewModelProvider.Factory{
+    private val repository: LocalRepository
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(PlaceListViewModel::class.java)) {
-            return PlaceListViewModel(repository, category) as T
+            return PlaceListViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
