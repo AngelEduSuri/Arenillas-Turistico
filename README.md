@@ -39,10 +39,10 @@ A continuacion se presentan las diferentes tecnologías y herramientas utilizada
 * [Realtime Databse][3]
 * [Cloud Firestore][11]
 
-## Realidad Aumentada
+## Realidad Aumentada:
 * [Wikitude SDK][6]
 
-## Mapas
+## Mapas:
 * [Mapbox SDK][5]
 
 ## Injección de dependencias:
