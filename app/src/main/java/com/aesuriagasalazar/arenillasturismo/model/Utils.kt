@@ -9,8 +9,9 @@ import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import com.aesuriagasalazar.arenillasturismo.R
+import com.aesuriagasalazar.arenillasturismo.model.domain.DataStatus
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
-import com.aesuriagasalazar.arenillasturismo.viewmodel.DataStatus
+import com.aesuriagasalazar.arenillasturismo.model.domain.PlaceCategory
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.ViewTarget
@@ -27,23 +28,15 @@ import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.CircleAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createCircleAnnotationManager
 
-
-/** Data class para representar las categorias de los lugares
- * @constructor Crea un objeto category
- * @param icon Valor entero del recurso dibujable
- * @param title El nombre de la categoria
- */
-data class Category(val icon: Int, val title: Int)
-
 /** Singleton que devuelve la lista de las categorias **/
 object CategoryStatic {
     fun getCategories() = listOf(
-        Category(R.drawable.icon_park, R.string.parks),
-        Category(R.drawable.icon_history, R.string.history),
-        Category(R.drawable.icon_nature, R.string.nature),
-        Category(R.drawable.icon_sport, R.string.sports),
-        Category(R.drawable.icon_lodging, R.string.lodging),
-        Category(R.drawable.icon_entertainment, R.string.entertainment)
+        PlaceCategory(R.drawable.icon_park, R.string.parks),
+        PlaceCategory(R.drawable.icon_history, R.string.history),
+        PlaceCategory(R.drawable.icon_nature, R.string.nature),
+        PlaceCategory(R.drawable.icon_sport, R.string.sports),
+        PlaceCategory(R.drawable.icon_lodging, R.string.lodging),
+        PlaceCategory(R.drawable.icon_entertainment, R.string.entertainment)
     )
 }
 

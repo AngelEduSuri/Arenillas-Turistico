@@ -1,5 +1,6 @@
 package com.aesuriagasalazar.arenillasturismo.view.map
 
+import android.Manifest
 import android.animation.Animator
 import android.app.Activity
 import android.graphics.Bitmap
@@ -26,8 +27,10 @@ import com.aesuriagasalazar.arenillasturismo.model.data.local.PlacesDatabase
 import com.aesuriagasalazar.arenillasturismo.model.data.location.GpsActivateManager
 import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 import com.aesuriagasalazar.arenillasturismo.view.permissions.LocationPermission
+import com.aesuriagasalazar.arenillasturismo.view.permissions.PermissionsAndroid
 import com.aesuriagasalazar.arenillasturismo.viewmodel.MapListViewModel
 import com.aesuriagasalazar.arenillasturismo.viewmodel.MapListViewModelFactory
+import com.fondesa.kpermissions.extension.permissionsBuilder
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
@@ -61,6 +64,13 @@ class FragmentMapList : Fragment() {
     private lateinit var viewAnnotation: ViewAnnotationManager
     private lateinit var locationPermission: LocationPermission
     private lateinit var turnOnGps: GpsActivateManager
+
+    private val request by lazy {
+        permissionsBuilder(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ).build()
+    }
 
     private val viewModel: MapListViewModel by viewModels {
         MapListViewModelFactory(
@@ -170,7 +180,7 @@ class FragmentMapList : Fragment() {
             viewModel.userPermission.observe(viewLifecycleOwner) {
                 it?.let {
                     if (it) {
-                        locationPermission = LocationPermission(this)
+                        locationPermission = LocationPermission(PermissionsAndroid(request, this))
                         if (locationPermission.checkPermissions()) {
                             viewModel.onGpsStateActivated()
                         } else {

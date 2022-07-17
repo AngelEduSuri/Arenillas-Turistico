@@ -1,13 +1,12 @@
-package com.aesuriagasalazar.arenillasturismo.model.data.local
+package com.aesuriagasalazar.arenillasturismo.model.domain
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.aesuriagasalazar.arenillasturismo.model.domain.Place
 
 /** Data class que representa la entidad de la base de datos local **/
 @Entity(tableName = "list_places_table")
-data class PlaceEntity(
+data class PlaceEntityDb(
     @PrimaryKey(autoGenerate = false)
     val id: Int = 0,
     @ColumnInfo(name = "name")
@@ -31,9 +30,9 @@ data class PlaceEntity(
 )
 
 /** Convierte la lista de datos en un modelo de entidad de base de datos Room **/
-fun List<Place>.asEntityModelList(): List<PlaceEntity>{
+fun List<Place>.asEntityModelList(): List<PlaceEntityDb>{
     return map {
-        PlaceEntity(
+        PlaceEntityDb(
             id = it.id,
             nombre = it.nombre,
             categoria = it.categoria,

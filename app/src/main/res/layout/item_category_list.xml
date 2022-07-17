@@ -6,7 +6,7 @@
     <data>
         <variable
             name="category"
-            type="com.aesuriagasalazar.arenillasturismo.model.Category" />
+            type="com.aesuriagasalazar.arenillasturismo.model.domain.PlaceCategory" />
         <variable
             name="categoryClick"
             type="com.aesuriagasalazar.arenillasturismo.view.category.CategoryClickListener" />

@@ -1,86 +1,22 @@
 package com.aesuriagasalazar.arenillasturismo.view.permissions
 
-import android.Manifest
-import android.content.Intent
-import android.net.Uri
-import android.provider.Settings
-import androidx.fragment.app.Fragment
 import com.aesuriagasalazar.arenillasturismo.R
-import com.fondesa.kpermissions.allGranted
-import com.fondesa.kpermissions.anyPermanentlyDenied
-import com.fondesa.kpermissions.anyShouldShowRationale
-import com.fondesa.kpermissions.extension.liveData
-import com.fondesa.kpermissions.extension.permissionsBuilder
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 
-class AugmentedRealityPermissions(private val fragment: Fragment) {
+class AugmentedRealityPermissions(private val permissions: PermissionsAndroid) {
 
-    private val request by lazy {
-        fragment.permissionsBuilder(
-            Manifest.permission.CAMERA,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        ).build()
+    init {
+        permissions.setResourcesByDialogs(
+            R.string.all_granted_augmented_reality,
+            R.string.permission_augmented_reality_denied_permanently,
+            R.string.permissions_augmented_reality_required,
+            R.string.rationale_permissions_augmented_reality,
+            R.string.permissions_augmented_reality_required
+        )
     }
 
-    fun checkPermissions() = request.checkStatus().allGranted()
+    fun checkPermissions() = permissions.checkPermissions()
 
-    fun showDialogPermissions(granted: (Boolean) -> Unit) {
-        requestPermissions(granted)
-        request.send()
-    }
+    fun showDialogPermissions(granted: (Boolean) -> Unit) =
+        permissions.showDialogPermissions(granted)
 
-    private fun requestPermissions(granted: (Boolean) -> Unit) {
-        request.liveData().observe(fragment) {
-            when {
-                it.allGranted() -> {
-                    granted(true)
-                    showGrantedSnackBar()
-                }
-                it.anyPermanentlyDenied() -> {
-                    showPermanentlyDeniedDialog()
-                }
-                it.anyShouldShowRationale() -> {
-                    showRationaleDialog()
-                }
-            }
-        }
-    }
-
-    private fun showGrantedSnackBar() {
-        val msg = fragment.getString(R.string.all_granted_augmented_reality)
-        Snackbar.make(fragment.requireView(), msg, Snackbar.LENGTH_LONG).show()
-    }
-
-    private fun showPermanentlyDeniedDialog() {
-        val msg = fragment.getString(R.string.permission_augmented_reality_denied_permanently)
-        MaterialAlertDialogBuilder(fragment.requireContext())
-            .setTitle(R.string.permissions_augmented_reality_required)
-            .setMessage(msg)
-            .setPositiveButton(R.string.accept) { _, _ ->
-                val intent = createAppSettingsIntent()
-                fragment.startActivity(intent)
-            }
-            .setNegativeButton(R.string.cancel, null)
-            .show()
-    }
-
-    private fun showRationaleDialog() {
-        val message = fragment.getString(R.string.rationale_permissions_augmented_reality)
-        MaterialAlertDialogBuilder(fragment.requireContext())
-            .setTitle(fragment.getString(R.string.permissions_augmented_reality_required))
-            .setMessage(message)
-            .setPositiveButton(R.string.retry_again) { _, _ ->
-                // Send the request again.
-                request.send()
-            }
-            .setNegativeButton(R.string.cancel, null)
-            .show()
-    }
-
-    private fun createAppSettingsIntent() = Intent().apply {
-        action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-        data = Uri.fromParts("package", fragment.context?.packageName, null)
-    }
 }

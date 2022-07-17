@@ -2,17 +2,10 @@ package com.aesuriagasalazar.arenillasturismo.viewmodel
 
 import androidx.lifecycle.*
 import com.aesuriagasalazar.arenillasturismo.model.data.remote.RemoteRepository
+import com.aesuriagasalazar.arenillasturismo.model.domain.DataStatus
 import com.aesuriagasalazar.arenillasturismo.model.network.NetworkStatus
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
-enum class DataStatus {
-    UPDATING,
-    DOWNLOADING,
-    ERROR,
-    NO_DATA,
-    LOCAL
-}
 
 class SplashViewModel(
     private val remoteRepository: RemoteRepository,

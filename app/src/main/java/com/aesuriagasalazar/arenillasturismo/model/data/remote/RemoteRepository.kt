@@ -1,7 +1,7 @@
 package com.aesuriagasalazar.arenillasturismo.model.data.remote
 
 import com.aesuriagasalazar.arenillasturismo.model.data.local.PlaceDao
-import com.aesuriagasalazar.arenillasturismo.model.data.local.asEntityModelList
+import com.aesuriagasalazar.arenillasturismo.model.domain.asEntityModelList
 import com.aesuriagasalazar.arenillasturismo.viewmodel.MessageBody
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

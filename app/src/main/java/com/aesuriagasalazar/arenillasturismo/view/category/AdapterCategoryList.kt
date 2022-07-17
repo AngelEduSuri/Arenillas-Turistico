@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.aesuriagasalazar.arenillasturismo.databinding.ItemCategoryListBinding
-import com.aesuriagasalazar.arenillasturismo.model.Category
+import com.aesuriagasalazar.arenillasturismo.model.domain.PlaceCategory
 
 class AdapterCategoryList(
-    private val listCategory: List<Category>,
+    private val listCategory: List<PlaceCategory>,
     private val categoryClickListener: CategoryClickListener
 ): RecyclerView.Adapter<AdapterCategoryList.ViewHolder>() {
 
@@ -19,7 +19,7 @@ class AdapterCategoryList(
 
     class ViewHolder private constructor(private val binding: ItemCategoryListBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(category: Category, categoryClickListener: CategoryClickListener) {
+        fun bind(category: PlaceCategory, categoryClickListener: CategoryClickListener) {
             binding.category = category
             binding.categoryClick = categoryClickListener
             binding.executePendingBindings()

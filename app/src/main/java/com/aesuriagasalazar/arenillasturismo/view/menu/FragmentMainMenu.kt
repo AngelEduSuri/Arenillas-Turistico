@@ -1,5 +1,6 @@
 package com.aesuriagasalazar.arenillasturismo.view.menu
 
+import android.Manifest
 import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
 import android.location.Location
@@ -15,6 +16,8 @@ import com.aesuriagasalazar.arenillasturismo.databinding.FragmentMainMenuBinding
 import com.aesuriagasalazar.arenillasturismo.model.data.location.GpsActivateManager
 import com.aesuriagasalazar.arenillasturismo.model.data.location.UserLocationOnLiveData
 import com.aesuriagasalazar.arenillasturismo.view.permissions.AugmentedRealityPermissions
+import com.aesuriagasalazar.arenillasturismo.view.permissions.PermissionsAndroid
+import com.fondesa.kpermissions.extension.permissionsBuilder
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.wikitude.architect.ArchitectView
 import com.wikitude.common.devicesupport.Feature
@@ -30,6 +33,14 @@ class FragmentMainMenu : Fragment() {
             latitude = resources.getString(R.string.center_city_latitude).toDouble()
             longitude = resources.getString(R.string.center_city_longitude).toDouble()
         }
+    }
+
+    private val request by lazy {
+        permissionsBuilder(
+            Manifest.permission.CAMERA,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ).build()
     }
 
     private lateinit var resultForIntentGPS: ActivityResultLauncher<IntentSenderRequest>
@@ -89,7 +100,7 @@ class FragmentMainMenu : Fragment() {
     }
 
     private fun augmentedRealityCheckPermissions() {
-        augmentedRealityPermissions = AugmentedRealityPermissions(this)
+        augmentedRealityPermissions = AugmentedRealityPermissions(PermissionsAndroid(request, this))
         if (augmentedRealityPermissions.checkPermissions()) {
             turnOnGpsAndNavigate()
         } else {

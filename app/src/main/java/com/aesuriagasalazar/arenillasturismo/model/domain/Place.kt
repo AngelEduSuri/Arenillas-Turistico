@@ -1,7 +1,6 @@
 package com.aesuriagasalazar.arenillasturismo.model.domain
 
 import android.os.Parcelable
-import com.aesuriagasalazar.arenillasturismo.model.data.local.PlaceEntity
 import kotlinx.android.parcel.Parcelize
 
 /** Data class que representa el dominio de la aplicacion, lugares turisticos **/
@@ -21,7 +20,7 @@ data class Place(
 ) : Parcelable
 
 /** Convierte el modelo de entidad de Room en una lista de dominio de lugares (Place) **/
-fun List<PlaceEntity>.asDomainModelList(): List<Place> {
+fun List<PlaceEntityDb>.asDomainModelList(): List<Place> {
     return map {
         Place(
             id = it.id,
@@ -38,7 +37,7 @@ fun List<PlaceEntity>.asDomainModelList(): List<Place> {
     }
 }
 
-fun PlaceEntity.asDomainModel(): Place {
+fun PlaceEntityDb.asDomainModel(): Place {
     return Place(
         id = this.id,
         nombre = this.nombre,

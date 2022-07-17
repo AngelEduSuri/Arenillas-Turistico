@@ -4,8 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.aesuriagasalazar.arenillasturismo.model.domain.PlaceEntityDb
 
-@Database(entities = [PlaceEntity::class], version = 1, exportSchema = false)
+@Database(entities = [PlaceEntityDb::class], version = 1, exportSchema = false)
 abstract class PlacesDatabase: RoomDatabase() {
 
     abstract val placeDao: PlaceDao
