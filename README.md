@@ -49,7 +49,7 @@ A continuacion se presentan las diferentes tecnologías y herramientas utilizada
 * [Manual Dependency Injection][16]
 
 ## Programación Asíncrona:
-* [Kotlin Coroutines][9]
+* [Kotlin Coroutines][21]
 
 ## Otras librerías:
 * [Glide][7]
@@ -61,7 +61,7 @@ A continuacion se presentan las diferentes tecnologías y herramientas utilizada
 
 # Consideraciones
 
-Si se clona el proyecto y quieres ejecutar la app en tu entorno, debes agregar el archivo **google-services.json** configurado con tu proyecto en Firebase, para más información visita la documentación oficial en [como agregar Firebase a tu proyecto en Android][15].
+Si se clona el proyecto y quieres ejecutar la app en tu entorno, debes agregar el archivo **google-services.json** configurado con tu proyecto en Firebase, para más información visita la documentación oficial en [como agregar Firebase a tu proyecto en Android][18].
 
 El SDK de Wikitude es de pago, pero ofrece una APIKEY por 45 días gratis y una de 1 año solicitando la versión educativa, para más información visita [Wikitude Academy][19].
 En la ruta de este archivo de recurso [api_key_wikitude.xml](app/src/main/res/values/api_key_wikitude.xml) debe colocar su APIKEY de Wikitude.
@@ -90,4 +90,5 @@ El SDK de Mapbox se basa en dos APIKEY, el token secreto (más información en: 
 [18]: https://firebase.google.com/docs/android/setup
 [19]: https://www.wikitude.com/wikitude-academy/
 [20]: https://docs.mapbox.com/accounts/guides/tokens/
+[21]: https://kotlinlang.org/docs/coroutines-overview.html
 
