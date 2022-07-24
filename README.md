@@ -23,7 +23,7 @@ Todo el proyecto emplea el pratron de arquitectura MVVM y componentes de [Androi
 
 # Capturas de pantalla
 
-![alt text](https://i.ibb.co/6y1dF72/screen-shot-app-arenillas.png)
+![alt text](https://i.postimg.cc/2S346MjX/screen-shot-app-arenillas.png)
 
 A continuacion se presentan las diferentes tecnologías y herramientas utilizadas en esta aplicación:
 
